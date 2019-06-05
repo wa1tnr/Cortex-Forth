@@ -1016,5 +1016,6 @@ void loop() {
 //  delay (300);
 }
 
-
-
+// Turn ON local echo (Ctrl A, E in minicom)
+// Turn OFF added CR
+// Turn OFF added LF
