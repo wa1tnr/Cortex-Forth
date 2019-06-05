@@ -211,7 +211,7 @@ void _NEST (void) {
 void _SHOWTIB (void) {
   W = tib.length ();
   tib [W - 1] = 0;
-  // tnr, suppressed // Serial.print (tib);
+  Serial.print (tib); // tnr // restored to original
 }
 
 // trim leading spaces
@@ -772,7 +772,7 @@ void setup () {
   DATA(103, number)
   DATA(104, zbranch)
   DATA(105, 114) // to ok
-  DATA(106, nop) // tnr // DATA(106, showtib)
+  DATA(106, nop) // tnr, suppressed with a nop // DATA(106, showtib)
   DATA(107, lit)
   DATA(108, '?')
   DATA(109, emit)
