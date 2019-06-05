@@ -1,4 +1,4 @@
-// Wed Jun  5 21:29:09 UTC 2019
+// Wed Jun  5 21:39:34 UTC 2019
 // identify: kinpaplid palermo tenerife
 // On branch exp-cc-aa
 
@@ -17,6 +17,8 @@
 #define CODE(m, a) {memory.program [m] = a;}
 #define DATA(m, a) {memory.data [m] = a;}
 #define IMMED 0x80
+
+#define LINE_ENDING 13 // alt: 10
 
 // global variables
 union Memory {
@@ -94,7 +96,7 @@ void _CR (void) {
 }
 
 void _OK (void) {
-  if (tib [tib.length () - 1] == 10) Serial.println (" Ok");
+  if (tib [tib.length () - 1] == LINE_ENDING) Serial.println (" Ok");
 }
 
 void _SWAP (void) {
@@ -209,7 +211,7 @@ void _NEST (void) {
 void _SHOWTIB (void) {
   W = tib.length ();
   tib [W - 1] = 0;
-  Serial.print (tib);
+  // tnr, suppressed // Serial.print (tib);
 }
 
 // trim leading spaces
@@ -230,7 +232,7 @@ void _PARSE (void) {
 //    Serial.write (t);
     tib = tib + t;
   } while (t > ' ');
-  Serial.print (tib);
+  // tnr, suppressed // Serial.print (tib);
 }
 
 void _WORD (void) {
@@ -646,6 +648,7 @@ void setup () {
   NAME(20, 0, 0, 10, 0, 0)
   LINK(21, 0)
   CODE(22, _NOP)
+#define nop 22
   // exit
   NAME(23, 0, 4, 'e', 'x', 'i')
   LINK(24, 20)
@@ -769,7 +772,7 @@ void setup () {
   DATA(103, number)
   DATA(104, zbranch)
   DATA(105, 114) // to ok
-  DATA(106, showtib)
+  DATA(106, nop) // tnr // DATA(106, showtib)
   DATA(107, lit)
   DATA(108, '?')
   DATA(109, emit)
