@@ -620,6 +620,24 @@ void _CSTORE (void) {
 } 
 
 
+void _color_yellow_fg (void) {
+  Serial.print("\033\133"); // ESC [
+  Serial.print("\063\063"); // 33 - yellow fg
+  Serial.print("m");        // for the stanza
+}
+
+void _color_blue_bg (void) {
+  Serial.print("\033\133"); // ESC [
+  Serial.print("\064\064"); // 44 - blue bg
+  Serial.print("m");        // for the stanza
+}
+
+void _color_black_bg (void) {
+  Serial.print("\033\133"); // ESC [
+  Serial.print("\064\060"); // 40 - black bg
+  Serial.print("m");        // for the stanza
+}
+
 
 void setup () {
   S = S0; // initialize data stack
@@ -1013,6 +1031,7 @@ void setup () {
   I = abort; // instruction pointer = abort
   Serial.begin (9600);
   while (!Serial);
+  _color_black_bg(); _color_yellow_fg();
   Serial.println ("myForth Arm Cortex");
 }
 
