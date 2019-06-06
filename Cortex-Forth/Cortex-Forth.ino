@@ -1,6 +1,9 @@
-// Thu Jun  6 00:33:12 UTC 2019
-// identify: telintha kinpaplid palermo tenerife
-// On branch exp-dd-b-aa
+// Thu Jun  6 18:59:58 UTC 2019
+// identify: puitveno  telintha kinpaplid palermo tenerife
+// On branch exp-ee
+
+// target: Feather M0 Express
+// comm: TX/RX pair for the Forth interpreter
 
 /*
   Forth virtual machine
@@ -80,23 +83,23 @@ void _QDUP (void) {
 
 void _KEY (void) {
   _DUP ();
-  while (!Serial.available ());
-  T = Serial.read ();
-//  Serial.write (T);
+  while (!Serial1.available ());
+  T = Serial1.read ();
+//  Serial1.write (T);
 }
 
 void _EMIT (void) {
   char c = T;
-  Serial.write (c);
+  Serial1.write (c);
   _DROP ();
 }
 
 void _CR (void) {
-  Serial.println (" ");
+  Serial1.println (" ");
 }
 
 void _OK (void) {
-  if (tib [tib.length () - 1] == LINE_ENDING) Serial.println (" Ok");
+  if (tib [tib.length () - 1] == LINE_ENDING) Serial1.println (" Ok");
 }
 
 void _WARM (void) {
@@ -215,7 +218,7 @@ void _NEST (void) {
 void _SHOWTIB (void) {
   W = tib.length ();
   tib [W - 1] = 0;
-  Serial.print (tib); // tnr // restored to original
+  Serial1.print (tib); // tnr // restored to original
 }
 
 // trim leading spaces
@@ -223,20 +226,20 @@ void _PARSE (void) {
   char t;
   tib = "";
   do {
-    while (!Serial.available ());
-    t = Serial.peek ();
+    while (!Serial1.available ());
+    t = Serial1.peek ();
     if (t == ' ') {
-      t = Serial.read ();
-//      Serial.write (t);
+      t = Serial1.read ();
+//      Serial1.write (t);
     }
   } while (t == ' ');
   do {
-    while (!Serial.available ());
-    t = Serial.read ();
-//    Serial.write (t);
+    while (!Serial1.available ());
+    t = Serial1.read ();
+//    Serial1.write (t);
     tib = tib + t;
   } while (t > ' ');
-  // tnr, suppressed // Serial.print (tib);
+  // tnr, suppressed // Serial1.print (tib);
 }
 
 void _WORD (void) {
@@ -313,33 +316,33 @@ void _FIND (void) {
 }
 
 void _DOT (void) {
-  Serial.print (T);
-  Serial.write (' ');
+  Serial1.print (T);
+  Serial1.write (' ');
   _DROP ();
 }
 
 void _HDOT (void) {
-  Serial.print (T, HEX);
-  Serial.write (' ');
+  Serial1.print (T, HEX);
+  Serial1.write (' ');
   _DROP ();
 }
 
 void _DDOTS (void) {
   if (S == S0) {
-    Serial.print ("empty ");
+    Serial1.print ("empty ");
     return;
   }
   _DUP ();
   W = (S0 - 1);
   while (W > (S)) {
-    Serial.print (memory.data [--W]);
-    Serial.write (' ');
+    Serial1.print (memory.data [--W]);
+    Serial1.write (' ');
   }
   _DROP ();
 }
 
 void _SPACE () {
-  Serial.write (' ');
+  Serial1.write (' ');
 }
 
 void _ZEROEQUAL () {
@@ -361,16 +364,16 @@ void _ZEROLESS () {
 void _DOTWORD () {
   int Y = memory.data [W];
   int X = (Y & 0xff);
-  Serial.write ('[');
-  Serial.print (X);
-  Serial.write (' ');
+  Serial1.write ('[');
+  Serial1.print (X);
+  Serial1.write (' ');
   X = ((Y >> 8) & 0xff);
   _DUP (); T = X; _EMIT ();
   X = ((Y >> 16) & 0xff);
   if (X != 0) { _DUP (); T = X; _EMIT (); }
   X = ((Y >> 24) & 0xff);
   if (X != 0) { _DUP (); T = X; _EMIT (); }
-  Serial.print ("] "); 
+  Serial1.print ("] "); 
 }
 
 void _WORDS (void) {
@@ -395,8 +398,8 @@ void _DUMP (void) {
   _DROP ();
   for (int i = 0; i < a; i++) {
     W = T;
-    Serial.print (memory.data [T++], HEX);
-    Serial.write (' ');
+    Serial1.print (memory.data [T++], HEX);
+    Serial1.write (' ');
     _DOTWORD ();
   }
 }
@@ -621,21 +624,21 @@ void _CSTORE (void) {
 
 
 void _color_yellow_fg (void) {
-  Serial.print("\033\133"); // ESC [
-  Serial.print("\063\063"); // 33 - yellow fg
-  Serial.print("m");        // for the stanza
+  Serial1.print("\033\133"); // ESC [
+  Serial1.print("\063\063"); // 33 - yellow fg
+  Serial1.print("m");        // for the stanza
 }
 
 void _color_blue_bg (void) {
-  Serial.print("\033\133"); // ESC [
-  Serial.print("\064\064"); // 44 - blue bg
-  Serial.print("m");        // for the stanza
+  Serial1.print("\033\133"); // ESC [
+  Serial1.print("\064\064"); // 44 - blue bg
+  Serial1.print("m");        // for the stanza
 }
 
 void _color_black_bg (void) {
-  Serial.print("\033\133"); // ESC [
-  Serial.print("\064\060"); // 40 - black bg
-  Serial.print("m");        // for the stanza
+  Serial1.print("\033\133"); // ESC [
+  Serial1.print("\064\060"); // 40 - black bg
+  Serial1.print("m");        // for the stanza
 }
 
 
@@ -1029,10 +1032,10 @@ void setup () {
 
 //  I = 300; // test
   I = abort; // instruction pointer = abort
-  Serial.begin (9600);
+  Serial1.begin (9600);
   while (!Serial);
   _color_black_bg(); _color_yellow_fg();
-  Serial.println ("myForth Arm Cortex");
+  Serial1.println ("myForth Arm Cortex");
 }
 
 // the loop function runs over and over again forever
