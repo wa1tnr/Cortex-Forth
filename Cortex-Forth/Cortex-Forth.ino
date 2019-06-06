@@ -1033,7 +1033,7 @@ void setup () {
 //  I = 300; // test
   I = abort; // instruction pointer = abort
   Serial1.begin (9600);
-  while (!Serial);
+  while (!Serial1);
   _color_black_bg(); _color_yellow_fg();
   Serial1.println ("myForth Arm Cortex");
 }
