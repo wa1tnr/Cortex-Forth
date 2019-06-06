@@ -12,3 +12,31 @@ was made in just a few minutes.
 Existing hardware setup for another project was
 leveraged (CP2104 and Feather M0 Express - there
 is also a Segger JLink EDU hookup handy).
+
+Setup note:
+
+Feather M0 Express is powered by its USB connector,
+by a battery (the kind with USB-A connector for
+supplying power to a cell phone or similar).
+
+There was no real port pin protection for TX/RX
+pair.
+
+The host PC supplies the CP2104 (which has been
+neutered by removing a foil trace jumper, to prevent
+'backfeeding' of power from it to the DUT).
+
+At no time were two USB cables running to external
+computing devices of any sort - just the one USB
+cable running back to the PC from CP2104.
+
+TX and RX should have inline 10k resistors, and there
+should be 1N914B's connected (reverse-biased) across
+the local power supplies for both ends of the connection,
+with TX and RX locate at the junction of two diodes.
+
+There should be no shared ground between the two
+devices (just TX and RX).  This last bit (no shared
+ground) needs careful examination for correctness,
+but it is taken as being correct for the case of two
+microcontrollers conversing over the TX/RX pair.
