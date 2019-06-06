@@ -1,6 +1,6 @@
-// Wed Jun  5 21:39:34 UTC 2019
-// identify: kinpaplid palermo tenerife
-// On branch exp-cc-aa
+// Thu Jun  6 00:33:12 UTC 2019
+// identify: telintha kinpaplid palermo tenerife
+// On branch exp-dd-b-aa
 
 /*
   Forth virtual machine
@@ -97,6 +97,10 @@ void _CR (void) {
 
 void _OK (void) {
   if (tib [tib.length () - 1] == LINE_ENDING) Serial.println (" Ok");
+}
+
+void _WARM (void) {
+  NVIC_SystemReset();      // processor software reset
 }
 
 void _SWAP (void) {
@@ -978,7 +982,10 @@ void setup () {
   DATA(256, lloop)
   DATA(257, 253)
   DATA(258, exit)
-
+  // warm (  - )
+  NAME(259, 0, 4, 'w', 'a', 'r')
+  LINK(260, 246)
+  CODE(261, _WARM)
  
   // test
   DATA(300, lit)
@@ -999,8 +1006,8 @@ void setup () {
 
 
 
-  D = 246; // latest word
-  H = 259; // top of dictionary
+  D = 259; // latest word
+  H = 262; // top of dictionary
 
 //  I = 300; // test
   I = abort; // instruction pointer = abort
