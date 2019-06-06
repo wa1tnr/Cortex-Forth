@@ -1,0 +1,14 @@
+Thu Jun  6 19:14:05 UTC 2019
+
+This is a variant that talks via TX/RX pair, to
+CP2104 (PiUART) rather than via /dev/ttyACM0.
+
+Device: /dev/ttyUSB0 at 9600 (baud rate should
+be arbitrary .. perhaps).
+
+Project works well, and simply - very small change
+was made in just a few minutes.
+
+Existing hardware setup for another project was
+leveraged (CP2104 and Feather M0 Express - there
+is also a Segger JLink EDU hookup handy).
