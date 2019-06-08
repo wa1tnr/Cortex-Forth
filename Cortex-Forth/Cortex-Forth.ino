@@ -21,7 +21,8 @@
 #define DATA(m, a) {memory.data [m] = a;}
 #define IMMED 0x80
 
-#define LINE_ENDING 13 // alt: 10
+// #define LINE_ENDING 13 // alt: 10
+#define LINE_ENDING 10 // alt: 13
 
 // global variables
 union Memory {
@@ -1032,7 +1033,8 @@ void setup () {
 
 //  I = 300; // test
   I = abort; // instruction pointer = abort
-  Serial1.begin (9600);
+  // Serial1.begin (9600);
+  Serial1.begin (38400);
   while (!Serial1);
   _color_black_bg(); _color_yellow_fg();
   Serial1.println ("myForth Arm Cortex");
