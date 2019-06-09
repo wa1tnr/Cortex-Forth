@@ -106,7 +106,7 @@ void _OK (void) {
 }
 
 void _WLIST (void) {
-  Serial1.println ("wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit");
+  Serial1.print ("wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
 }
 
 void _WARM (void) {
