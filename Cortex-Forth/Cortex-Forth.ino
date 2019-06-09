@@ -1,8 +1,10 @@
-// Thu Jun  6 18:59:58 UTC 2019
-// identify: puitveno  telintha kinpaplid palermo tenerife
+// Sun Jun  9 01:26:44 UTC 2019
+// identify: famixid puitveno  telintha kinpaplid palermo tenerife
 // On branch exp-ee
 
-// target: Feather M0 Express
+// added: wlist word
+
+// target: ItsyBitsy M4 Express
 // comm: TX/RX pair for the Forth interpreter
 
 /*
@@ -21,8 +23,8 @@
 #define DATA(m, a) {memory.data [m] = a;}
 #define IMMED 0x80
 
-// #define LINE_ENDING 13 // alt: 10
 #define LINE_ENDING 10 // alt: 13
+extern void setup_dotstar(void); // dotstar.cpp
 
 // global variables
 union Memory {
@@ -101,6 +103,10 @@ void _CR (void) {
 
 void _OK (void) {
   if (tib [tib.length () - 1] == LINE_ENDING) Serial1.println (" Ok");
+}
+
+void _WLIST (void) {
+  Serial1.println ("wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit");
 }
 
 void _WARM (void) {
@@ -400,7 +406,8 @@ void _DUMP (void) {
   for (int i = 0; i < a; i++) {
     W = T;
     Serial1.print (memory.data [T++], HEX);
-    Serial1.write (' ');
+    // Serial1.write (' ');
+    Serial1.write (" ~dump_delimiter~ ");
     _DOTWORD ();
   }
 }
@@ -644,6 +651,8 @@ void _color_black_bg (void) {
 
 
 void setup () {
+  setup_dotstar(); // turn off dotstar (apa-102 RGB LED)
+
   S = S0; // initialize data stack
   R = R0; // initialize return stack
 
@@ -1008,7 +1017,10 @@ void setup () {
   NAME(259, 0, 4, 'w', 'a', 'r')
   LINK(260, 246)
   CODE(261, _WARM)
- 
+  NAME(262, 0, 5, 'w', 'l', 'i')
+  LINK(263, 259)
+  CODE(264, _WLIST)
+
   // test
   DATA(300, lit)
   DATA(301, 10) // i
@@ -1028,8 +1040,8 @@ void setup () {
 
 
 
-  D = 259; // latest word
-  H = 262; // top of dictionary
+  D = 262; // latest word // D = 259;
+  H = 265; // top of dictionary // H = 262;
 
 //  I = 300; // test
   I = abort; // instruction pointer = abort
@@ -1037,7 +1049,7 @@ void setup () {
   Serial1.begin (38400);
   while (!Serial1);
   _color_black_bg(); _color_yellow_fg();
-  Serial1.println ("myForth Arm Cortex");
+  Serial1.println ("myForth Arm Cortex - ItsyBitsyM4 8 JUN 2019 2335z");
 }
 
 // the loop function runs over and over again forever
