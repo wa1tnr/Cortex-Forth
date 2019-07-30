@@ -1,4 +1,5 @@
 // Sun Jun  9 01:26:44 UTC 2019
+// Tue Jul 30 11:59:58 UTC 2019 rev b
 // identify: famixid puitveno  telintha kinpaplid palermo tenerife
 // On branch exp-ee
 
@@ -1049,7 +1050,7 @@ void setup () {
   Serial1.begin (38400);
   while (!Serial1);
   _color_black_bg(); _color_yellow_fg();
-  Serial1.println ("myForth Arm Cortex - ItsyBitsyM4 8 JUN 2019 2335z");
+  Serial1.println ("myForth Arm Cortex - ItsyBitsyM4 30 JUL 2019 1159z");
 }
 
 // the loop function runs over and over again forever
