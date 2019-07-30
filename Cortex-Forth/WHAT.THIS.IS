@@ -1,4 +1,23 @@
-Thu Jun  6 19:14:05 UTC 2019
+Tue Jul 30 11:35:41 UTC 2019
+
+was: Thu Jun  6 19:14:05 UTC 2019
+
+NOTE for July 30th:  It's been long enough since the
+last time this project was worked on, to immediately
+notice the disparity between what this file states,
+and the 'working' truth. ;)
+
+The current project does not work with CP2104; but
+rather, it talks to a second microcontroller (Trinket M0)
+running a simple terminal emulation.
+
+The CP2104 thing would probably work, somewhat. ;)
+
+What follows is the earlier contents of this very file.
+Have not read through it to see what obtains on July 30th
+and what is now obsoleted. ;)
+
+ * * *
 
 This is a variant that talks via TX/RX pair, to
 CP2104 (PiUART) rather than via /dev/ttyACM0.
