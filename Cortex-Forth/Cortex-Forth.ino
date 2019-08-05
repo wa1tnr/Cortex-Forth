@@ -586,7 +586,7 @@ void setup () {
   //  I = 200; //  test
   Serial.begin (9600);
   while (!Serial);
-  Serial.println ("myForth Arm Cortex - release 0.1.4 (reversed-dd) de wa1tnr"); 
+  Serial.println ("myForth Arm Cortex - release 0.1.4 (reversed-dd) de wa1tnr - use CTRL J - not very responsive");
   //  _WORDS ();
   //  _DEPTH ();
   _DDOTS ();
