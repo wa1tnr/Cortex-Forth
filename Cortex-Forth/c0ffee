@@ -1,8 +1,10 @@
-# Mon Aug  5 22:55:42 UTC 2019
-# branch * reversed-ee
+# Mon Aug  5 23:34:36 UTC 2019
+# branch * reversed-ff
 
 reverse-collated:
 
+TODO: new hard reset for this branch (reversed-ff)
+$ git reset --hard 2781876672e85b   # MOST RECENT - for release 0.1.7 (reversed-ff)
 $ git reset --hard b570d184ce5684   # MOST RECENT - for release 0.1.6 (reversed-ee)
 $ git reset --hard 835113101c1adf   #   for release 0.1.5
 $ git reset --hard 91340fd8c7159d
