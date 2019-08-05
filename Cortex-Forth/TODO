@@ -1,6 +1,0 @@
-
-  Build second module to do the terminal handling stuff,
-  join to this via tx/rx pair (USART).  DONE.
-
-  The Steno keyboard may've played this role.
-
