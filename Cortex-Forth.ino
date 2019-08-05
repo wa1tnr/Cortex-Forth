@@ -489,7 +489,7 @@ void setup () {
 
   Serial.begin (9600);
   while (!Serial);
-  Serial.println ("myForth Arm Cortex");
+  Serial.println ("myForth Arm Cortex - release 0.1.3 de wa1tnr");
 //  _words ();
 }
 
