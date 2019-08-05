@@ -592,7 +592,7 @@ void setup () {
 //  I = 200; //  test
   Serial.begin (9600);
   while (!Serial);
-  Serial.println ("myForth Arm Cortex");
+  Serial.println ("myForth Arm Cortex - release 0.1.6 (reversed-ee) de wa1tnr - use CTRL J and try the words word ");
   //  _WORDS ();
   //  _DEPTH ();
   _DDOTS ();
