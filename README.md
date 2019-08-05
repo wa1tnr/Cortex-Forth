@@ -1,9 +1,7 @@
 Cortex-Forth
 ============
 
-Mon Aug  5 20:02:52 UTC 2019
-
-Cortex-Forth - other upstream code removed.
+Mon Aug  5 22:55:42 UTC 2019
 
 Cortex-Forth is a Forth in C for an Arm Arduino, in development.
 
@@ -13,7 +11,7 @@ Sample Run
 connected to /dev/ttyACM0
 Escape character: Ctrl-\
 Type the escape character followed by c to get to the menu or q to quit
-myForth Arm Cortex - release 0.1.6 (reversed-ee) de wa1tnr - use CTRL J
+myForth Arm Cortex - release 0.1.6 (reversed-ee) de wa1tnr - use CTRL J and try the words word
 empty  Ok
  Ok
  Ok
