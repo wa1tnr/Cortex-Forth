@@ -1,2 +1,1 @@
-// gisgis kualdo  - Mon Aug  5 23:34:36 UTC 2019
-// * reversed-ff
+// privak gisgis kualdo  - Tue Aug  6 00:16:30 UTC 2019 0.1.8 reversed-gg
