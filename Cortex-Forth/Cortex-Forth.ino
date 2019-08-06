@@ -156,6 +156,14 @@ void _TWOSLASH (void) {
   T = (T >> 1);
 }
 
+void _WARM (void) {
+  NVIC_SystemReset();      // processor software reset
+}
+
+void _WLIST (void) {
+  Serial1.print ("wlist warm 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
+}
+
 void _TWOSTAR (void) {
   T = (T << 1);
 }
@@ -612,8 +620,18 @@ void setup () {
   LINK(160, 156)
   CODE(161, _TWOSLASH)
 
-  D = 159; // latest word
-  H = 162; // top of dictionary
+  // warm
+  NAME(162, 0, 4, 'w', 'a', 'r')
+  LINK(163, 159)
+  CODE(164, _WARM)
+
+  // wlist
+  NAME(165, 0, 5, 'w', 'l', 'i')
+  LINK(166, 162)
+  CODE(167, _WLIST)
+
+  D = 165; // latest word
+  H = 168; // top of dictionary
 
   // test
   DATA(200, parse)
