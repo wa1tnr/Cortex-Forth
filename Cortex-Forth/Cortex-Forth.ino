@@ -65,22 +65,22 @@ void _QDUP (void) {
 
 void _KEY (void) {
   _DUP ();
-  while (!Serial.available ());
-  T = Serial.read ();
+  while (!Serial1.available ());
+  T = Serial1.read ();
 }
 
 void _EMIT (void) {
   char c = T;
-  Serial.write (c);
+  Serial1.write (c);
   _DROP ();
 }
 
 void _CR (void) {
-  Serial.println (" ");
+  Serial1.println (" ");
 }
 
 void _OK (void) {
-  if (tib [tib.length () - 1] == 10) Serial.println (" Ok");
+  if (tib [tib.length () - 1] == 10) Serial1.println (" Ok");
 }
 
 void _SWAP (void) {
@@ -215,7 +215,7 @@ void _LOOP (void) {
 void _SHOWTIB (void) {
   W = tib.length ();
   tib [W - 1] = 0;
-  Serial.print (tib);
+  Serial1.print (tib);
 }
 
 // trim leading spaces
@@ -223,13 +223,13 @@ void _PARSE (void) {
   char t;
   tib = "";
   do {
-    while (!Serial.available ());
-    t = Serial.peek ();
-    if (t == ' ') t = Serial.read ();
+    while (!Serial1.available ());
+    t = Serial1.peek ();
+    if (t == ' ') t = Serial1.read ();
   } while (t == ' ');
   do {
-    while (!Serial.available ());
-    t = Serial.read ();
+    while (!Serial1.available ());
+    t = Serial1.read ();
     tib = tib + t;
   } while (t > ' ');
 }
@@ -295,33 +295,33 @@ void _FIND (void) {
 }
 
 void _DOT (void) {
-  Serial.print (T);
-  Serial.write (' ');
+  Serial1.print (T);
+  Serial1.write (' ');
   _DROP ();
 }
 
 void _HDOT (void) {
-  Serial.print (T, HEX);
-  Serial.write (' ');
+  Serial1.print (T, HEX);
+  Serial1.write (' ');
   _DROP ();
 }
 
 void _DDOTS (void) {
   if (S == S0) {
-    Serial.print ("empty ");
+    Serial1.print ("empty ");
     return;
   }
   _DUP ();
   W = (S0 - 1);
   while (W > (S)) {
-    Serial.print (memory.data [--W]);
-    Serial.write (' ');
+    Serial1.print (memory.data [--W]);
+    Serial1.write (' ');
   }
   _DROP ();
 }
 
 void _SPACE () {
-  Serial.write (' ');
+  Serial1.write (' ');
 }
 
 void _ZEROEQUAL () {
@@ -360,7 +360,7 @@ void _WORDS (void) {
     }
     C -= 4;
     while (!(C < 0)) {
-      Serial.print ("_");
+      Serial1.print ("_");
       C -= 1;
     }
     _SPACE ();
@@ -633,9 +633,9 @@ void setup () {
 
   I = abort; // instruction pointer = abort
 //  I = 200; //  test
-  Serial.begin (9600);
-  while (!Serial);
-  Serial.println ("myForth Arm Cortex - release 0.1.8 (reversed-gg) de wa1tnr - use CTRL J and try the words word");
+  Serial1.begin (38400);
+  while (!Serial1);
+  Serial1.println ("myForth Arm Cortex - release 0.1.8 (reversed-gg) de wa1tnr - use CTRL J and try the words word");
   //  _WORDS ();
   //  _DEPTH ();
   //  _DDOTS ();
