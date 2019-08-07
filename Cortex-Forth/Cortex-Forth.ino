@@ -73,6 +73,12 @@ void _NOP (void) {
   return;
 }
 
+void _FLOAD (void) { // file load: fload
+     I = 90; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
+  // I = 82; //  allows typing but never exits (infinite nesting?)
+  // I = 83; //  simulate 'abort' - this 83 is a #define later on.
+}
+
 void _EXIT (void) {
   I = memory.data [R++];
 }
@@ -111,7 +117,7 @@ void _OK (void) {
 }
 
 void _WLIST (void) {
-  Serial1.print ("wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
+  Serial1.print ("fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
 }
 
 void _WARM (void) {
@@ -1022,9 +1028,17 @@ void setup () {
   NAME(259, 0, 4, 'w', 'a', 'r')
   LINK(260, 246)
   CODE(261, _WARM)
+
+  // wlist (  - )
   NAME(262, 0, 5, 'w', 'l', 'i')
   LINK(263, 259)
   CODE(264, _WLIST)
+
+  // fload (  - )
+  NAME(265, 0, 5, 'f', 'l', 'o')
+  LINK(266, 262)
+  CODE(267, _FLOAD)
+
 
   // test
   DATA(300, lit)
@@ -1045,8 +1059,8 @@ void setup () {
 
 
 
-  D = 262; // latest word // D = 259;
-  H = 265; // top of dictionary // H = 262;
+  D = 265; // latest word // D = 259;
+  H = 268; // top of dictionary // H = 262;
 
 //  I = 300; // test
   I = abort; // instruction pointer = abort
