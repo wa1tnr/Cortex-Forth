@@ -1,16 +1,15 @@
-// Thu Aug  1 14:21:20 UTC 2019 rev a1
-// On branch exp-m-gg
+// Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa
+// On branch  fload-bb-aa
+// imported from another repository, 
+// Steno-Keyboard-Arduino-tnr branch exp-m-gg
 
 // Tue Jul 30 11:59:58 UTC 2019 rev b
 // Sun Jun  9 01:26:44 UTC 2019
 
-// identify: kelsotle famixid puitveno  telintha kinpaplid palermo
-// previously: On branch exp-ee
+// identify: bikfalmo kelsotle famixid puitveno  telintha kinpaplid
 
-// added: wlist word
-
-// target: ItsyBitsy M4 Express - still current on branch exp-m-gg 01 August 2019
-// comm: TX/RX pair for the Forth interpreter - still current on branch exp-m-gg
+// target: ItsyBitsy M4 Express - still current on branch fload-bb-aa 08 August 2019
+// comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-aa
 
 /*
   Forth virtual machine
@@ -74,7 +73,8 @@ void _NOP (void) {
 }
 
 void _FLOAD (void) { // file load: fload
-     I = 90; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
+  Serial1.println("quit  to exit the fload word.");
+     I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
   // I = 82; //  allows typing but never exits (infinite nesting?)
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
 }
@@ -830,9 +830,58 @@ void setup () {
   DATA(115, branch)
   DATA(116, 90) // continue quit loop
 
+  // a 'branch' points to a 'DATA' statement
+
+  // - - - - -   large  gap  here   - - - - -
+
+
+  // flabort
+  NAME(180, 0, 7, 'f', 'l', 'a')
+  LINK(181, 77)
+  CODE(182, _NEST)
+  DATA(183, inits)
+#  define flabort 183
+  // fload loop - again
+  DATA(184, branch)
+  DATA(185, 189)
+  // bye - seems ignored
+  NAME(186, 0, 3, 'b', 'y', 'e')
+  LINK(187, 77) // 0< - may be the same entry point
+  CODE(188, _NEST)
+  DATA(189, initr)
+  // begin quit loop
+  DATA(190, parse)
+  DATA(191, wword)
+  DATA(192, find)
+  DATA(193, qdup)
+  DATA(194, zbranch)
+  DATA(195, 203) // to number
+  DATA(196, execute)
+  DATA(197, depth)
+  DATA(198, zeroless)
+  DATA(199, zbranch)
+  DATA(200, 214) // to ok
+  DATA(201, branch)
+  DATA(202, 206)
+  DATA(203, number)
+  DATA(204, zbranch)
+  DATA(205, 214) // to ok
+  DATA(206, nop) // tnr, suppressed with a nop // DATA(106, showtib)
+  DATA(207, lit)
+  DATA(208, '~') // was '?' in the original
+  DATA(209, emit)
+  DATA(210, cr)
+  DATA(211, inits)
+  DATA(212, branch)
+  DATA(213, 189)
+  DATA(214, ok)
+  DATA(215, branch)
+  DATA(216, 190) // continue quit loop
+
+
   // . ( n - )
   NAME(217, 0, 1, '.', 0, 0)
-  LINK(218, 86)   //  NEAT - links back to the quit word here
+  LINK(218, 86)   // if this isn't 86 then the quit word is lost -- old: NEAT - links back to the quit word here
   CODE(219, _DOT)
 #  define dot 219
   // .s
@@ -1068,7 +1117,9 @@ void setup () {
   Serial1.begin (38400);
   while (!Serial1);
   _color_black_bg(); _color_yellow_fg();
-  Serial1.println ("myForth Arm Cortex - ItsyBitsyM4 01 AUG 2019 1420z");
+  Serial1.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 08 AUG 2019 2025z");
+  Serial1.println ("\n      Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa");
+  Serial1.println ("\n      +fload primitive    shred: abn-302 ");
 }
 
 // the loop function runs over and over again forever
