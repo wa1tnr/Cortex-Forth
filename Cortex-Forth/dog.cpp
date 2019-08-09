@@ -1,12 +1,15 @@
-// pokrak  kinten  privak gisgis  - Fri Aug  9 01:05:18 UTC 2019 0.1.8 fload-bb-aa
-// vadrige steyva  fanipi
+// mivwre  pokrak  kinten  privak  - Fri Aug  9 01:29:33 UTC 2019 0.1.8 fload-bb-bb
+// tronya  vadrige steyva  fanipi
 
-// Fri Aug  9 01:05:18 UTC 2019
+// Try the tronya, Captain.
+
+// Fri Aug  9 01:29:33 UTC 2019
 
 // Other branches:
 /*
   fload-aa
-* fload-bb-aa
+  fload-bb-aa
+* fload-bb-bb
   master
   reversed-aa
   reversed-bb
