@@ -1,0 +1,112 @@
+diff --git a/Cortex-Forth/Cortex-Forth.ino b/Cortex-Forth/Cortex-Forth.ino
+index 81f5983..c62116c 100644
+--- a/Cortex-Forth/Cortex-Forth.ino
++++ b/Cortex-Forth/Cortex-Forth.ino
+@@ -1,4 +1,4 @@
+-// Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa
++// Fri Aug  9 01:05:18 UTC 2019 0.1.8 fload-bb-aa
+ // On branch  fload-bb-aa
+ // imported from another repository, 
+ // Steno-Keyboard-Arduino-tnr branch exp-m-gg
+@@ -6,7 +6,7 @@
+ // Tue Jul 30 11:59:58 UTC 2019 rev b
+ // Sun Jun  9 01:26:44 UTC 2019
+ 
+-// identify: bikfalmo kelsotle famixid puitveno  telintha kinpaplid
++// identify: tubabr bikfalmo kelsotle famixid puitveno
+ 
+ // target: ItsyBitsy M4 Express - still current on branch fload-bb-aa 08 August 2019
+ // comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-aa
+@@ -73,7 +73,7 @@ void _NOP (void) {
+ }
+ 
+ void _FLOAD (void) { // file load: fload
+-  Serial1.println("quit  to exit the fload word.");
++  Serial1.println(" 'quit'   to exit the fload word.");
+      I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
+   // I = 82; //  allows typing but never exits (infinite nesting?)
+   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
+@@ -260,6 +260,38 @@ void _PARSE (void) {
+   // tnr, suppressed // Serial1.print (tib);
+ }
+ 
++// trim leading spaces
++// parse .. and right now, flparse .. is the only
++// place that acquires input, other than _KEY ..
++// and _KEY is not used internally (at all!)
++
++// This might make for a neat solution to the
++// problem of reading from a file, as only this
++// one (C language) function seems to talk to the
++// serial port, to read from it.
++
++// All other references to the serial port involve
++// writing to it (printing messages to the serial
++// terminal).
++
++void _FLPARSE (void) {
++  char t;
++  tib = "";
++  Serial1.print(" ~DEBUG: _FLPARSE seen~ ");
++  do {
++    while (!Serial1.available ());
++    t = Serial1.peek ();
++    if (t == ' ') {
++      t = Serial1.read ();
++    }
++  } while (t == ' ');
++  do {
++    while (!Serial1.available ());
++    t = Serial1.read ();
++    tib = tib + t;
++  } while (t > ' ');
++}
++
+ void _WORD (void) {
+   char t;
+   _DUP ();
+@@ -834,6 +866,11 @@ void setup () {
+ 
+   // - - - - -   large  gap  here   - - - - -
+ 
++  // flparse // leaves string in tib
++  NAME(135, 0, 7, 'f', 'l', 'p')
++  LINK(136, 86)
++  CODE(137, _FLPARSE)
++#  define flparse 137
+ 
+   // flabort
+   NAME(180, 0, 7, 'f', 'l', 'a')
+@@ -850,7 +887,7 @@ void setup () {
+   CODE(188, _NEST)
+   DATA(189, initr)
+   // begin quit loop
+-  DATA(190, parse)
++  DATA(190, flparse) // latest change
+   DATA(191, wword)
+   DATA(192, find)
+   DATA(193, qdup)
+@@ -881,7 +918,7 @@ void setup () {
+ 
+   // . ( n - )
+   NAME(217, 0, 1, '.', 0, 0)
+-  LINK(218, 86)   // if this isn't 86 then the quit word is lost -- old: NEAT - links back to the quit word here
++  LINK(218, 135)  // 86 // if this isn't 86 then the quit word is lost -- old: NEAT - links back to the quit word here
+   CODE(219, _DOT)
+ #  define dot 219
+   // .s
+diff --git a/Cortex-Forth/dog.cpp b/Cortex-Forth/dog.cpp
+index d958520..71b86fa 100644
+--- a/Cortex-Forth/dog.cpp
++++ b/Cortex-Forth/dog.cpp
+@@ -1,7 +1,7 @@
+-// kinten  privak gisgis kualdo  - Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa
+-// steyva  fanipi  telco robit
++// pokrak  kinten  privak gisgis  - Fri Aug  9 01:05:18 UTC 2019 0.1.8 fload-bb-aa
++// vadrige steyva  fanipi
+ 
+-// Thu Aug  8 20:25:10 UTC 2019
++// Fri Aug  9 01:05:18 UTC 2019
+ 
+ // Other branches:
+ /*
