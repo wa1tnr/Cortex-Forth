@@ -1,15 +1,11 @@
-// Fri Aug  9 01:05:18 UTC 2019 0.1.8 fload-bb-aa
-// On branch  fload-bb-aa
-// imported from another repository, 
-// Steno-Keyboard-Arduino-tnr branch exp-m-gg
+// Sat Aug 10 16:38:58 UTC 2019 0.1.8 fload-bb-dd
 
-// Tue Jul 30 11:59:58 UTC 2019 rev b
-// Sun Jun  9 01:26:44 UTC 2019
+// On branch  fload-bb-dd
 
-// identify: tubabr bikfalmo kelsotle famixid puitveno
+// identify: chowfex  tubabr bikfalmo kelsotle
 
-// target: ItsyBitsy M4 Express - still current on branch fload-bb-aa 08 August 2019
-// comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-aa
+// target: ItsyBitsy M4 Express - still current on branch fload-bb-dd 10 August 2019
+// comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-dd
 
 /*
   Forth virtual machine
@@ -17,6 +13,8 @@
   This code is in the public domain.
 
 */
+
+#include <SdFat.h> // 'File' 10 Aug 16:10z
 
 #define RAM_SIZE 0x1200
 #define S0 0x1000
@@ -30,6 +28,8 @@
 #define LINE_ENDING 10 // alt: 13
 extern void setup_dotstar(void); // dotstar.cpp
 extern void fl_setup(void);
+
+extern File thisFile; // You must include SdFat.h to use 'File' here
 
 // global variables
 union Memory {
@@ -58,6 +58,9 @@ boolean state = false; // compiling or not
 
 */
 
+// forward decl (?) foreign code not part of Shattuck's myForth here:
+// probably won't use this the way it is; here for reference:
+void creading(void); // forward decl?
 
 // primitive definitions
 
@@ -275,22 +278,60 @@ void _PARSE (void) {
 // writing to it (printing messages to the serial
 // terminal).
 
+char rd; // cheat, global
+
+// _FLPARSE basically 'works' in some sense.  Not what's wanted, quite.
+
 void _FLPARSE (void) {
   char t;
+  // char peeked_char;
   tib = "";
-  Serial1.print(" ~DEBUG: _FLPARSE seen~ ");
-  do {
-    while (!Serial1.available ());
-    t = Serial1.peek ();
-    if (t == ' ') {
-      t = Serial1.read ();
-    }
-  } while (t == ' ');
-  do {
-    while (!Serial1.available ());
-    t = Serial1.read ();
-    tib = tib + t;
-  } while (t > ' ');
+  if (thisFile) {
+    while (thisFile.available() > 1) { // new conditional 17:25z
+      do {
+        // while (!thisFile.available()); // while (!Serial1.available ());
+        t = thisFile.read(); // t = Serial1.peek ();
+        char peeked_char = t;
+        // Serial1.print(" ~DEBUG C~ ");
+        // Serial1.print(" imm: ");
+        // Serial1.print(peeked_char);
+        tib = peeked_char; // not sure where this goes
+        if (t == ' ') {
+          tib = ""; // unpeek tib
+          t = thisFile.read(); // t = Serial1.read ();
+          // Serial1.print(" ~DEBUG C-b~ ");
+        }
+      } while (t == ' ');
+      do {
+        // while (!thisFile.available()); // while (!Serial1.available ());
+        t = thisFile.read(); // t = Serial1.read ();
+        tib = tib + t;
+        Serial1.print("  ");
+        Serial1.print(tib);
+        Serial1.print("  ");
+
+      } while (t > ' ');
+
+      Serial1.println("TIB may be complete here.  See if that's true.");
+      Serial1.print("  TIB is currently: '");
+      Serial1.print(tib);
+      Serial1.println("'");
+
+      if (thisFile.available() < 2) {
+        Serial1.print("LOW BUFFER zone < 2 now. ");
+        // thisFile.close(); // NEW 17:52z
+        // thisFile.rewind(); // NEW 18:22z
+        // Serial.println("\n\n\nREWOUND THE FILE\n\n\nx");
+        Serial1.println("\n\n\nRETURN TO CALLER\n\n\nx");
+        return;
+      }
+      // SWEET SPOT for debug printing: // Serial1.print(" ~DEBUG E~ ");
+    } // new conditional 17:25z
+  Serial1.print(" ~DEBUG F~ ");
+  } // if thisfile
+  else {
+    Serial1.print("Trouble at the Old Well, Timmy?");
+  }
 }
 
 void _WORD (void) {
@@ -1175,3 +1216,17 @@ void loop() {
 // Turn ON local echo (Ctrl A, E in minicom)
 // Turn OFF added CR
 // Turn OFF added LF
+
+// probably won't use this the way it is; here for reference:
+void creading(void) {
+  if (thisFile) {
+    while (thisFile.available()) {
+      char c = thisFile.read();
+      rd = c; // global passing var
+      Serial1.print(c);
+    }
+  }
+  else {
+    Serial1.println("Failed open.");
+  }
+}
