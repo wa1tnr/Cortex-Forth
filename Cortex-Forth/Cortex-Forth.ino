@@ -298,9 +298,11 @@ void _FLPARSE (void) {
       do {
         t = thisFile.read();
         // 10 Aug 20:55z // if (t != ' ') {
-        if ((t != ' ') && (t !='\n')   ) {
+        // if ((t != ' ') && (t !='\n')   ) {
+        // if ((t != ' ')) {
+// ###bookmark
           tib = tib + t; // was unconditional before 19:01z 10 Aug
-        }
+        // }
       } while (t > ' ');
       Serial1.print("  _"); Serial1.print(tib); Serial1.print("_  ");
       if (thisFile.available() < (FLEN_MAX - 1)) {
@@ -333,6 +335,16 @@ void _WORD (void) {
   T = (tib.length () - 1);
   W = T;
   t = tib [0];
+
+  // Serial1.print("DEBUG: t in _WORD: ");
+  // Serial1.println(t);
+  // Serial1.print("DEBUG: tib (entire): ");
+  // Serial1.print(" _");
+  // Serial1.print(tib);
+  // Serial1.print("_ ");
+
+  // looks like tib needs the follow-on character here
+
   T |= (t << 8);
   if (W > 1) {
     t = tib [1];
@@ -342,6 +354,7 @@ void _WORD (void) {
     t = tib [2];
     T |= (t << 24);
   }
+  Serial1.println("DEBUG: _WORD exits.");
 }
 
 void _NUMBER (void) {
@@ -394,10 +407,12 @@ void _FIND (void) {
   while (T != 0) {
     W = (memory.data [T]);
     if ((W & 0xffffff7f) == X) {
+      Serial1.println("FIND exits - and its a word.");
       return;
     }
     T = memory.data [T + 1];
   }
+  Serial1.println("FIND exits.");
 }
 
 void _DOT (void) {
