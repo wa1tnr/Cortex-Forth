@@ -297,15 +297,24 @@ void _FLPARSE (void) {
       } while (t == ' ');
       do {
         t = thisFile.read(); // t = Serial1.read (); 
-        if (t != ' ') {
+        // 10 Aug 20:55z // if (t != ' ') {
           tib = tib + t; // was unconditional before 19:01z 10 Aug
-        }
+        // 10 Aug 20:55z // }
       } while (t > ' ');
+
       Serial1.print("  _"); Serial1.print(tib); Serial1.print("_  ");
-      return;
+      // I = 90;
+      // premature return // return;
+
       if (thisFile.available() < (FLEN_MAX - 1)) {
+        I = 90;
+        Serial.println("\n\n\nSAFETY NET\n\n\n");
+        // thisFile.close();
       }
     } // new conditional 17:25z
+
+    I = 90;
+
     if (thisFile.available() > 0) {
     }
   } // if thisfile
