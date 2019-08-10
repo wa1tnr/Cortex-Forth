@@ -280,40 +280,43 @@ void _PARSE (void) {
 
 char rd; // cheat, global
 
-#define FLEN_MAX 4
+#define FLEN_MAX 3
 void _FLPARSE (void) {
   char t;
   tib = "";
   if (thisFile) {
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
-        t = thisFile.read(); // t = Serial1.peek ();
+        t = thisFile.read();
         char peeked_char = t;
         tib = peeked_char; // not sure where this goes
         if (t == ' ') {
           tib = ""; // unpeek tib
-          t = thisFile.read(); // t = Serial1.read ();
+          t = thisFile.read();
         }
       } while (t == ' ');
       do {
-        t = thisFile.read(); // t = Serial1.read (); 
+        t = thisFile.read();
         // 10 Aug 20:55z // if (t != ' ') {
+        if ((t != ' ') && (t !='\n')   ) {
           tib = tib + t; // was unconditional before 19:01z 10 Aug
-        // 10 Aug 20:55z // }
+        }
       } while (t > ' ');
-
       Serial1.print("  _"); Serial1.print(tib); Serial1.print("_  ");
-      // I = 90;
-      // premature return // return;
-
       if (thisFile.available() < (FLEN_MAX - 1)) {
-        I = 90;
-        Serial.println("\n\n\nSAFETY NET\n\n\n");
-        // thisFile.close();
+        Serial1.println("\n\n\nSAFETY NET\n\n\n");
+        I = 90; // run the real quit loop again
       }
+      Serial1.println("TRAP");
+// ----------------------------------------
+      return; // really ought to do it.
+// ----------------------------------------
     } // new conditional 17:25z
 
-    I = 90;
+    // Serial1.println("I = 191");
+    // delay(3000);
+    // I = 191;
+    Serial.println("JCN 315"); // nonsense
 
     if (thisFile.available() > 0) {
     }
