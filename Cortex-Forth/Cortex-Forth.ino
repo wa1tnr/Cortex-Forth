@@ -280,70 +280,42 @@ void _PARSE (void) {
 
 char rd; // cheat, global
 
-// _FLPARSE basically 'works' in some sense.  Not what's wanted, quite.
-
 #define FLEN_MAX 4
 void _FLPARSE (void) {
   char t;
-  // char peeked_char;
   tib = "";
   if (thisFile) {
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
-        // while (!thisFile.available()); // while (!Serial1.available ());
         t = thisFile.read(); // t = Serial1.peek ();
         char peeked_char = t;
-        // Serial1.print(" ~DEBUG C~ ");
-        // Serial1.print(" imm: ");
-        // Serial1.print(peeked_char);
         tib = peeked_char; // not sure where this goes
         if (t == ' ') {
           tib = ""; // unpeek tib
           t = thisFile.read(); // t = Serial1.read ();
-          // Serial1.print(" ~DEBUG C-b~ ");
         }
       } while (t == ' ');
       do {
-        // while (!thisFile.available()); // while (!Serial1.available ());
-        t = thisFile.read(); // t = Serial1.read ();
-
-        if ((t != ' ') && (t !='\n')   ) {
+        t = thisFile.read(); // t = Serial1.read (); 
+        if (t != ' ') {
           tib = tib + t; // was unconditional before 19:01z 10 Aug
         }
-        Serial1.print("  _");
-        Serial1.print(tib);
-        Serial1.print("_  ");
-
-      // } while (t > ' ');
-      } while ( (t != ' ') && (t != '\n'));
-
-      if (tib == ";") Serial.println("END OF LINE");
-
-      Serial1.print("  TIB is currently: '");
-      Serial1.print(tib);
-      Serial1.println("'");
-
-
+      } while (t > ' ');
+      Serial1.print("  _"); Serial1.print(tib); Serial1.print("_  ");
+      return;
       if (thisFile.available() < (FLEN_MAX - 1)) {
         Serial1.print("LOW BUFFER zone < 2 now. ");
-        // thisFile.rewind(); // NEW 18:22z
-        // Serial.println("\n\n\nREWOUND THE FILE\n\n\nx");
-        Serial1.println("\n\n\nCLOSING THE FILE\n\n\nx");
-        thisFile.close(); // NEW 17:52z
+        Serial1.println("Setting IP to top of 'quit' loop");
         I = 90 ; // return to proper quit loop - maybe not here, though. // 19:56z 10 Aug
-        // seems effective 19:58z
-
-        // return;
       }
-      // SWEET SPOT for debug printing: // Serial1.print(" ~DEBUG E~ ");
     } // new conditional 17:25z
-    // return; // wild random return thrown in
-  Serial1.print(" ~DEBUG F~ ");
-  Serial1.print(" available chars: ");
-  Serial1.println(  thisFile.available() );
-
-  // delay(2000);
-
+    I = 90 ; // another kludge plug leak 20:18z 10 Aug
+    Serial1.print(" ~DEBUG F~ ");
+    Serial1.print(" available chars: ");
+    Serial1.println(  thisFile.available() );
+    if (thisFile.available() > 0) {
+      t = thisFile.read();
+    }
   } // if thisfile
   else {
     Serial1.print("Trouble at the Old Well, Timmy?");
@@ -951,7 +923,7 @@ void setup () {
   DATA(189, initr)
   // begin quit loop
   DATA(190, flparse) // latest change
-  DATA(191, wword)
+  DATA(191, wword) // gets string from tib
   DATA(192, find)
   DATA(193, qdup)
   DATA(194, zbranch)
