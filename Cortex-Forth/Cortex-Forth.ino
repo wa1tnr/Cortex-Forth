@@ -58,10 +58,6 @@ boolean state = false; // compiling or not
 
 */
 
-// forward decl (?) foreign code not part of Shattuck's myForth here:
-// probably won't use this the way it is; here for reference:
-void creading(void); // forward decl?
-
 // primitive definitions
 
 void _LBRAC (void) {
@@ -278,7 +274,6 @@ void _PARSE (void) {
 // writing to it (printing messages to the serial
 // terminal).
 
-char rd; // cheat, global
 
 #define FLEN_MAX 3
 void _FLPARSE (void) {
@@ -297,51 +292,27 @@ void _FLPARSE (void) {
       } while (t == ' ');
       do {
         t = thisFile.read();
-        // 10 Aug 20:55z // if (t != ' ') {
-        // if ((t != ' ') && (t !='\n')   ) {
-        // if ((t != ' ')) {
-// ###bookmark
           tib = tib + t; // was unconditional before 19:01z 10 Aug
-        // }
       } while (t > ' ');
       Serial1.print("  _"); Serial1.print(tib); Serial1.print("_  ");
       if (thisFile.available() < (FLEN_MAX - 1)) {
         Serial1.println("\n\n\nSAFETY NET\n\n\n");
-        I = 90; // run the real quit loop again
       }
       Serial1.println("TRAP");
-// ----------------------------------------
-      return; // really ought to do it.
-// ----------------------------------------
     } // new conditional 17:25z
-
-    // Serial1.println("I = 191");
-    // delay(3000);
-    // I = 191;
-    Serial.println("JCN 315"); // nonsense
-
-    if (thisFile.available() > 0) {
-    }
+    Serial1.println("Do we ever see this message LINE 309");
   } // if thisfile
   else {
     Serial1.print("Trouble at the Old Well, Timmy?");
-    delay(100);
   }
 }
 
 void _WORD (void) {
   char t;
-  _DUP ();
+  _DUP (); // what are we dup'ing here
   T = (tib.length () - 1);
   W = T;
   t = tib [0];
-
-  // Serial1.print("DEBUG: t in _WORD: ");
-  // Serial1.println(t);
-  // Serial1.print("DEBUG: tib (entire): ");
-  // Serial1.print(" _");
-  // Serial1.print(tib);
-  // Serial1.print("_ ");
 
   // looks like tib needs the follow-on character here
 
@@ -354,7 +325,7 @@ void _WORD (void) {
     t = tib [2];
     T |= (t << 24);
   }
-  Serial1.println("DEBUG: _WORD exits.");
+  Serial1.println(" --- _WORD  exits --- ");
 }
 
 void _NUMBER (void) {
@@ -407,12 +378,12 @@ void _FIND (void) {
   while (T != 0) {
     W = (memory.data [T]);
     if ((W & 0xffffff7f) == X) {
-      Serial1.println("FIND exits - and its a word.");
+      // Serial1.println("FIND exits - and its a word.");
       return;
     }
     T = memory.data [T + 1];
   }
-  Serial1.println("FIND exits.");
+  // Serial1.println("FIND exits.");
 }
 
 void _DOT (void) {
@@ -1219,22 +1190,4 @@ void loop() {
   W = memory.data [I++];
   memory.program [W] ();
 //  delay (300);
-}
-
-// Turn ON local echo (Ctrl A, E in minicom)
-// Turn OFF added CR
-// Turn OFF added LF
-
-// probably won't use this the way it is; here for reference:
-void creading(void) {
-  if (thisFile) {
-    while (thisFile.available()) {
-      char c = thisFile.read();
-      rd = c; // global passing var
-      Serial1.print(c);
-    }
-  }
-  else {
-    Serial1.println("Failed open.");
-  }
 }
