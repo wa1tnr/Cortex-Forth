@@ -29,6 +29,7 @@
 
 #define LINE_ENDING 10 // alt: 13
 extern void setup_dotstar(void); // dotstar.cpp
+extern void fl_setup(void);
 
 // global variables
 union Memory {
@@ -696,6 +697,8 @@ void _color_black_bg (void) {
 void setup () {
   setup_dotstar(); // turn off dotstar (apa-102 RGB LED)
 
+  // Serial1.begin (38400); while (!Serial1);
+
   S = S0; // initialize data stack
   R = R0; // initialize return stack
 
@@ -1149,11 +1152,14 @@ void setup () {
   H = 368; // top of dictionary // H = 262;
 
 //  I = 400; // test
+  // Serial1.begin (38400);
+  // while (!Serial1);
+  // delay(100);
+  fl_setup();
   I = abort; // instruction pointer = abort
-  // Serial1.begin (9600);
-  Serial1.begin (38400);
-  while (!Serial1);
+
   _color_black_bg(); _color_yellow_fg();
+  delay(2000);
   Serial1.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 08 AUG 2019 2025z");
   Serial1.println ("\n      Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa");
   Serial1.println ("\n      +fload primitive    shred: abn-302 ");
