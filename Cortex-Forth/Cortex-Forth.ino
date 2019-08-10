@@ -304,25 +304,15 @@ void _FLPARSE (void) {
       Serial1.print("  _"); Serial1.print(tib); Serial1.print("_  ");
       return;
       if (thisFile.available() < (FLEN_MAX - 1)) {
-        Serial1.print("LOW BUFFER zone < 2 now. ");
-        Serial1.println("Setting IP to top of 'quit' loop");
-        I = 90 ; // return to proper quit loop - maybe not here, though. // 19:56z 10 Aug
       }
     } // new conditional 17:25z
-    I = 90 ; // another kludge plug leak 20:18z 10 Aug
-    Serial1.print(" ~DEBUG F~ ");
-    Serial1.print(" available chars: ");
-    Serial1.println(  thisFile.available() );
     if (thisFile.available() > 0) {
-      t = thisFile.read();
     }
   } // if thisfile
   else {
     Serial1.print("Trouble at the Old Well, Timmy?");
     delay(100);
   }
-  Serial1.println("VERY LAST THING");
-  delay(100);
 }
 
 void _WORD (void) {
