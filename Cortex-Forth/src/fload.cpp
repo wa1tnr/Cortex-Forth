@@ -65,6 +65,6 @@ void fl_setup(void) {
 
   File dataFile = fatfs.open(FILE_NAME, FILE_READ);
   thisFile = (File) dataFile;
-  reading();
-  Serial1.println("READING has already run.");
+  // reading();
+  Serial1.println("READING now omitted - was 'has already run.' 10 Aug 16:42z");
 }
