@@ -1,9 +1,22 @@
 // Sat Aug 10 18:34:31 UTC 2019 fload-bb-dd
 
+// mezohn  chizuni  minverta
+
 // minimally functioning fload from file - does not parse at all, though.
 // Well, 'at all' is a bit rough, there - does kind of parse.
 
-// chizuni  minverta  telpode
+
+// - - - - - - - - - - - - - - - -
+
+/*
+ $ date
+Sat Aug 10 18:45:34 UTC 2019
+
+ $ git branch| cat | egrep fload | egrep dd
+* fload-bb-dd
+ $ git checkout -b fload-bb-ee
+Switched to a new branch 'fload-bb-ee'
+*/
 
 /*
  $ date
