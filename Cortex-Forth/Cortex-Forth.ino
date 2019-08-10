@@ -282,12 +282,13 @@ char rd; // cheat, global
 
 // _FLPARSE basically 'works' in some sense.  Not what's wanted, quite.
 
+#define FLEN_MAX 4
 void _FLPARSE (void) {
   char t;
   // char peeked_char;
   tib = "";
   if (thisFile) {
-    while (thisFile.available() > 1) { // new conditional 17:25z
+    while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
         // while (!thisFile.available()); // while (!Serial1.available ());
         t = thisFile.read(); // t = Serial1.peek ();
@@ -305,33 +306,51 @@ void _FLPARSE (void) {
       do {
         // while (!thisFile.available()); // while (!Serial1.available ());
         t = thisFile.read(); // t = Serial1.read ();
-        tib = tib + t;
-        Serial1.print("  ");
+
+        if ((t != ' ') && (t !='\n')   ) {
+          tib = tib + t; // was unconditional before 19:01z 10 Aug
+        }
+        Serial1.print("  _");
         Serial1.print(tib);
-        Serial1.print("  ");
+        Serial1.print("_  ");
 
-      } while (t > ' ');
+      // } while (t > ' ');
+      } while ( (t != ' ') && (t != '\n'));
 
-      Serial1.println("TIB may be complete here.  See if that's true.");
+      if (tib == ";") Serial.println("END OF LINE");
+
       Serial1.print("  TIB is currently: '");
       Serial1.print(tib);
       Serial1.println("'");
 
-      if (thisFile.available() < 2) {
+
+      if (thisFile.available() < (FLEN_MAX - 1)) {
         Serial1.print("LOW BUFFER zone < 2 now. ");
-        // thisFile.close(); // NEW 17:52z
         // thisFile.rewind(); // NEW 18:22z
         // Serial.println("\n\n\nREWOUND THE FILE\n\n\nx");
-        Serial1.println("\n\n\nRETURN TO CALLER\n\n\nx");
-        return;
+        Serial1.println("\n\n\nCLOSING THE FILE\n\n\nx");
+        thisFile.close(); // NEW 17:52z
+        I = 90 ; // return to proper quit loop - maybe not here, though. // 19:56z 10 Aug
+        // seems effective 19:58z
+
+        // return;
       }
       // SWEET SPOT for debug printing: // Serial1.print(" ~DEBUG E~ ");
     } // new conditional 17:25z
+    // return; // wild random return thrown in
   Serial1.print(" ~DEBUG F~ ");
+  Serial1.print(" available chars: ");
+  Serial1.println(  thisFile.available() );
+
+  // delay(2000);
+
   } // if thisfile
   else {
     Serial1.print("Trouble at the Old Well, Timmy?");
+    delay(100);
   }
+  Serial1.println("VERY LAST THING");
+  delay(100);
 }
 
 void _WORD (void) {
