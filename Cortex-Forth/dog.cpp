@@ -1,6 +1,13 @@
-// Sun Aug 11 18:26:15 UTC 2019 fload-bb-ee-aa
+// Sun Aug 11 21:43:25 UTC 2019 0.1.8 fload-bb-ee-aa
 
-// carflo   shelvolv   dixina  mezohn
+// carfrax  carflo   shelvolv   dixina  mezohn
+
+// Working.  Won't compile from a file source, but
+// will execute, correctly, most words except for
+// the colon word (':') due to the way it erases
+// what was held in tib.
+
+// OLDER:
 
 // WORKS - have new ability to read from a file!
 // very sketchy, but the mechanism works (somewhat)
