@@ -304,6 +304,7 @@ void _FLPARSE (void) {
         Serial.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < (1)) {
           thisFile.close(); // experiment 17:06z 11 Aug
+/*
           _DDOTS(); // experiment 16:48z 11 Aug
           _SPACE();
           _SPACE();
@@ -324,6 +325,7 @@ void _FLPARSE (void) {
           Serial.println("\n previous line: _DDOTS();");
           delay(100);
           // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
+*/
         }
       }
       Serial.println("TRAP");
