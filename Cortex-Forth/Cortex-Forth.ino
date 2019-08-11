@@ -326,6 +326,7 @@ void _FLPARSE (void) {
         }
       }
       Serial.println("TRAP");
+      return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
     Serial.println("Do we ever see this message LINE 309");
   } // if thisfile
