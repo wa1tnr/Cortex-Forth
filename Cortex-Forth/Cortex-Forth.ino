@@ -1,23 +1,8 @@
-// Sun Aug 11 18:26:15 UTC 2019 fload-bb-ee-aa
-// old: Sat Aug 10 16:38:58 UTC 2019 0.1.8 fload-bb-dd
+// Sat Aug 10 16:38:58 UTC 2019 0.1.8 fload-bb-dd
 
-// On branch  fload-bb-ee-aa
+// On branch  fload-bb-dd
 
-// identify: kewlwor  chowfex  tubabr bikfalmo kelsotle
-
-// NEW BUG (noticed) - test program fails probably due to single-char ':' word in Forth program source
-// May not be handling this special case, due to basic program design when
-// handling the first character input, per word typed at the console.
-
-// This is easily noticed during interactive session at the keyboard;
-// Only when the second keystoke is input, does the program echo back
-// anything typed.
-
-// NEW BUG or noticed bug - extra 0's added to stack even before fload is called.
-// Probably from pressing ENTER instead of Ctrl-J
-// Seems sensitive to a blank command line - press ENTER  on a blank command line
-// to incur this bug.
-// .s ENTER -- does not, for example, seem to invoke the bug.
+// identify: chowfex  tubabr bikfalmo kelsotle
 
 // target: ItsyBitsy M4 Express - still current on branch fload-bb-dd 10 August 2019
 // comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-dd
@@ -314,15 +299,9 @@ void _FLPARSE (void) {
         t = thisFile.read();
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
-
-      // ------------------------
-      // PRESERVE - quite useful // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
-      // ------------------------
-
+      // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
       if (thisFile.available() < (FLEN_MAX - 1)) {
-        // ------------------------
-        // PRESERVE - much appreciated // Serial.println("\nSAFETY NET\n");
-        // ------------------------
+        // Serial.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < (1)) {
           thisFile.close(); // experiment 17:06z 11 Aug
 /*
@@ -349,18 +328,15 @@ void _FLPARSE (void) {
 */
         }
       }
-
-      // ------------------------
-      // PRESERVE - very useful // Serial.println("TRAP");
-      // ------------------------
-
+      // Serial.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
-    Serial.println("Do we ever see this message LINE 309");
+    Serial.println(" alt TRAP LINE 334");
   } // if thisfile
   else {
     // Serial.print("Trouble at the Old Well, Timmy?");
-    Serial.println(" ~old well msg~ ");
+    // Serial.print(" I = 90 -- the 'parse' word  ");
+    // Serial.println(" alt TRAP LINE 339");
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
 }
@@ -383,7 +359,7 @@ void _WORD (void) {
     t = tib [2];
     T |= (t << 24);
   }
-  // nice little debug message: // Serial.print(" ~k~ ");
+  // Serial.print(" ~k~ ");
   // Serial.println(" --- _WORD  exits --- ");
 }
 
@@ -1239,9 +1215,9 @@ void setup () {
 
   _color_black_bg(); _color_yellow_fg();
   delay(2000);
-  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 11 AUG 2019 1829z");
-  Serial.println ("\n      Sun Aug 11 18:26:15 UTC 2019 0.1.8 fload-bb-ee-aa");
-  Serial.println ("\n      +fload primitive    shred: abn-411 ");
+  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 08 AUG 2019 2025z");
+  Serial.println ("\n      Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa");
+  Serial.println ("\n      +fload primitive    shred: abn-302 ");
 }
 
 // the loop function runs over and over again forever
