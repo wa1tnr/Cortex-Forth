@@ -1,12 +1,65 @@
 diff --git a/Cortex-Forth/Cortex-Forth.ino b/Cortex-Forth/Cortex-Forth.ino
-index 1c5dab4..6c25a91 100644
+index c10d4b3..fc4884d 100644
 --- a/Cortex-Forth/Cortex-Forth.ino
 +++ b/Cortex-Forth/Cortex-Forth.ino
-@@ -326,6 +326,7 @@ void _FLPARSE (void) {
+@@ -4,6 +4,12 @@
+ 
+ // identify: chowfex  tubabr bikfalmo kelsotle
+ 
++// NEW BUG or noticed bug - extra 0's added to stack even before fload is called.
++// Probably from pressing ENTER instead of Ctrl-J
++// Seems sensitive to a blank command line - press ENTER  on a blank command line
++// to incur this bug.
++// .s ENTER -- does not, for example, seem to invoke the bug.
++
+ // target: ItsyBitsy M4 Express - still current on branch fload-bb-dd 10 August 2019
+ // comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-dd
+ 
+@@ -299,9 +305,15 @@ void _FLPARSE (void) {
+         t = thisFile.read();
+           tib = tib + t; // was unconditional before 19:01z 10 Aug
+       } while (t > ' ');
+-      Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
++
++      // ------------------------
++      // PRESERVE - quite useful // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
++      // ------------------------
++
+       if (thisFile.available() < (FLEN_MAX - 1)) {
+-        Serial.println("\n\n\nSAFETY NET\n\n\n");
++        // ------------------------
++        // PRESERVE - much appreciated // Serial.println("\nSAFETY NET\n");
++        // ------------------------
+         if (thisFile.available() < (1)) {
+           thisFile.close(); // experiment 17:06z 11 Aug
+ /*
+@@ -328,13 +340,18 @@ void _FLPARSE (void) {
+ */
          }
        }
-       Serial.println("TRAP");
-+      return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
+-      Serial.println("TRAP");
++
++      // ------------------------
++      // PRESERVE - very useful // Serial.println("TRAP");
++      // ------------------------
++
+       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
      } // new conditional 17:25z
      Serial.println("Do we ever see this message LINE 309");
    } // if thisfile
+   else {
+-    Serial.print("Trouble at the Old Well, Timmy?");
++    // Serial.print("Trouble at the Old Well, Timmy?");
++    Serial.println(" ~old well msg~ ");
+     I = 90; // I = 90 points to 'parse' - top of original quit loop
+   }
+ }
+@@ -357,7 +374,7 @@ void _WORD (void) {
+     t = tib [2];
+     T |= (t << 24);
+   }
+-  Serial.print(" ~k~ ");
++  // nice little debug message: // Serial.print(" ~k~ ");
+   // Serial.println(" --- _WORD  exits --- ");
+ }
+ 
