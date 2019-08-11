@@ -524,7 +524,8 @@ void _ALLOT (void) {
 }
 
 void _HEAD (void) {
-  _PARSE ();
+//  _PARSE ();
+  _FLPARSE ();
   _WORD ();
   _COMMA ();
   _DUP ();
@@ -703,6 +704,7 @@ void _FORGET (void) {
 }
 
 void _TICK (void) {
+  Serial.println("WHOOPS - _TICK encountered! ");
   _PARSE ();
   _WORD ();
   _FIND ();
