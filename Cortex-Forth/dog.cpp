@@ -1,6 +1,6 @@
-// Sun Aug 11 21:43:25 UTC 2019 0.1.8 fload-bb-ee-aa
+// Sun Aug 11 22:02:02 UTC 2019 0.1.8 fload-bb-ee-aa  shred: abn-423
 
-// carfrax  carflo   shelvolv   dixina  mezohn
+// kransofer  carfrax  carflo   shelvolv   dixina  mezohn
 
 // Working.  Won't compile from a file source, but
 // will execute, correctly, most words except for

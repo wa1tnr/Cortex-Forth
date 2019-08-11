@@ -1,11 +1,13 @@
-// Sun Aug 11 21:43:25 UTC 2019 0.1.8 fload-bb-ee-aa  shred: abn-421
+// Sun Aug 11 22:02:02 UTC 2019 0.1.8 fload-bb-ee-aa  shred: abn-423
 
 // On branch  fload-bb-ee-aa
 
 // identify: helmkuttr  chowfex  tubabr bikfalmo kelsotle
 
-// target: ItsyBitsy M4 Express - still current on branch fload-bb-dd 10 August 2019
-// comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-dd
+// target: ItsyBitsy M4 Express - still current on branch fload-bb-ee-aa 11 August 2019
+// comm: USB, not the TX/RX pair for the Forth interpreter - on branch fload-bb-ee-aa
+
+// Note: other branches may want to use the UART rather than USB.
 
 /*
   Forth virtual machine
@@ -1215,9 +1217,9 @@ void setup () {
 
   _color_black_bg(); _color_yellow_fg();
   delay(2000);
-  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 11 AUG 2019 21:43z");
-  Serial.println ("\n      Sun Aug 11 21:43:25 UTC 2019 0.1.8 fload-bb-ee-aa");
-  Serial.println ("\n      +fload primitive    shred: abn-421 ");
+  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 11 AUG 2019 22:02z");
+  Serial.println ("\n      Sun Aug 11 22:02:02 UTC 2019 0.1.8 fload-bb-ee-aa");
+  Serial.println ("\n      +fload primitive    shred: abn-423 ");
 }
 
 // the loop function runs over and over again forever
