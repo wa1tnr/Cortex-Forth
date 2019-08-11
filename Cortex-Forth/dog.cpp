@@ -1,6 +1,6 @@
-// Sun Aug 11 17:13:13 UTC 2019 fload-bb-ee-aa
+// Sun Aug 11 18:26:15 UTC 2019 fload-bb-ee-aa
 
-// shelvolv   dixina  mezohn  chizuni  minverta
+// carflo   shelvolv   dixina  mezohn
 
 // WORKS - have new ability to read from a file!
 // very sketchy, but the mechanism works (somewhat)
