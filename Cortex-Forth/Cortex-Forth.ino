@@ -1,8 +1,17 @@
-// Sat Aug 10 16:38:58 UTC 2019 0.1.8 fload-bb-dd
+// Sun Aug 11 18:26:15 UTC 2019 fload-bb-ee-aa
+// old: Sat Aug 10 16:38:58 UTC 2019 0.1.8 fload-bb-dd
 
-// On branch  fload-bb-dd
+// On branch  fload-bb-ee-aa
 
-// identify: chowfex  tubabr bikfalmo kelsotle
+// identify: kewlwor  chowfex  tubabr bikfalmo kelsotle
+
+// NEW BUG (noticed) - test program fails probably due to single-char ':' word in Forth program source
+// May not be handling this special case, due to basic program design when
+// handling the first character input, per word typed at the console.
+
+// This is easily noticed during interactive session at the keyboard;
+// Only when the second keystoke is input, does the program echo back
+// anything typed.
 
 // NEW BUG or noticed bug - extra 0's added to stack even before fload is called.
 // Probably from pressing ENTER instead of Ctrl-J
@@ -1230,9 +1239,9 @@ void setup () {
 
   _color_black_bg(); _color_yellow_fg();
   delay(2000);
-  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 08 AUG 2019 2025z");
-  Serial.println ("\n      Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa");
-  Serial.println ("\n      +fload primitive    shred: abn-302 ");
+  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 11 AUG 2019 1829z");
+  Serial.println ("\n      Sun Aug 11 18:26:15 UTC 2019 0.1.8 fload-bb-ee-aa");
+  Serial.println ("\n      +fload primitive    shred: abn-411 ");
 }
 
 // the loop function runs over and over again forever
