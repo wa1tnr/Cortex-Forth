@@ -1,6 +1,23 @@
-// Sat Aug 10 18:34:31 UTC 2019 fload-bb-dd
+// Sun Aug 11 17:13:13 UTC 2019 fload-bb-ee-aa
 
-// mezohn  chizuni  minverta
+// shelvolv   dixina  mezohn  chizuni  minverta
+
+// WORKS - have new ability to read from a file!
+// very sketchy, but the mechanism works (somewhat)
+// as of 17:13z 11 Aug.  Continue. ;)
+
+/*
+
+ $ date
+Sun Aug 11 15:07:50 UTC 2019
+
+ $ git branch|cat|egrep "flo"|egrep "ee"
+* fload-bb-ee
+
+ $ git checkout -b fload-bb-ee-aa
+Switched to a new branch 'fload-bb-ee-aa'
+
+*/
 
 // minimally functioning fload from file - does not parse at all, though.
 // Well, 'at all' is a bit rough, there - does kind of parse.
