@@ -1,8 +1,8 @@
-// Sat Aug 10 16:38:58 UTC 2019 0.1.8 fload-bb-dd
+// Sun Aug 11 21:43:25 UTC 2019 0.1.8 fload-bb-ee-aa  shred: abn-421
 
-// On branch  fload-bb-dd
+// On branch  fload-bb-ee-aa
 
-// identify: chowfex  tubabr bikfalmo kelsotle
+// identify: helmkuttr  chowfex  tubabr bikfalmo kelsotle
 
 // target: ItsyBitsy M4 Express - still current on branch fload-bb-dd 10 August 2019
 // comm: TX/RX pair for the Forth interpreter - still current on branch fload-bb-dd
@@ -1215,9 +1215,9 @@ void setup () {
 
   _color_black_bg(); _color_yellow_fg();
   delay(2000);
-  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 08 AUG 2019 2025z");
-  Serial.println ("\n      Thu Aug  8 20:25:10 UTC 2019 0.1.8 fload-bb-aa");
-  Serial.println ("\n      +fload primitive    shred: abn-302 ");
+  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 11 AUG 2019 21:43z");
+  Serial.println ("\n      Sun Aug 11 21:43:25 UTC 2019 0.1.8 fload-bb-ee-aa");
+  Serial.println ("\n      +fload primitive    shred: abn-421 ");
 }
 
 // the loop function runs over and over again forever
