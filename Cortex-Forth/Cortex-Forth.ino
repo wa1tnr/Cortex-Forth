@@ -279,7 +279,8 @@ void _PARSE (void) {
 // terminal).
 
 
-#define FLEN_MAX 3
+// change from 3 to 2 - 11 Aug 17:41z
+#define FLEN_MAX 2
 void _FLPARSE (void) {
   char t;
   tib = "";
