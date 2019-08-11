@@ -1,0 +1,20 @@
+Sun Aug 11 17:13:13 UTC 2019 fload-bb-ee-aa
+
+16:49z New workflow
+
+Ctrl A X - end minicom - prerequisite to firmware
+upload in Arduino IDE
+
+Serial (not Serial1) is the new output target in
+the arduino code base - temporary measure to
+increase firmware iteration speed. ;)
+
+
+
+15:29z First char does not echo immediately; needs
+second char typed before it is shown.
+
+Control J works better than ENTER does - it will
+provoke an Ok prompt, for example.
+
+
