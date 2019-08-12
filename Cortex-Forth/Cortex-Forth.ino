@@ -76,7 +76,7 @@ void _NOP (void) {
 }
 
 void _FLOAD (void) { // file load: fload
-  Serial.println(" 'quit'   to exit the fload word.");
+  Serial.println(" loading a forth program from flashROM ..");
      I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
   // I = 82; //  allows typing but never exits (infinite nesting?)
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
@@ -120,7 +120,7 @@ void _OK (void) {
 }
 
 void _WLIST (void) {
-  Serial.print ("fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
+  Serial.print ("fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
 }
 
 void _WARM (void) {
