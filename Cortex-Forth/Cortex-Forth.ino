@@ -1,11 +1,11 @@
-// Sun Aug 11 22:02:02 UTC 2019 0.1.8 fload-bb-ee-aa  shred: abn-423
+// Mon Aug 12 00:26:02 UTC 2019 0.1.8 side-fload-bb-ee-aa-aa  shred: abn-453
 
-// On branch  fload-bb-ee-aa
+// On branch  side-fload-bb-ee-aa-aa
 
-// identify: helmkuttr  chowfex  tubabr bikfalmo kelsotle
+// identify: vimaxl  helmkuttr  chowfex  tubabr bikfalmo kelsotle
 
-// target: ItsyBitsy M4 Express - still current on branch fload-bb-ee-aa 11 August 2019
-// comm: USB, not the TX/RX pair for the Forth interpreter - on branch fload-bb-ee-aa
+// target: ItsyBitsy M4 Express - still current on branch  side-fload-bb-ee-aa-aa 12 August 2019
+// comm: USB, not the TX/RX pair for the Forth interpreter - on branch  side-fload-bb-ee-aa-aa
 
 // Note: other branches may want to use the UART rather than USB.
 
@@ -49,6 +49,7 @@ int H = 0; // dictionary pointer, HERE
 int D = 0; // dictionary list entry point
 int base = 10;
 boolean state = false; // compiling or not
+boolean keyboard_not_file = true; // keyboard or file input, for parsing
 
 /*  A word in the dictionary has these fields:
   name  32b word,  a 32 bit int, made up of byte count and three letters
@@ -286,6 +287,7 @@ void _PARSE (void) {
 void _FLPARSE (void) {
   char t;
   tib = "";
+  keyboard_not_file = false;
   if (thisFile) {
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
@@ -305,6 +307,7 @@ void _FLPARSE (void) {
       if (thisFile.available() < (FLEN_MAX - 1)) {
         // Serial.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < (1)) {
+          keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
 /*
           _DDOTS(); // experiment 16:48z 11 Aug
@@ -339,6 +342,7 @@ void _FLPARSE (void) {
     // Serial.print("Trouble at the Old Well, Timmy?");
     // Serial.print(" I = 90 -- the 'parse' word  ");
     // Serial.println(" alt TRAP LINE 339");
+    keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
 }
@@ -524,8 +528,12 @@ void _ALLOT (void) {
 }
 
 void _HEAD (void) {
+  if ( keyboard_not_file ) {
+    _PARSE ();
+  } else {
+    _FLPARSE ();
+  }
 //  _PARSE ();
-  _FLPARSE ();
   _WORD ();
   _COMMA ();
   _DUP ();
@@ -1219,9 +1227,9 @@ void setup () {
 
   _color_black_bg(); _color_yellow_fg();
   delay(2000);
-  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 11 AUG 2019 22:02z");
-  Serial.println ("\n      Sun Aug 11 22:02:02 UTC 2019 0.1.8 fload-bb-ee-aa");
-  Serial.println ("\n      +fload primitive    shred: abn-423 ");
+  Serial.println ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 12 AUG 2019 00:26z");
+  Serial.println ("\n      Mon Aug 12 00:26:02 UTC 2019 0.1.8 side-fload-bb-ee-aa-aa");
+  Serial.println ("\n      +fload primitive    shred: abn-453 ");
 }
 
 // the loop function runs over and over again forever
