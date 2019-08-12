@@ -25,6 +25,7 @@ Sample Run
 
 TODO: The sample run has not updated in quite a while.
 
+```
  $ microcom -p /dev/ttyACM0
 connected to /dev/ttyACM0
 Escape character: Ctrl-\
@@ -72,4 +73,5 @@ wlist fload wlist warm type c! c@ literal repeat while again ' forget else then 
 space space emits space space cr
 70 79 69 3 emits cr
 
+```
 END.
