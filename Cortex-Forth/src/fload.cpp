@@ -29,7 +29,7 @@ File thisFile;
 void fl_setup(void) {
   Serial.begin(38400);
   while (!Serial);
-  Serial.println("shred abn-453\n");
+  Serial.println("shred abn-473-fl\n");
   // Serial.println("using SPI Flash FatFs file load - the 'fload' word");
 
   if (!flash.begin()) {
