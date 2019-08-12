@@ -1,4 +1,4 @@
-// Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa  shred: abn-473
+// Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa  shred: abn-493
 
 // On branch  good-compiler-aa
 
@@ -1274,11 +1274,11 @@ void setup () {
 
   _color_black_bg(); _color_yellow_fg();
   delay(2000);
-// Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa  shred: abn-473
+// Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa  shred: abn-493
   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 12 AUG 2019 02:33z");
 // Serial.println ("\n      Mon Aug 12 00:26:02 UTC 2019 0.1.8 side-fload-bb-ee-aa-aa");
   Serial.println  ("\n      Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa");
-  Serial.println  ("\n      +fload - clean compile.  shred: abn-473 ");
+  Serial.println  ("\n      +fload - clean compile.  shred: abn-493 ");
   Serial.println  ("\n      words: fload wlist warm");
 }
 
