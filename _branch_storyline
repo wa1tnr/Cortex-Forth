@@ -1,8 +1,8 @@
  $ date
-Sun Aug 11 23:14:38 UTC 2019
+Mon Aug 12 00:39:22 UTC 2019
 
- $ git branch | cat | egrep fload | egrep ee
-* fload-bb-ee-aa
+ $ git branch | cat | egrep side
+* side-fload-bb-ee-aa-aa
 
- $ git checkout -b side-fload-bb-ee-aa-aa
-Switched to a new branch 'side-fload-bb-ee-aa-aa'
+ $ git checkout -b good-compiler-aa
+Switched to a new branch 'good-compiler-aa'
