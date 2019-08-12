@@ -1,14 +1,18 @@
-// Sun Aug 11 22:02:02 UTC 2019 0.1.8 fload-bb-ee-aa  shred: abn-423
-// Sun Aug 11 23:35:36 UTC 2019
+// Mon Aug 12 00:26:02 UTC 2019 0.1.8 side-fload-bb-ee-aa-aa  shred: abn-453
 
-// tefnippa  kransofer  carfrax  carflo   shelvolv   dixina  mezohn
+// fawidnok  tefnippa  kransofer  carfrax  carflo
+
+// Seems to compile at both the keyboard (interactively)
+// and from a file!  Monday 12 Aug 00:29z
+
+
+// OLDER:
 
 // Working.  Won't compile from a file source, but
 // will execute, correctly, most words except for
 // the colon word (':') due to the way it erases
 // what was held in tib.
 
-// OLDER:
 
 // WORKS - have new ability to read from a file!
 // very sketchy, but the mechanism works (somewhat)
