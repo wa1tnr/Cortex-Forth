@@ -23,8 +23,6 @@ If unexpected results occur, check that first. ;)
 Sample Run
 ==========
 
-TODO: The sample run has not updated in quite a while.
-
 ```
  $ microcom -p /dev/ttyACM0
 connected to /dev/ttyACM0
@@ -63,7 +61,11 @@ words [6 sil] [5 emi] [5 flo] [5 wli] [4 war] [4 typ] [2 c!] [2 c@]
 [1 .] [7 flp] [4 qui] [2 0<] [5 dep] [6 num] [3 ?du] [7 exe]  
 [4 fin] [1 ,] [1 !] [1 @] [4 ove] [4 swa] [4 dro] [3 dup]  
 [4 wor] [5 par] [2 cr] [4 emi] [3 key] [4 exi]  Ok
-wlist fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit  Ok
+wlist fload wlist warm type c! c@ literal repeat while again ' forget
+else then if until begin loop do i ; : ] [ R constant ? variable allot
+here create dump 2/ 2* negate abs invert xor or and - + h. space
+words .s . quit 0< depth number ?dup execute find , ! @ over swap drop
+dup word parse cr emit key exit  Ok
 
  - - -  a separate entity, the forth source file, test.fs:
 
