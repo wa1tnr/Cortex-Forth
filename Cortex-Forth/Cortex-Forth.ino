@@ -29,8 +29,18 @@
 #define IMMED 0x80
 
 #include "prequel.h"
+#include "compatibility.h"
+
 #define LINE_ENDING 10 // alt: 13
+
+#ifdef HAS_DOTSTAR_LIB
 extern void setup_dotstar(void); // dotstar.cpp
+extern void set_dotStarColors(void);
+extern void wiggleDSManyTimes(void);
+extern void wiggleDotStarOnce(void); // toggle once
+#endif // #ifdef HAS_DOTSTAR_LIB
+
+
 extern void fl_setup(void);
 
 extern File thisFile; // You must include SdFat.h to use 'File' here
@@ -84,6 +94,27 @@ void _FLOAD (void) { // file load: fload
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
 }
 
+void _WAGDS (void) { // 'wag' the dotStar colored lED - ItsyBitsy M4, others
+#ifdef HAS_DOTSTAR_LIB
+  wiggleDotStarOnce();
+#endif // #ifdef HAS_DOTSTAR_LIB
+}
+
+void _WIGGLE (void) { // toggle dotStar a number of times
+/*
+ 124 void _EMIT (void) {
+ 125   char c = T;
+ 126   Serial.write (c);
+ 127   _DROP ();
+ 128 }
+*/
+  for (int i = T; i > 0; i--) {
+    _WAGDS();
+  }
+  _DROP ();
+  // wiggleDotStarOnce();
+}
+
 void _EXIT (void) {
   I = memory.data [R++];
 }
@@ -122,7 +153,7 @@ void _OK (void) {
 }
 
 void _WLIST (void) {
-  Serial.print ("fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
+  Serial.print ("wiggle wag fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
 }
 
 void _WARM (void) {
@@ -764,7 +795,11 @@ void _color_black_bg (void) {
 
 
 void setup () {
+#ifdef HAS_DOTSTAR_LIB
   setup_dotstar(); // turn off dotstar (apa-102 RGB LED)
+  // set_dotStarColors(); // give them some color
+  // wiggleDSManyTimes(); // repeat the toggle
+#endif // #ifdef HAS_DOTSTAR_LIB
 
   // Serial.begin (38400); while (!Serial);
 
@@ -1197,6 +1232,15 @@ void setup () {
   LINK(366, 362)
   CODE(367, _FLOAD)
 
+  NAME(368, 0, 3, 'w', 'a', 'g')
+  LINK(369, 365)
+  CODE(370, _WAGDS)
+
+  NAME(371, 0, 6, 'w', 'i', 'g')
+  LINK(372, 368)
+  CODE(373, _WIGGLE)
+
+
 
   // test
   DATA(400, lit)
@@ -1216,9 +1260,10 @@ void setup () {
   DATA(414, 400)
 
 
-
-  D = 365; // latest word // D = 259;
-  H = 368; // top of dictionary // H = 262;
+  // D = 368; // latest word // D = 259;
+  D = 371; // latest word // D = 259;
+  // H = 371; // top of dictionary // H = 262;
+  H = 374; // top of dictionary // H = 262;
 
 //  I = 400; // test
   // Serial.begin (38400);
