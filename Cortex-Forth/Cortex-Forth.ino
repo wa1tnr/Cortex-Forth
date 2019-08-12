@@ -2,10 +2,12 @@
 
 // On branch  good-compiler-aa
 
-// identify: bunaka  vimaxl  helmkuttr  chowfex  tubabr
+// identify: kruvulax  bunaka  vimaxl  helmkuttr  chowfex  tubabr
 
-// target: ItsyBitsy M4 Express - still current on branch  side-fload-bb-ee-aa-aa 12 August 2019
-// comm: USB, not the TX/RX pair for the Forth interpreter - on branch  side-fload-bb-ee-aa-aa
+// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa  12 August 2019
+// comm: USB, not the TX/RX pair for the Forth interpreter - on branch  good-compiler-aa
+// terminal: minicom (provides keystroke echo)
+// the other method is to construct a 'terminal' from a Trinket M0 and use the UART ;)
 
 // Note: other branches may want to use the UART rather than USB.
 
