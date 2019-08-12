@@ -1,12 +1,30 @@
 Cortex-Forth
 ============
 
-Mon Aug  5 23:34:36 UTC 2019
+Mon Aug 12 01:06:11 UTC 2019
 
 Cortex-Forth is a Forth in C for an Arm Arduino, in development.
 
+Status
+======
+
+12 August 2019:
+
+Branch 'good-compiler-aa' now holds a developed Forth that
+can read in Forth source, from files stored on (vfat formatted)
+QSPI flashROM (the usual CircuitPython method of file storage).
+
+Adafruit ItsyBitsy M4 is the test case.
+
+Some variants/branches use Serial and others, Serial1 (the UART).
+
+If unexpected results occur, check that first. ;)
+
 Sample Run
 ==========
+
+TODO: The sample run has not updated in quite a while.
+
  mc $ microcom -p /dev/ttyACM0
 connected to /dev/ttyACM0
 Escape character: Ctrl-\
