@@ -26,45 +26,28 @@ FatFileSystem fatfs;
 
 File thisFile;
 
-void reading(void) {
-  if (thisFile) {
-    while (thisFile.available()) {
-      char c = thisFile.read();
-      Serial1.print(c);
-    }
-  }
-  else {
-    Serial1.println("Failed open.");
-  }
-}
-
 void fl_setup(void) {
-  // Serial1.begin(115200);
-  // while (!Serial) {
-  // delay(100);
-  // }
-  Serial1.begin(38400);
-  // while (!Serial);
-  Serial1.println("\nshred dcm-vbb\n");
-  Serial1.println("SPI Flash FatFs file-printout demo");
+  Serial.begin(38400);
+  while (!Serial);
+  Serial.println("shred abn-453\n");
+  // Serial.println("using SPI Flash FatFs file load - the 'fload' word");
 
   if (!flash.begin()) {
-    Serial1.println("Error");
+    Serial.println("Error");
     while(1);
   }
-  Serial1.print("Flash chip JEDEC ID: 0x"); Serial1.println(flash.getJEDECID(), HEX);
+  Serial.print("Flash chip JEDEC ID: 0x"); Serial.println(flash.getJEDECID(), HEX);
 
   if (!fatfs.begin(&flash)) {
-    Serial1.println("Error");
+    Serial.println("Error");
     while(1);
   }
-  Serial1.println("Mounted filesystem ok");
-  Serial1.print("  concat  ");
-  Serial1.print(FILE_NAME);
-  Serial1.println("   ... to the console:\n");
+  Serial.println("Mounted filesystem ok");
+  Serial.print("  fixed filename:  ");
+  Serial.print(FILE_NAME);
+  Serial.println("   ... resident on flashROM filesystem\n");
 
   File dataFile = fatfs.open(FILE_NAME, FILE_READ);
   thisFile = (File) dataFile;
-  // reading();
-  Serial1.println("READING now omitted - was 'has already run.' 10 Aug 16:42z");
+  // Serial.println("READING now omitted - was 'has already run.' 10 Aug 16:42z");
 }
