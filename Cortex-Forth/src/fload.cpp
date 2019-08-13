@@ -9,8 +9,8 @@
 #include <SdFat.h>
 #include <Adafruit_SPIFlash.h>
 
-#define FILE_NAME      "/forth/ascii_xfer_a001.txt"
 
+/* flash_ops.cpp
 #if defined(__SAMD51__) || defined(NRF52840_XXAA)
   Adafruit_FlashTransport_QSPI flashTransport(PIN_QSPI_SCK, PIN_QSPI_CS, PIN_QSPI_IO0, PIN_QSPI_IO1, PIN_QSPI_IO2, PIN_QSPI_IO3);
 #else
@@ -20,34 +20,43 @@
     Adafruit_FlashTransport_SPI flashTransport(SS1, &SPI1);
   #endif
 #endif
+*/
 
-Adafruit_SPIFlash flash(&flashTransport);
-FatFileSystem fatfs;
+// flash_ops.cpp Adafruit_SPIFlash flash(&flashTransport);
+// flash_ops.cpp FatFileSystem fatfs;
 
-File thisFile;
+// File thisFile;
 
 void fl_setup(void) {
-  Serial.begin(38400);
-  while (!Serial);
-  Serial.println("shred abn-473-fl\n");
-  // Serial.println("using SPI Flash FatFs file load - the 'fload' word");
+}
 
+/* flash_ops.cpp
   if (!flash.begin()) {
     Serial.println("Error");
     while(1);
   }
-  Serial.print("Flash chip JEDEC ID: 0x"); Serial.println(flash.getJEDECID(), HEX);
+*/
 
+/* flash_ops.cpp
+  Serial.print("Flash chip JEDEC ID: 0x"); Serial.println(flash.getJEDECID(), HEX);
+*/
+
+/* flash_ops.cpp
   if (!fatfs.begin(&flash)) {
     Serial.println("Error");
     while(1);
   }
+*/
+
+/*
   Serial.println("Mounted filesystem ok");
   Serial.print("  fixed filename:  ");
   Serial.print(FILE_NAME);
   Serial.println("   ... resident on flashROM filesystem\n");
+*/
 
+/* flash_ops.cpp
   File dataFile = fatfs.open(FILE_NAME, FILE_READ);
   thisFile = (File) dataFile;
+*/
   // Serial.println("READING now omitted - was 'has already run.' 10 Aug 16:42z");
-}
