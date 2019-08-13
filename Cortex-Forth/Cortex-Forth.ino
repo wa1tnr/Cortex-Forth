@@ -31,6 +31,8 @@
 #include "prequel.h"
 #include "compatibility.h"
 
+#include "common.h"
+
 #define LINE_ENDING 10 // alt: 13
 
 #ifdef HAS_DOTSTAR_LIB
@@ -41,7 +43,8 @@ extern void wiggleDotStarOnce(void); // toggle once
 #endif // #ifdef HAS_DOTSTAR_LIB
 
 
-extern void fl_setup(void);
+extern void fl_setup(void); // fload.cpp
+extern void flash_setup(void); // flash_ops.cpp
 
 extern File thisFile; // You must include SdFat.h to use 'File' here
 
@@ -316,12 +319,19 @@ void _PARSE (void) {
 
 
 // change from 3 to 2 - 11 Aug 17:41z
+// change from 2 back to 3 - file isn't closing at the right time.
+
+// 12 Aug 23:42 - way too sensitive manual test for EOF here:
+
+// This Forth does NOT like println() to the file; it wants 'print("foo \r");
+
 #define FLEN_MAX 2
 void _FLPARSE (void) {
   char t;
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
+    // Serial.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
         t = thisFile.read();
@@ -342,6 +352,9 @@ void _FLPARSE (void) {
         if (thisFile.available() < (1)) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
+          Serial.print("\r");
+          Serial.print(FILE_NAME);
+          Serial.println(" was closed - Cortex-Forth.ino LINE 347");
 /*
           _DDOTS(); // experiment 16:48z 11 Aug
           _SPACE();
@@ -370,6 +383,7 @@ void _FLPARSE (void) {
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
     Serial.println(" alt TRAP LINE 334");
+    delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
     // Serial.print("Trouble at the Old Well, Timmy?");
@@ -1269,7 +1283,8 @@ void setup () {
   // Serial.begin (38400);
   // while (!Serial);
   // delay(100);
-  fl_setup();
+  // fl_setup();
+  flash_setup(); // flash_ops.cpp
   I = abort; // instruction pointer = abort
 
   _color_black_bg(); _color_yellow_fg();
