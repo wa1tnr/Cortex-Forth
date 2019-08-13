@@ -1,62 +1,20 @@
-// Mon Aug 12 05:17:29 UTC 2019 0.1.8 good-compiler-aa  shred: abn-493
+// Tue Aug 13 03:11:26 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-495
+// On branch  good-compiler-aa-bb
 
-// tipalote  cinaverat  kivano
+// binafo   tipalote  cinaverat  kivano
 
 // fawidnok  tefnippa  kransofer  carfrax  carflo
 
-// Seems to compile at both the keyboard (interactively)
-// and from a file!  Monday 12 Aug 00:29z
+// Compiles at both the keyboard (interactively)
+// and from a file!  Tuesday 13 Aug 03:18z
 
+// Also edits a flashROM resident file, by truncating
+// it before writing the new version of it.
 
-// OLDER:
-
-// Working.  Won't compile from a file source, but
-// will execute, correctly, most words except for
-// the colon word (':') due to the way it erases
-// what was held in tib.
-
-
-// WORKS - have new ability to read from a file!
-// very sketchy, but the mechanism works (somewhat)
-// as of 17:13z 11 Aug.  Continue. ;)
-
-/*
-
- $ date
-Sun Aug 11 15:07:50 UTC 2019
-
- $ git branch|cat|egrep "flo"|egrep "ee"
-* fload-bb-ee
-
- $ git checkout -b fload-bb-ee-aa
-Switched to a new branch 'fload-bb-ee-aa'
-
-*/
-
-// minimally functioning fload from file - does not parse at all, though.
-// Well, 'at all' is a bit rough, there - does kind of parse.
-
-
-// - - - - - - - - - - - - - - - -
-
-/*
- $ date
-Sat Aug 10 18:45:34 UTC 2019
-
- $ git branch| cat | egrep fload | egrep dd
-* fload-bb-dd
- $ git checkout -b fload-bb-ee
-Switched to a new branch 'fload-bb-ee'
-*/
-
-/*
- $ date
-Sat Aug 10 16:30:58 UTC 2019
- $ git branch | cat | egrep fload | egrep cc
-* fload-bb-cc
- $ git checkout -b fload-bb-dd
-Switched to a new branch 'fload-bb-dd'
-*/
+// The newly-edited file can (of course) be loaded
+// in as a program (or just as a series of things
+// to be typed automatically as if a human typed
+// them).
 
 // mivwre  pokrak  kinten  privak  - Fri Aug  9 01:29:33 UTC 2019 0.1.8 fload-bb-bb
 // tronya  vadrige steyva  fanipi
