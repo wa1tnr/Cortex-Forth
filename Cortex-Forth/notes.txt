@@ -1,3 +1,25 @@
+Tue Aug 13
+
+For some reason, if formatted as 'custom' vfat in
+Linux (nautilus) the flashROM functions reasonably
+well.
+
+Had investigated this because it became necessary
+to reflash the program, from simple misoperation
+of it (forgot to pad the stack before calling
+wiggle).
+
+Dropping a CircuitPython .uf2 exposes the flashROM
+to Linux, but when CircuitPython formats the flash,
+it doesn't seem to be used here by this program
+(they are incompatible, just as Adafruit mentions).
+
+Long term solution may be to follow their guidance,
+and use CircuitPython-oriented tools on this.
+
+Short term is working - use Nautilus and choose a
+custom (write-in!) format of 'vfat'.
+
 Sun Aug 11 17:13:13 UTC 2019 fload-bb-ee-aa
 
 16:49z New workflow
