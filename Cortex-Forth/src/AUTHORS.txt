@@ -1,0 +1,37 @@
+Mon Aug 12 20:04:38 UTC 2019
+
+Adafruit
+  David A. Mellis
+  Tom Igoe
+
+wa1tnr - August, 2019 (and earlier; see ainsuForth-gen-exp-m4 and such)
+
+ - - -
+
+../Arduino/libraries/Adafruit_SPIFlash/examples/SdFat_ReadWrite/SdFat_ReadWrite.ino
+
+       copied to  _fdl_src.cpp_ORIG_
+  and  copied to  flDownload.cpp
+
+Intellectual property is Adafruit, per license with the Adafruit_SPIFlash repository on GitHub.
+
+
+From that file:
+
+  SD card read/write
+
+ This example shows how to read and write data to and from an SD card file
+ The circuit:
+ * SD card attached to SPI bus as follows:
+ ** MOSI - pin 11
+ ** MISO - pin 12
+ ** CLK - pin 13
+
+ created   Nov 2010
+ by David A. Mellis
+ modified 9 Apr 2012
+ by Tom Igoe
+
+ This example code is in the public domain.
+
+August 2019 (local copy begins, wa1tnr)
