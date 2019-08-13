@@ -72,11 +72,18 @@ void flash_setup(void) {
 
 // file contents - - - - - - - - - - - - - - - -
 
+    myFile.print("wag wag 8 wiggle\r");
+
     myFile.print(": hello 0 do 1 drop emit loop ;\r");
 
     myFile.print(": eamit 0 do emit loop ;\r");
 
+    myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
+
+// for some reason, stuffit (above) could not follow after this line, without crashing:
+
     myFile.print("69 68 67 66 65 5 eamit cr\r");
+
 
     // myFile.print("wlist cr cr words cr\r");
 
