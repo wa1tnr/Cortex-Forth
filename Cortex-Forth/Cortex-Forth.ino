@@ -1,15 +1,27 @@
-// Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa  shred: abn-493
+// Tue Aug 13 03:11:26 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-495
 
-// On branch  good-compiler-aa
+// On branch  good-compiler-aa-bb
 
-// identify: kruvulax  bunaka  vimaxl  helmkuttr  chowfex  tubabr
+// identify: pescanole  kruvulax  bunaka  vimaxl  helmkuttr
 
-// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa  12 August 2019
-// comm: USB, not the TX/RX pair for the Forth interpreter - on branch  good-compiler-aa
-// terminal: minicom (provides keystroke echo)
+// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa-bb  13 August 2019
+// comm: USB, not the TX/RX pair for the Forth interpreter - on branch  good-compiler-aa-bb
+// terminal: minicom (provides keystroke echo) (and color support)
 // the other method is to construct a 'terminal' from a Trinket M0 and use the UART ;)
 
 // Note: other branches may want to use the UART rather than USB.
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//   In theory, sfparse can be called just the same as flparse is
+//   called, at present.  They're identical (only at the moment)
+//   (13 Aug 03:23z).
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*
   Forth virtual machine
@@ -327,6 +339,75 @@ void _PARSE (void) {
 
 #define FLEN_MAX 2
 void _FLPARSE (void) {
+  char t;
+  tib = "";
+  keyboard_not_file = false;
+  if (thisFile) {
+    // Serial.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
+    while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
+      do {
+        t = thisFile.read();
+        char peeked_char = t;
+        tib = peeked_char; // not sure where this goes
+        if (t == ' ') {
+          tib = ""; // unpeek tib
+          t = thisFile.read();
+        }
+      } while (t == ' ');
+      do {
+        t = thisFile.read();
+          tib = tib + t; // was unconditional before 19:01z 10 Aug
+      } while (t > ' ');
+      // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
+      if (thisFile.available() < (FLEN_MAX - 1)) {
+        // Serial.println("\n\n\nSAFETY NET\n\n\n");
+        if (thisFile.available() < (1)) {
+          keyboard_not_file = true;
+          thisFile.close(); // experiment 17:06z 11 Aug
+          Serial.print("\r");
+          Serial.print(FILE_NAME);
+          Serial.println(" was closed - Cortex-Forth.ino LINE 347");
+/*
+          _DDOTS(); // experiment 16:48z 11 Aug
+          _SPACE();
+          _SPACE();
+          Serial.print("xxx");
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          Serial.print("yyy");
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _DEPTH();
+          _DDOTS();
+          _SPACE();
+          _SPACE();
+          Serial.println("\n previous line: _DDOTS();");
+          delay(100);
+          // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
+*/
+        }
+      }
+      // Serial.println("TRAP");
+      return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
+    } // new conditional 17:25z
+    Serial.println(" alt TRAP LINE 334");
+    delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
+  } // if thisfile
+  else {
+    // Serial.print("Trouble at the Old Well, Timmy?");
+    // Serial.print(" I = 90 -- the 'parse' word  ");
+    // Serial.println(" alt TRAP LINE 339");
+    keyboard_not_file = true;
+    I = 90; // I = 90 points to 'parse' - top of original quit loop
+  }
+}
+
+// #define FLEN_MAX 2
+void _SFPARSE (void) { // safe parse
   char t;
   tib = "";
   keyboard_not_file = false;
@@ -993,6 +1074,13 @@ void setup () {
   CODE(137, _FLPARSE)
 #  define flparse 137
 
+  // sfparse // leaves string in tib
+  NAME(138, 0, 7, 's', 'f', 'p')
+  LINK(139, 135)
+  CODE(140, _SFPARSE)
+#  define sfparse 140
+
+
   // flabort
   NAME(180, 0, 7, 'f', 'l', 'a')
   LINK(181, 77)
@@ -1037,249 +1125,297 @@ void setup () {
   DATA(216, 190) // continue quit loop
 
 
+
+
+
+  // sfabort
+  NAME(280, 0, 7, 's', 'f', 'a')
+  LINK(281, 77)
+  CODE(282, _NEST)
+  DATA(283, inits)
+#  define sfabort 283
+  // sfload loop - again
+  DATA(284, branch)
+  DATA(285, 289)
+  // alhoa - seems ignored
+  NAME(286, 0, 5, 'a', 'l', 'o')
+  LINK(287, 77) // 0< - may be the same entry point
+  CODE(288, _NEST)
+  DATA(289, initr)
+  // begin quit loop
+  DATA(290, sfparse) // latest change - - - - - - - - - - - - - - - -
+  DATA(291, wword) // gets string from tib
+  DATA(292, find)
+  DATA(293, qdup)
+  DATA(294, zbranch)
+  DATA(295, 303) // to number
+  DATA(296, execute)
+  DATA(297, depth)
+  DATA(298, zeroless)
+  DATA(299, zbranch)
+  DATA(300, 314) // to ok
+  DATA(301, branch)
+  DATA(302, 306)
+  DATA(303, number)
+  DATA(304, zbranch)
+  DATA(305, 314) // to ok
+  DATA(306, nop) // tnr, suppressed with a nop // DATA(106, showtib)
+  DATA(307, lit)
+  DATA(308, '!') // was '~' in the recent copy of the original
+  DATA(309, emit)
+  DATA(310, cr)
+  DATA(311, inits)
+  DATA(312, branch)
+  DATA(313, 289)
+  DATA(314, ok)
+  DATA(315, branch)
+  DATA(316, 290) // continue quit loop
+
+
+
   // . ( n - )
-  NAME(217, 0, 1, '.', 0, 0)
-  LINK(218, 135)  // 86 // if this isn't 86 then the quit word is lost -- old: NEAT - links back to the quit word here
-  CODE(219, _DOT)
-#  define dot 219
+  NAME(317, 0, 1, '.', 0, 0)
+  LINK(318, 138) // 135 // 86 // if this isn't 86 then the quit word is lost -- old: NEAT - links back to the quit word here
+  CODE(319, _DOT)
+#  define dot 319
   // .s
-  NAME(220, 0, 2, '.', 's', 0)
-  LINK(221, 217)
-  CODE(222, _DDOTS)
-#  define ddots 222
+  NAME(320, 0, 2, '.', 's', 0)
+  LINK(321, 317)
+  CODE(322, _DDOTS)
+#  define ddots 322
   // words
-  NAME(223, 0, 5, 'w', 'o', 'r')
-  LINK(224, 220)
-  CODE(225, _WORDS)
-#  define words 225
+  NAME(323, 0, 5, 'w', 'o', 'r')
+  LINK(324, 320)
+  CODE(325, _WORDS)
+#  define words 325
   // space
-  NAME(226, 0, 5, 's', 'p', 'a')
-  LINK(227, 223)
-  CODE(228, _SPACE)
-#  define space 228
+  NAME(326, 0, 5, 's', 'p', 'a')
+  LINK(327, 323)
+  CODE(328, _SPACE)
+#  define space 328
   // h. ( n - )
-  NAME(229, 0, 2, 'h', '.', 0)
-  LINK(230, 226)
-  CODE(231, _HDOT)
-#  define hdot 231
+  NAME(329, 0, 2, 'h', '.', 0)
+  LINK(330, 326)
+  CODE(331, _HDOT)
+#  define hdot 331
   // + ( n1 n2 - n3)
-  NAME(232, 0, 1, '+', 0, 0)
-  LINK(233, 229)
-  CODE(234, _PLUS)
-#  define plus 234
+  NAME(332, 0, 1, '+', 0, 0)
+  LINK(333, 329)
+  CODE(334, _PLUS)
+#  define plus 334
   // - ( n1 n2 - n3)
-  NAME(235, 0, 1, '-', 0, 0)
-  LINK(236, 232)
-  CODE(237, _MINUS)
+  NAME(335, 0, 1, '-', 0, 0)
+  LINK(336, 332)
+  CODE(337, _MINUS)
   // and (n1 n2 - n3)
-  NAME(238, 0, 3, 'a', 'n', 'd')
-  LINK(239, 235)
-  CODE(240, _aND)
+  NAME(338, 0, 3, 'a', 'n', 'd')
+  LINK(339, 335)
+  CODE(340, _aND)
   // or ( n1 n2 - n3)
-  NAME(241, 0, 2, 'o', 'r', 0)
-  LINK(242, 238)
-  CODE(243, _OR)
+  NAME(341, 0, 2, 'o', 'r', 0)
+  LINK(342, 338)
+  CODE(343, _OR)
   // xor ( n1 n2 - n3)
-  NAME(244, 0, 3, 'x', 'o', 'r')
-  LINK(245, 241)
-  CODE(246, _XOR)
+  NAME(344, 0, 3, 'x', 'o', 'r')
+  LINK(345, 341)
+  CODE(346, _XOR)
   // invert ( n1 - n2)
-  NAME(247, 0, 6, 'i', 'n', 'v')
-  LINK(248, 244)
-  CODE(249, _INVERT)
+  NAME(347, 0, 6, 'i', 'n', 'v')
+  LINK(348, 344)
+  CODE(349, _INVERT)
   // abs ( n1 - n2)
-  NAME(250, 0, 3, 'a', 'b', 's')
-  LINK(251, 247)
-  CODE(252, _ABS)
+  NAME(350, 0, 3, 'a', 'b', 's')
+  LINK(351, 347)
+  CODE(352, _ABS)
   // negate ( n1 - n2)
-  NAME(253, 0, 6, 'n', 'e', 'g')
-  LINK(254, 250)
-  CODE(255, _NEGATE)
+  NAME(353, 0, 6, 'n', 'e', 'g')
+  LINK(354, 350)
+  CODE(355, _NEGATE)
   // 2* ( n1 - n2)
-  NAME(256, 0, 2, '2', '*', 0)
-  LINK(257, 253)
-  CODE(258, _TWOSTAR)
+  NAME(356, 0, 2, '2', '*', 0)
+  LINK(357, 353)
+  CODE(358, _TWOSTAR)
   // 2/ ( n1 - n2)
-  NAME(259, 0, 2, '2', '/', 0)
-  LINK(260, 256)
-  CODE(261, _TWOSLASH)
+  NAME(359, 0, 2, '2', '/', 0)
+  LINK(360, 356)
+  CODE(361, _TWOSLASH)
   // dump ( a n - a+n) 
-  NAME(262, 0, 4, 'd', 'u', 'm')
-  LINK(263, 259)
-  CODE(264, _DUMP)
+  NAME(362, 0, 4, 'd', 'u', 'm')
+  LINK(363, 359)
+  CODE(364, _DUMP)
   // create
-  NAME(265, 0, 6, 'c', 'r', 'e')
-  LINK(266, 262)
-  CODE(267, _CREATE)
+  NAME(365, 0, 6, 'c', 'r', 'e')
+  LINK(366, 362)
+  CODE(367, _CREATE)
   // here 
-  NAME(268, 0, 4, 'h', 'e', 'r')
-  LINK(269, 265)
-  CODE(270, _HERE)
+  NAME(368, 0, 4, 'h', 'e', 'r')
+  LINK(369, 365)
+  CODE(370, _HERE)
   // allot 
-  NAME(271, 0, 5, 'a', 'l', 'l')
-  LINK(272, 268)
-  CODE(273, _ALLOT)
+  NAME(371, 0, 5, 'a', 'l', 'l')
+  LINK(372, 368)
+  CODE(373, _ALLOT)
   // variable 
-  NAME(274, 0, 8, 'v', 'a', 'r')
-  LINK(275, 271)
-  CODE(276, _VARIABLE)
+  NAME(374, 0, 8, 'v', 'a', 'r')
+  LINK(375, 371)
+  CODE(376, _VARIABLE)
   // ?
-  NAME(277, 0, 1, '?', 0, 0)
-  LINK(278, 274)
-  CODE(279, _QUESTION)
+  NAME(377, 0, 1, '?', 0, 0)
+  LINK(378, 374)
+  CODE(379, _QUESTION)
   // constant
-  NAME(280, 0, 8, 'c', 'o', 'n')
-  LINK(281, 277)
-  CODE(282, _CONSTANT)
+  NAME(380, 0, 8, 'c', 'o', 'n')
+  LINK(381, 377)
+  CODE(382, _CONSTANT)
   // R
-  NAME(283, 0, 1, 'R', 0, 0)
-  LINK(284, 280)
-  CODE(285, _R)
+  NAME(383, 0, 1, 'R', 0, 0)
+  LINK(384, 380)
+  CODE(385, _R)
   // [ 
-  NAME(286, IMMED, 1, '[', 0, 0)
-  LINK(287, 283)
-  CODE(288, _LBRAC)
+  NAME(386, IMMED, 1, '[', 0, 0)
+  LINK(387, 383)
+  CODE(388, _LBRAC)
   // ]
-  NAME(289, 0, 1, ']', 0, 0)
-  LINK(290, 286)
-  CODE(291, _RBRAC)
+  NAME(389, 0, 1, ']', 0, 0)
+  LINK(390, 386)
+  CODE(391, _RBRAC)
   // :
-  NAME(292, 0, 1, ':', 0, 0)
-  LINK(293, 289)
-  CODE(294, _COLON)
+  NAME(392, 0, 1, ':', 0, 0)
+  LINK(393, 389)
+  CODE(394, _COLON)
   // ;
-  NAME(295, IMMED, 1, ';', 0, 0)
-  LINK(296, 292)
-  CODE(297, _SEMI)
+  NAME(395, IMMED, 1, ';', 0, 0)
+  LINK(396, 392)
+  CODE(397, _SEMI)
   // i 
-  NAME(298, 0, 1, 'i', 0, 0)
-  LINK(299, 295)
-  CODE(300, _I)
-#  define _i 300
+  NAME(398, 0, 1, 'i', 0, 0)
+  LINK(399, 395)
+  CODE(400, _I)
+#  define _i 400
   // do
-  NAME(301, IMMED, 2, 'd', 'o', 0)
-  LINK(302, 298)
-  CODE(303, _CDO)
+  NAME(401, IMMED, 2, 'd', 'o', 0)
+  LINK(402, 398)
+  CODE(403, _CDO)
   // loop 
-  NAME(304, IMMED, 4, 'l', 'o', 'o')
-  LINK(305, 301)
-  CODE(306, _CLOOP)
+  NAME(404, IMMED, 4, 'l', 'o', 'o')
+  LINK(405, 401)
+  CODE(406, _CLOOP)
   // begin 
-  NAME(307, IMMED, 5, 'b', 'e', 'g')
-  LINK(308, 304)
-  CODE(309, _CBEGIN)
+  NAME(407, IMMED, 5, 'b', 'e', 'g')
+  LINK(408, 404)
+  CODE(409, _CBEGIN)
   // until 
-  NAME(310, IMMED, 5, 'u', 'n', 't')
-  LINK(311, 307)
-  CODE(312, _CUNTIL)
+  NAME(410, IMMED, 5, 'u', 'n', 't')
+  LINK(411, 407)
+  CODE(412, _CUNTIL)
   // if
-  NAME(313, IMMED, 2, 'i', 'f', 0)
-  LINK(314, 310)
-  CODE(315, _CIF)
+  NAME(413, IMMED, 2, 'i', 'f', 0)
+  LINK(414, 410)
+  CODE(415, _CIF)
   // then
-  NAME(316, IMMED, 4, 't', 'h', 'e')
-  LINK(317, 313)
-  CODE(318, _CTHEN)
+  NAME(416, IMMED, 4, 't', 'h', 'e')
+  LINK(417, 413)
+  CODE(418, _CTHEN)
   // else
-  NAME(319, IMMED, 4, 'e', 'l', 's')
-  LINK(320, 316)
-  CODE(321, _CELSE)
+  NAME(419, IMMED, 4, 'e', 'l', 's')
+  LINK(420, 416)
+  CODE(421, _CELSE)
   // forget
-  NAME(322, 0, 6, 'f', 'o', 'r')
-  LINK(323, 319)
-  CODE(324, _FORGET)
+  NAME(422, 0, 6, 'f', 'o', 'r')
+  LINK(423, 419)
+  CODE(424, _FORGET)
   // '
-  NAME(325, 0, 1, '\'', 0, 0)
-  LINK(326, 322)
-  CODE(327, _TICK)
+  NAME(425, 0, 1, '\'', 0, 0)
+  LINK(426, 422)
+  CODE(427, _TICK)
   // again
-  NAME(328, IMMED, 5, 'a', 'g', 'a')
-  LINK(329, 325)
-  CODE(330, _CAGAIN)
+  NAME(428, IMMED, 5, 'a', 'g', 'a')
+  LINK(429, 425)
+  CODE(430, _CAGAIN)
   // while
-  NAME(331, IMMED, 5, 'w', 'h', 'i')
-  LINK(332, 328)
-  CODE(333, _CWHILE)
+  NAME(431, IMMED, 5, 'w', 'h', 'i')
+  LINK(432, 428)
+  CODE(433, _CWHILE)
   // repeat
-  NAME(334, IMMED, 6, 'r', 'e', 'p')
-  LINK(335, 331)
-  CODE(336, _CREPEAT)
+  NAME(434, IMMED, 6, 'r', 'e', 'p')
+  LINK(435, 431)
+  CODE(436, _CREPEAT)
   // literal 
-  NAME(337, IMMED, 7, 'l', 'i', 't')
-  LINK(338, 334)
-  CODE(339, _CLITERAL)
+  NAME(437, IMMED, 7, 'l', 'i', 't')
+  LINK(438, 434)
+  CODE(439, _CLITERAL)
   // c@ ( b - c) 
-  NAME(340, 0, 2, 'c', '@', 0)
-  LINK(341, 337)
-  CODE(342, _CFETCH)
-#  define cfetch 342
+  NAME(440, 0, 2, 'c', '@', 0)
+  LINK(441, 437)
+  CODE(442, _CFETCH)
+#  define cfetch 442
   // c! ( c b - ) 
-  NAME(343, 0, 2, 'c', '!', 0)
-  LINK(344, 340)
-  CODE(345, _CSTORE)
+  NAME(443, 0, 2, 'c', '!', 0)
+  LINK(444, 440)
+  CODE(445, _CSTORE)
   // type ( b c - ) 
-  NAME(346, 0, 4, 't', 'y', 'p')
-  LINK(347, 343)
-  CODE(348, _NEST)
-  DATA(349, over)
-  DATA(350, plus)
-  DATA(351, swap)
-  DATA(352, ddo)
-  DATA(353, _i)
-  DATA(354, cfetch)
-  DATA(355, emit)
-  DATA(356, lloop)
-  DATA(357, 353)
-  DATA(358, exit)
+  NAME(446, 0, 4, 't', 'y', 'p')
+  LINK(447, 443)
+  CODE(448, _NEST)
+  DATA(449, over)
+  DATA(450, plus)
+  DATA(451, swap)
+  DATA(452, ddo)
+  DATA(453, _i)
+  DATA(454, cfetch)
+  DATA(455, emit)
+  DATA(456, lloop)
+  DATA(457, 453)
+  DATA(458, exit)
   // warm (  - )
-  NAME(359, 0, 4, 'w', 'a', 'r')
-  LINK(360, 346)
-  CODE(361, _WARM)
+  NAME(459, 0, 4, 'w', 'a', 'r')
+  LINK(460, 446)
+  CODE(461, _WARM)
 
   // wlist (  - )
-  NAME(362, 0, 5, 'w', 'l', 'i')
-  LINK(363, 359)
-  CODE(364, _WLIST)
+  NAME(462, 0, 5, 'w', 'l', 'i')
+  LINK(463, 459)
+  CODE(464, _WLIST)
 
   // fload (  - )
-  NAME(365, 0, 5, 'f', 'l', 'o')
-  LINK(366, 362)
-  CODE(367, _FLOAD)
+  NAME(465, 0, 5, 'f', 'l', 'o')
+  LINK(466, 462)
+  CODE(467, _FLOAD)
 
-  NAME(368, 0, 3, 'w', 'a', 'g')
-  LINK(369, 365)
-  CODE(370, _WAGDS)
+  NAME(468, 0, 3, 'w', 'a', 'g')
+  LINK(469, 465)
+  CODE(470, _WAGDS)
 
-  NAME(371, 0, 6, 'w', 'i', 'g')
-  LINK(372, 368)
-  CODE(373, _WIGGLE)
+  NAME(471, 0, 6, 'w', 'i', 'g')
+  LINK(472, 468)
+  CODE(473, _WIGGLE)
 
 
 
   // test
-  DATA(400, lit)
-  DATA(401, 10) // i
-  DATA(402, lit)
-  DATA(403, 0) // i
-  DATA(404, ddo)
-  DATA(405, 300) // i
-  DATA(406, dot)
-  DATA(407, lloop)
-  DATA(408, 405)
-  DATA(409, 285) // R
-  DATA(410, dot)
-  DATA(411, ddots)
-  DATA(412, cr)
-  DATA(413, branch)
-  DATA(414, 400)
+  DATA(500, lit)
+  DATA(501, 10) // i
+  DATA(502, lit)
+  DATA(503, 0) // i
+  DATA(504, ddo)
+  DATA(505, 400) // i
+  DATA(506, dot)
+  DATA(507, lloop)
+  DATA(508, 505)
+  DATA(509, 385) // R
+  DATA(510, dot)
+  DATA(511, ddots)
+  DATA(512, cr)
+  DATA(513, branch)
+  DATA(514, 500)
 
 
   // D = 368; // latest word // D = 259;
-  D = 371; // latest word // D = 259;
+  D = 471; // latest word // D = 259;
   // H = 371; // top of dictionary // H = 262;
-  H = 374; // top of dictionary // H = 262;
+  H = 474; // top of dictionary // H = 262;
 
-//  I = 400; // test
+//  I = 500; // test
   // Serial.begin (38400);
   // while (!Serial);
   // delay(100);
@@ -1287,14 +1423,15 @@ void setup () {
   flash_setup(); // flash_ops.cpp
   I = abort; // instruction pointer = abort
 
-  _color_black_bg(); _color_yellow_fg();
-  delay(2000);
-// Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa  shred: abn-493
-  Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 12 AUG 2019 02:33z");
-// Serial.println ("\n      Mon Aug 12 00:26:02 UTC 2019 0.1.8 side-fload-bb-ee-aa-aa");
-  Serial.println  ("\n      Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa");
-  Serial.println  ("\n      +fload - clean compile.  shred: abn-493 ");
-  Serial.println  ("\n      words: fload wlist warm");
+   _color_black_bg(); _color_yellow_fg();
+   delay(2000);
+// Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa  shred: abn-495
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 13 AUG 2019 03:11z");
+// Tue Aug 13 03:11:26 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-495
+   Serial.println  ("\n      Tue Aug 13 03:11:26 UTC 2019 0.1.8 good-compiler-aa-bb");
+// Serial.println  ("\n      Mon Aug 12 02:33:44 UTC 2019 0.1.8 good-compiler-aa");
+   Serial.println  ("\n      +write_File +fload - experimental.  shred: abn-495 ");
+   Serial.println  ("\n      words: fload wlist warm");
 }
 
 // the loop function runs over and over again forever
