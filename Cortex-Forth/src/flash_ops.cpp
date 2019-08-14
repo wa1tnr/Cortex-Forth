@@ -72,18 +72,37 @@ void flash_setup(void) {
 
 // file contents - - - - - - - - - - - - - - - -
 
+//  myFile.print("\r");
+
+// max ( n1 n2 -- max )
+    myFile.print(": max over over - 0< if swap drop -1 then if exit then swap drop ;\r");
+
+// min ( n1 n2 -- min )
+    myFile.print(": min over over - 0< if drop exit then swap drop ;\r");
+
+// >prn ( n -- 31<n<128 )
+    myFile.print(": >prn 32 max 127 min ;\r");
+
+// alist ( addr -- )
+    myFile.print(": alist 16 + dup 16 - over over\r");
+    myFile.print("do 1 + over over swap - 0<\r");
+    myFile.print("if dup c@ >prn emit then loop\r");
+    myFile.print("drop ;\r");
+
+// blist ( addr -- addr + CONST )
+    myFile.print(": blist depth 1 - 0< if 0 then\r");
+    myFile.print("111000 min 1 max 48 0 do alist loop ;\r");
+    // need an accurate upper limit number there . 111000 is a stand-in
+
     myFile.print("wag wag 8 wiggle\r");
 
-    myFile.print(": hello 0 do 1 drop emit loop ;\r");
-
-    myFile.print(": eamit 0 do emit loop ;\r");
+    myFile.print(": emits 0 do emit loop ;\r");
 
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
 
 // for some reason, stuffit (above) could not follow after this line, without crashing:
 
-    myFile.print("69 68 67 66 65 5 eamit cr\r");
-
+    myFile.print("69 68 67 66 65 5 emits cr\r");
 
     // myFile.print("wlist cr cr words cr\r");
 
