@@ -81,18 +81,29 @@ void flash_setup(void) {
     myFile.print(": min over over - 0< if drop exit then swap drop ;\r");
 
 // >prn ( n -- 31<n<128 )
-    myFile.print(": >prn 32 max 127 min ;\r");
+//  myFile.print(": >prn 32 over over - 0< if 46 emit drop then max 127 over over - 0< if 46 emit drop then min ;\r");
+
+// >prn ( n -- )
+    myFile.print(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
 
 // alist ( addr -- )
     myFile.print(": alist 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 0<\r");
-    myFile.print("if dup c@ >prn emit then loop\r");
+ // myFile.print("if dup c@ >prn emit then loop\r");
+    myFile.print("if dup c@ >prn then loop\r");
     myFile.print("drop ;\r");
 
 // blist ( addr -- addr + CONST )
     myFile.print(": blist depth 1 - 0< if 0 then\r");
-    myFile.print("111000 min 1 max 48 0 do alist loop ;\r");
-    // need an accurate upper limit number there . 111000 is a stand-in
+
+    myFile.print("196608 1148 - min 1 max 48 0 do alist loop cr ;\r");
+
+/*
+.. ...... ....D.. w...a.  ...!D........ .Y......y...........@..;...
+.s
+  196228  Ok
+
+*/
 
     myFile.print("wag wag 8 wiggle\r");
 
