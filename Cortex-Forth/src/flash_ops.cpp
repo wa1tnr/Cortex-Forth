@@ -1,3 +1,6 @@
+// flash_ops.cpp  wa1tnr
+// Sat Aug 17 23:06:52 UTC 2019
+
 /*
   SD card read/write
 
@@ -21,6 +24,9 @@
 #include "SdFat.h"
 #include "Adafruit_SPIFlash.h"
 
+#undef WANT_MKDIR_FORTH
+#define WANT_MKDIR_FORTH
+
 File thisFile;
 #include "../common.h"
 
@@ -41,6 +47,43 @@ FatFileSystem fatfs;
 
 File myFile;
 
+#define WORKING_DIR "/forth"
+
+void mkdir_forth(void) {
+  if (!fatfs.exists(WORKING_DIR)) {
+    Serial.print(WORKING_DIR);
+    Serial.println(" directory not found, creating...");
+    if (!fatfs.mkdir(WORKING_DIR)) {
+      Serial.print("Error, failed to create ");
+      Serial.print(WORKING_DIR);
+      Serial.println(" directory!");
+      Serial.println("Entering an endless loop (as a trap) after a delay of 4 seconds.");
+      delay(4000);
+      while(1);
+    }
+    Serial.print("Created ");
+    Serial.print(WORKING_DIR);
+    Serial.println(" directory!");
+  } else {
+      Serial.print(WORKING_DIR);
+      Serial.println("  directory was previously created.  No worries.  Continuing.. ");
+  }
+}
+
+// modeled on:
+
+/*
+ 75   if (!fatfs.exists("/test")) {
+ 76     Serial.println("Test directory not found, creating...");
+ 77     // Use mkdir to create directory (note you should _not_ have a trailing slash).
+ 78     if (!fatfs.mkdir("/test")) {
+ 79       Serial.println("Error, failed to create test directory!");
+ 80       while(1);
+ 81     }
+ 82     Serial.println("Created test directory!");
+ 83   }
+
+*/
 void flash_setup(void) {
   // Open serial communications and wait for port to open:
   Serial.begin(38400);
@@ -61,6 +104,11 @@ void flash_setup(void) {
   if (!fatfs.remove(FILE_NAME)) {
     Serial.print("Failed to remove "); Serial.println(FILE_NAME);
   }
+
+
+#ifdef WANT_MKDIR_FORTH
+  mkdir_forth(); // tnr kludge
+#endif // #ifdef WANT_MKDIR_FORTH
 
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
@@ -133,7 +181,8 @@ void flash_setup(void) {
   // thisFile = (File) myFile; // local tnr kludge
 
   if (myFile) {
-    Serial.print(FILE_NAME); Serial.println(" .. will now be read and printed to the console.");
+    Serial.print(FILE_NAME); Serial.println(" .. will now be read and printed");
+    Serial.println("to the console.  Attention: design has strange line endings!\r\n");
 
     // read from the file until there's nothing else in it:
     while (myFile.available()) {
@@ -141,32 +190,20 @@ void flash_setup(void) {
     }
     // close the file:
     myFile.close();
+    Serial.println("\r\n");
     Serial.print(FILE_NAME); Serial.println(" .. is now closed, safely.");
-
-
-    // super kludge tnr - open it and leave it open:
 
     // re-open the file for reading:
 
-    Serial.println("FILE STAYS OPEN");
+    File dataFile = fatfs.open(FILE_NAME, FILE_READ);
+    Serial.print(FILE_NAME);
+    Serial.println(" is now re-opened (for reading).");
 
-    // myFile = fatfs.open(FILE_NAME);
-
-       File dataFile = fatfs.open(FILE_NAME, FILE_READ);
-       thisFile = (File) dataFile; // local tnr kludge
-       thisFile.rewind();
-
-// 50   File dataFile = fatfs.open(FILE_NAME, FILE_READ);
-// 51   thisFile = (File) dataFile;
-
-
-
+    thisFile = (File) dataFile;
+    thisFile.rewind();
+    Serial.println("FILE STAYS OPEN (and rewound) (for a possible fload).");
   } else {
     // if the file didn't open, print an error:
     Serial.print("error opening "); Serial.println(FILE_NAME);
   }
-}
-
-void flash_loop() {
-  // nothing happens after setup
 }
