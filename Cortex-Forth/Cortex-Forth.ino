@@ -1,11 +1,12 @@
-// Sat Aug 17 23:06:52 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-497
+// Sun Aug 18 18:49:45 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-499
 
 // On branch  good-compiler-aa-bb
 
-// identify: entwistle  pescanole  kruvulax  bunaka  vimaxl
+// identify: cablefour  entwistle  pescanole  kruvulax  bunaka
 
-// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa-bb  17 August 2019
+// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa-bb  18 August 2019
 // comm: USB, not the TX/RX pair for the Forth interpreter - on branch  good-compiler-aa-bb
+
 // terminal: minicom (provides keystroke echo) (and color support)
 // the other method is to construct a 'terminal' from a Trinket M0 and use the UART ;)
 
@@ -1425,12 +1426,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 17 AUG 2019 23:06z");
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 18 AUG 2019 18:49z");
 
-   Serial.println  ("\n      Sat Aug 17 23:06:52 UTC 2019 0.1.8 good-compiler-aa-bb");
-   Serial.println  ("\n      +mkdir +write_File +fload   shred: abn-497 ");
+   Serial.println  ("\n      Sun Aug 18 18:49:45 UTC 2019 0.1.8 good-compiler-aa-bb");
+   Serial.println  ("\n      +mkdir +write_File +fload   shred: abn-499 ");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK");
+   Serial.println  ("\n      TEF MEK B");
 }
 
 // the loop function runs over and over again forever

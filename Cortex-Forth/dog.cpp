@@ -1,10 +1,9 @@
-// Sat Aug 17 23:06:52 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-497
+// Sun Aug 18 18:49:45 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-499
 
 // On branch  good-compiler-aa-bb
 
-// visdury   binafo   tipalote  cinaverat  kivano
-
-// fawidnok  tefnippa  kransofer  carfrax  carflo
+// junafid     visdury     binafo      tipalote    cinaverat
+// kivano      fawidnok    tefnippa    kransofer   carfrax
 
 // Compiles at both the keyboard (interactively)
 // and from a file!  Tuesday 13 Aug 03:18z
