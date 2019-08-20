@@ -1,5 +1,5 @@
 // flash_ops.cpp  wa1tnr
-// Sat Aug 17 23:06:52 UTC 2019
+// Tue Aug 20 20:27:58 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-511
 
 /*
   SD card read/write
@@ -134,12 +134,17 @@ void flash_setup(void) {
 // >prn ( n -- )
     myFile.print(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
 
+// delay ( n -- )
+    myFile.print(": delay drop 1234 0 do 1 drop loop ;\r");
+// 123456
+
 // alist ( addr -- )
     myFile.print(": alist 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 0<\r");
  // myFile.print("if dup c@ >prn emit then loop\r");
-    myFile.print("if dup c@ >prn then loop\r");
+    myFile.print("if dup c@ >prn 100 delay then loop\r");
     myFile.print("drop ;\r");
+
 
 // blist ( addr -- addr + CONST )
     myFile.print(": blist depth 1 - 0< if 0 then\r");
