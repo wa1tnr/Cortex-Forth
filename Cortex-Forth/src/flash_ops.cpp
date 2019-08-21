@@ -1,5 +1,5 @@
 // flash_ops.cpp  wa1tnr
-// Tue Aug 20 20:27:58 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-511
+// Wed Aug 21 01:06:21 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-513
 
 /*
   SD card read/write
@@ -138,14 +138,38 @@ void flash_setup(void) {
 // delay ( n -- )
     myFile.print(": delay drop 1234 0 do 1 drop loop ;\r");
 
+// ecol ( -- ) \ emit a colon
+    myFile.print(": ecol 58 emit ;\r");
+
+// hadr ( addr -- addr ) print to display
+    myFile.print(": hadr dup 1 + h. ecol space ;\r");
+/*
+
+Can pack memory efficiently using the comma word:
+
+\ 0abbccdd    1a2b3c4d
+
+180079837 , 439041101 , 3008 16 - blist
+
+BB0 05 00 00 00 19 00 00 00 DD CC BB 0A 4D 3C 2B 1A ............M<+.
+BC0 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 ................
+BD0 04 00 00 00 05 00 00 00 06 00 00 00 07 00 00 00 ................
+BE0 08 00 00 00 09 00 00 00 0A 00 00 00 0B 00 00 00 ................
+BF0 0C 00 00 00 0D 00 00 00 0E 00 00 00 0F 00 00 00 ................
+C00 10 00 00 00 11 00 00 00 12 00 00 00 13 00 00 00 ................
+C10 14 00 00 00 15 00 00 00 16 00 00 00 17 00 00 00 ................
+C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
+
+*/
+
 // hlist ( addr -- )
-    myFile.print(": hlist 16 + dup 16 - over over\r");
+    myFile.print(": hlist hadr 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
     myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
     myFile.print("drop ;\r");
 
 // alist ( addr -- )
-    myFile.print(": alist 16 + dup 16 - over over\r");
+    myFile.print(": alist space space 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
     myFile.print("if dup c@ >prn 100 delay then loop\r");
     myFile.print("drop ;\r");
