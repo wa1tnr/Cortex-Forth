@@ -1,10 +1,10 @@
-// Tue Aug 20 20:27:58 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-511
+// Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
 // On branch  good-compiler-aa-bb
 
-// identify: tr0mso   cablefour  entwistle  pescanole  kruvulax  bunaka
+// identify: kibarthe   tr0mso   cablefour  entwistle  pescanole
 
-// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa-bb  18 August 2019
+// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa-bb  21 August 2019
 // comm: USB, not the TX/RX pair for the Forth interpreter - on branch  good-compiler-aa-bb
 
 // terminal: minicom (provides keystroke echo) (and color support)
@@ -1426,12 +1426,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 20 AUG 2019 20:27z");
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 21 AUG 2019 02:15z");
 
-   Serial.println  ("\n      Tue Aug 20 20:27:58 UTC 2019 0.1.8 good-compiler-aa-bb");
-   Serial.println  ("\n      +mkdir +write_File +fload   shred: abn-511 ");
+   Serial.println  ("\n      Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb");
+   Serial.println  ("\n      +blist +mkdir +write_File +fload   shred: abn-515 ");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK C");
+   Serial.println  ("\n      TEF MEK D");
 }
 
 // the loop function runs over and over again forever

@@ -1,9 +1,11 @@
-// Tue Aug 20 20:27:58 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-511
+// Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
 // On branch  good-compiler-aa-bb
 
-// dephide     junafid     visdury     binafo      tipalote
-// cinaverat   kivano      fawidnok    tefnippa    kransofer
+// baspher     dephide     junafid     visdury     binafo
+// tipalote    cinaverat   kivano      fawidnok    tefnippa
+
+// pretty decent hex dump now - the blist word
 
 // Compiles at both the keyboard (interactively)
 // and from a file!  Tuesday 13 Aug 03:18z
