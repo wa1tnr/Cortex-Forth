@@ -175,11 +175,32 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     myFile.print("drop ;\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
 
+// bottom ( -- addr )
+    myFile.print(": bottom 536870912 ;\r");
+    myFile.print(": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r");
+
 // blist ( addr -- addr + CONST )
     myFile.print(": blist cr depth 1 - 0< if 0 then\r");
-    myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
+//  myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
+//  myFile.print("335544320 1148 - min 1 max 1 - 8 0 do\r");
+
+//  4280 near crash
+//  blist temporarily checks bounds not for working ram but some other area (mem mapped registers?)
+    myFile.print("bottom 16384 + 1024 - 1024 + 16 - 512 + 32 + 16 - min bottom max 1 - 8 0 do\r");
     myFile.print("dup hlist 16 - alist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
+/*
+
+536870912
+          Ok
+blist
+      
+20000000 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................    
+20000010 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................    
+20000020 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................    
+
+
+*/
 
 /*
 180079837 , 439041101 , 2944 blist  
