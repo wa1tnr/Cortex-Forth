@@ -1,7 +1,16 @@
 Cortex-Forth
 ============
 
-Mon Aug 12 01:06:11 UTC 2019
+TEMPORARY BRANCH
+
+Wed Aug 21 03:50:14 UTC 2019
+
+This branch ought to disappear soon.  Its goal is obscure. ;)
+Meant for transferring current experimental work to another
+computer during convective weather events. ;)
+
+
+
 
 Cortex-Forth is a Forth in C for an Arm Arduino, in development.
 
