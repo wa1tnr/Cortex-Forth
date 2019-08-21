@@ -1,5 +1,5 @@
 // flash_ops.cpp  wa1tnr
-// Wed Aug 21 01:06:21 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-513
+// Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
 /*
   SD card read/write
@@ -201,6 +201,7 @@ DD CC BB 0A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A ........M<+.....
 
 */
 
+
     myFile.print("wag wag 8 wiggle\r");
 
     myFile.print(": emits 0 do emit loop ;\r");
@@ -210,6 +211,10 @@ DD CC BB 0A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A ........M<+.....
 // for some reason, stuffit (above) could not follow after this line, without crashing:
 
     myFile.print("69 68 67 66 65 5 emits cr\r");
+
+// - - - exercise blist
+//  myFile.print("variable myvar 439041101 myvar c! myvar 32 - blist\r");
+//                                         1a2b3c4d
 
     // myFile.print("wlist cr cr words cr\r");
 
