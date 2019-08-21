@@ -128,28 +128,47 @@ void flash_setup(void) {
 // min ( n1 n2 -- min )
     myFile.print(": min over over - 0< if drop exit then swap drop ;\r");
 
-// >prn ( n -- 31<n<128 )
-//  myFile.print(": >prn 32 over over - 0< if 46 emit drop then max 127 over over - 0< if 46 emit drop then min ;\r");
+// testc ( -- )
+
+    myFile.print(": testcc -1 512 0 do 1 + dup , loop ;\r");
 
 // >prn ( n -- )
     myFile.print(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
 
 // delay ( n -- )
     myFile.print(": delay drop 1234 0 do 1 drop loop ;\r");
-// 123456
+
+// hlist ( addr -- )
+    myFile.print(": hlist 16 + dup 16 - over over\r");
+    myFile.print("do 1 + over over swap - 1 - 0<\r");
+    myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+    myFile.print("drop ;\r");
 
 // alist ( addr -- )
     myFile.print(": alist 16 + dup 16 - over over\r");
-    myFile.print("do 1 + over over swap - 0<\r");
- // myFile.print("if dup c@ >prn emit then loop\r");
+    myFile.print("do 1 + over over swap - 1 - 0<\r");
     myFile.print("if dup c@ >prn 100 delay then loop\r");
     myFile.print("drop ;\r");
-
+    myFile.print("do 1 + over over swap - 1 - 0<\r");
 
 // blist ( addr -- addr + CONST )
-    myFile.print(": blist depth 1 - 0< if 0 then\r");
+    myFile.print(": blist cr depth 1 - 0< if 0 then\r");
+    myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
+    myFile.print("dup hlist 16 - alist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
-    myFile.print("196608 1148 - min 1 max 48 0 do alist loop cr ;\r");
+
+/*
+180079837 , 439041101 , 2944 blist  
+41 00 00 00 01 00 00 00 05 00 00 00 19 00 00 00 A...............    
+20 00 00 00 20 00 00 00 20 00 00 00 20 00 00 00  ... ... ... ...    
+20 00 00 00 20 00 00 00 20 00 00 00 20 00 00 00  ... ... ... ...    
+2B 00 00 00 2B 00 00 00 2B 00 00 00 4D 3C 2B 1A +...+...+...M<+.    
+DD CC BB 0A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A ........M<+.....    
+4D 3C 2B 1A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A M<+.....M<+.....    
+4D 3C 2B 1A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A M<+.....M<+.....    
+4D 3C 2B 1A DD CC BB 0A 4D 3C 2B 1A 00 00 00 00 M<+.....M<+.....    
+*/
+
 
 /*
 .. ...... ....D.. w...a.  ...!D........ .Y......y...........@..;...
