@@ -197,12 +197,12 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // blist ( addr -- addr + CONST )
     myFile.print(": blist cr depth 1 - 0< if 0 then\r");
-    myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
+    myFile.print("196608 1148 - min 0 max 1 - 8 0 do\r");
     myFile.print("dup hlist 16 - alist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
 // rlist ( addr -- addr + CONST )
     myFile.print(": rlist cr depth 1 - 0< if 0 then\r");
-    myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
+    myFile.print("bottom 16384 + min 0 max 1 - 8 0 do\r");
     myFile.print("dup rhlist 16 - ralist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
 /*
