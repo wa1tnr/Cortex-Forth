@@ -1,9 +1,11 @@
-// Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
+// Thu Aug 22 13:08:32 EDT 2019 0.1.8 good-comp-tstorm-hah  shred: abn-531
 
-// On branch  good-compiler-aa-bb
+// On branch  good-comp-tstorm-hah
 
-// baspher     dephide     junafid     visdury     binafo
-// tipalote    cinaverat   kivano      fawidnok    tefnippa
+// chivatru    baspher     dephide     junafid     visdury
+// binafo      tipalote    cinaverat   kivano      fawidnok
+
+// rdump and friends - uninterpreted memory map dumps
 
 // pretty decent hex dump now - the blist word
 
