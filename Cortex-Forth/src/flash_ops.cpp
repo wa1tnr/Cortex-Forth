@@ -173,7 +173,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     myFile.print("do 1 + over over swap - 1 - 0<\r");
     myFile.print("if dup c@ >prn 100 delay then loop\r");
     myFile.print("drop ;\r");
-    myFile.print("do 1 + over over swap - 1 - 0<\r");
+
+// this is messed up - why did this line get repeated below the word's definition?  Editor misoperation, maybe.
+    // myFile.print("do 1 + over over swap - 1 - 0<\r");
 
 // bottom ( -- addr )
     myFile.print(": bottom 536870912 ;\r");
@@ -185,8 +187,11 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 //  myFile.print("335544320 1148 - min 1 max 1 - 8 0 do\r");
 
 //  4280 near crash
-//  blist temporarily checks bounds not for working ram but some other area (mem mapped registers?)
-    myFile.print("bottom 16384 + 1024 - 1024 + 16 - 512 + 32 + 16 - min bottom max 1 - 8 0 do\r");
+//  blist NO LONGER checks bounds not for working ram but some other area (mem mapped registers?)
+
+
+//  myFile.print("bottom 16384 + 1024 - 1024 + 16 - 512 + 32 + 16 - min bottom max 1 - 8 0 do\r");
+    myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
     myFile.print("dup hlist 16 - alist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
 /*
@@ -224,6 +229,12 @@ DD CC BB 0A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A ........M<+.....
 
 
     myFile.print("wag wag 8 wiggle\r");
+
+// : tdump cr 16 0 do rdump cr loop cr ;
+
+    myFile.print(": tlist cr 16 0 do rdump cr loop cr ;\r");
+
+// : nlist blist blist ; : testdd bottom 256 + 0 16 + swap 16 + swap nlist cr swap tlist cr ;
 
     myFile.print(": emits 0 do emit loop ;\r");
 
