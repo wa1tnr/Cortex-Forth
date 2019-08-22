@@ -188,71 +188,36 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 //  myFile.print("if dup rbyte >prn 100 delay then loop\r");
     myFile.print("drop ;\r");
 
-// this is messed up - why did this line get repeated below the word's definition?  Editor misoperation, maybe.
-    // myFile.print("do 1 + over over swap - 1 - 0<\r");
-
 // bottom ( -- addr )
     myFile.print(": bottom 536870912 ;\r");
     myFile.print(": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r");
 
-// blist ( addr -- addr + CONST )
+// blist ( addr -- )
     myFile.print(": blist cr depth 1 - 0< if 0 then\r");
     myFile.print("196608 1148 - min 0 max 1 - 8 0 do\r");
     myFile.print("dup hlist 16 - alist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
-// rlist ( addr -- addr + CONST )
+// rlist ( addr -- )
     myFile.print(": rlist cr depth 1 - 0< if 0 then\r");
     myFile.print("bottom 16384 + min 0 max 1 - 8 0 do\r");
     myFile.print("dup rhlist 16 - ralist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
-/*
-
-536870912
-          Ok
-blist
-      
-20000000 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................    
-20000010 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................    
-20000020 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................    
-
-
-*/
-
-/*
-180079837 , 439041101 , 2944 blist  
-41 00 00 00 01 00 00 00 05 00 00 00 19 00 00 00 A...............    
-20 00 00 00 20 00 00 00 20 00 00 00 20 00 00 00  ... ... ... ...    
-20 00 00 00 20 00 00 00 20 00 00 00 20 00 00 00  ... ... ... ...    
-2B 00 00 00 2B 00 00 00 2B 00 00 00 4D 3C 2B 1A +...+...+...M<+.    
-DD CC BB 0A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A ........M<+.....    
-4D 3C 2B 1A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A M<+.....M<+.....    
-4D 3C 2B 1A DD CC BB 0A 4D 3C 2B 1A DD CC BB 0A M<+.....M<+.....    
-4D 3C 2B 1A DD CC BB 0A 4D 3C 2B 1A 00 00 00 00 M<+.....M<+.....    
-*/
-
-
-/*
-.. ...... ....D.. w...a.  ...!D........ .Y......y...........@..;...
-.s
-  196228  Ok
-
-*/
-
-
+// at the Ok prompt, type:
     myFile.print("wag wag 8 wiggle\r");
 
+
+// canonical for 22 August:
+// rlist and blist
+
+// example:
+//        bottom 464 + rlist cr 84 blist cr
+
+// rdump may be deprecated soon. 22 Aug
+
 // : tdump cr 16 0 do rdump cr loop cr ;
-
     myFile.print(": tlist cr 16 0 do rdump cr loop cr ;\r");
-
-// : nlist blist blist ; : testdd bottom 256 + 0 16 + swap 16 + swap nlist cr swap tlist cr ;
-
     myFile.print(": emits 0 do emit loop ;\r");
-
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
-
-// for some reason, stuffit (above) could not follow after this line, without crashing:
-
     myFile.print("69 68 67 66 65 5 emits cr\r");
 
 // - - - exercise blist
