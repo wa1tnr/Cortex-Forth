@@ -1,6 +1,7 @@
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
 extern void _dumpRAM(void);
+extern void _getOneByteRAM(void); // ( addr -- )
 
 // On branch  good-compiler-aa-bb
 
@@ -182,6 +183,10 @@ void _WARM (void) {
 
 void _RDUMP (void) { // _dumpRAM();
   _dumpRAM();
+}
+
+void _RBYTE (void) { // _getOneByteRAM(); // ( addr -- )
+  _getOneByteRAM();
 }
 
 void _SWAP (void) {
@@ -1403,6 +1408,10 @@ void setup () {
   LINK(475, 471) // BUG tnr 22 aug 2019 - may have caused much mayhem - look for others like it ;)
   CODE(476, _RDUMP)
 
+  NAME(477, 0, 5, 'r', 'b', 'y')
+  LINK(478, 474)
+  CODE(479, _RBYTE)
+
 
   // test
   DATA(500, lit)
@@ -1428,9 +1437,11 @@ void setup () {
   // D = 471; // latest word // D = 259;
   // H = 474; // top of dictionary // H = 262;
 
-  D = 474; // latest word // D = 259;
-  H = 477; // top of dictionary // H = 262;
+  // D = 474; // latest word // D = 259;
+  // H = 477; // top of dictionary // H = 262;
 
+  D = 477; // latest word // D = 259;
+  H = 480; // top of dictionary // H = 262;
 //  I = 500; // test
   // Serial.begin (38400);
   // while (!Serial);
