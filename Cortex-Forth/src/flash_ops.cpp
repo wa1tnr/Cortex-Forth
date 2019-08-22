@@ -165,13 +165,15 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // hlist ( addr -- )
     myFile.print(": hlist hadr 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+//  myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+    myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
     myFile.print("drop ;\r");
 
 // alist ( addr -- )
     myFile.print(": alist space space 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup c@ >prn 100 delay then loop\r");
+//  myFile.print("if dup c@ >prn 100 delay then loop\r");
+    myFile.print("if dup rbyte >prn 100 delay then loop\r");
     myFile.print("drop ;\r");
 
 // this is messed up - why did this line get repeated below the word's definition?  Editor misoperation, maybe.
