@@ -162,18 +162,30 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 */
 
+// rhlist ( addr -- )
+    myFile.print(": rhlist hadr 16 + dup 16 - over over\r");
+    myFile.print("do 1 + over over swap - 1 - 0<\r");
+    myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+    myFile.print("drop ;\r");
+
+// ralist ( addr -- )
+    myFile.print(": ralist space space 16 + dup 16 - over over\r");
+    myFile.print("do 1 + over over swap - 1 - 0<\r");
+    myFile.print("if dup rbyte >prn 100 delay then loop\r");
+    myFile.print("drop ;\r");
+
 // hlist ( addr -- )
     myFile.print(": hlist hadr 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-//  myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
-    myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+    myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+//  myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
     myFile.print("drop ;\r");
 
 // alist ( addr -- )
     myFile.print(": alist space space 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-//  myFile.print("if dup c@ >prn 100 delay then loop\r");
-    myFile.print("if dup rbyte >prn 100 delay then loop\r");
+    myFile.print("if dup c@ >prn 100 delay then loop\r");
+//  myFile.print("if dup rbyte >prn 100 delay then loop\r");
     myFile.print("drop ;\r");
 
 // this is messed up - why did this line get repeated below the word's definition?  Editor misoperation, maybe.
@@ -185,16 +197,13 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // blist ( addr -- addr + CONST )
     myFile.print(": blist cr depth 1 - 0< if 0 then\r");
-//  myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
-//  myFile.print("335544320 1148 - min 1 max 1 - 8 0 do\r");
-
-//  4280 near crash
-//  blist NO LONGER checks bounds not for working ram but some other area (mem mapped registers?)
-
-
-//  myFile.print("bottom 16384 + 1024 - 1024 + 16 - 512 + 32 + 16 - min bottom max 1 - 8 0 do\r");
     myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
     myFile.print("dup hlist 16 - alist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
+
+// rlist ( addr -- addr + CONST )
+    myFile.print(": rlist cr depth 1 - 0< if 0 then\r");
+    myFile.print("196608 1148 - min 1 max 1 - 8 0 do\r");
+    myFile.print("dup rhlist 16 - ralist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
 /*
 
