@@ -1,5 +1,7 @@
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
+extern void _dumpRAM(void);
+
 // On branch  good-compiler-aa-bb
 
 // identify: kibarthe   tr0mso   cablefour  entwistle  pescanole
@@ -31,6 +33,8 @@
 
 */
 #include <SdFat.h> // 'File' 10 Aug 16:10z
+
+// 0x1200 == 4608 decimal
 
 #define RAM_SIZE 0x1200
 #define S0 0x1000
@@ -174,6 +178,10 @@ void _WLIST (void) {
 
 void _WARM (void) {
   NVIC_SystemReset();      // processor software reset
+}
+
+void _RDUMP (void) { // _dumpRAM();
+  _dumpRAM();
 }
 
 void _SWAP (void) {
@@ -1391,6 +1399,9 @@ void setup () {
   LINK(472, 468)
   CODE(473, _WIGGLE)
 
+  NAME(474, 0, 5, 'r', 'd', 'u')
+  LINK(475, 471) // BUG tnr 22 aug 2019 - may have caused much mayhem - look for others like it ;)
+  CODE(476, _RDUMP)
 
 
   // test
@@ -1412,9 +1423,13 @@ void setup () {
 
 
   // D = 368; // latest word // D = 259;
-  D = 471; // latest word // D = 259;
   // H = 371; // top of dictionary // H = 262;
-  H = 474; // top of dictionary // H = 262;
+
+  // D = 471; // latest word // D = 259;
+  // H = 474; // top of dictionary // H = 262;
+
+  D = 474; // latest word // D = 259;
+  H = 477; // top of dictionary // H = 262;
 
 //  I = 500; // test
   // Serial.begin (38400);
@@ -1426,12 +1441,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 21 AUG 2019 02:15z");
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 22 AUG 2019 15:34z");
 
    Serial.println  ("\n      Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb");
-   Serial.println  ("\n      +blist +mkdir +write_File +fload   shred: abn-515 ");
+   Serial.println  ("\n      +blist +mkdir +write_File +fload   shred: abn-515-b ");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK D");
+   Serial.println  ("\n      TEF MEK D-b");
 }
 
 // the loop function runs over and over again forever
