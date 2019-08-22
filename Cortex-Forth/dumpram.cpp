@@ -91,3 +91,11 @@ void _dumpRAM(void) {
 296 }
 */
 
+void _getOneByteRAM(void) { // ( addr -- )
+  char *ram;
+  int p = pop(); // address to investigate
+  ram = (char*)p;
+  char c = *ram++;
+  push((int) c); // can we do this?
+}
+
