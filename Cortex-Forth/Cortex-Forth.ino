@@ -1,4 +1,4 @@
-// Sat Aug 24 16:23:15 UTC 2019 0.1.8 dest: good-compiler-aa-bb  current: * good-comp-tstorm-hah  shred: abn-553
+// Sat Aug 24 16:56:58 UTC 2019 0.1.8 dest: good-compiler-aa-bb  current: * good-comp-tstorm-hah  shred: abn-559
 
 // old:
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
@@ -1514,13 +1514,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-// Sat Aug 24 16:23:15 UTC 2019 0.1.8 dest: good-compiler-aa-bb  current: * good-comp-tstorm-hah  shred: abn-553
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 16:23z");
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 16:56z");
 
-   Serial.println  ("\n      Sat Aug 24 16:23:15 UTC 2019 0.1.8 good-comp-tstorm-hah");
-   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-553");
+   Serial.println  ("\n      Sat Aug 24 16:56:58 UTC 2019 0.1.8 good-comp-tstorm-hah");
+   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-559");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK Gb");
+   Serial.println  ("\n      TEF MEK Gc");
 }
 
 // the loop function runs over and over again forever
