@@ -1552,7 +1552,7 @@ void setup () {
    Serial.println  ("\n      Sat Aug 24 17:55:00 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
    Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-573");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK Hc");
+   Serial.println  ("\n      TEF MEK Hd");
 }
 
 // the loop function runs over and over again forever
