@@ -1,6 +1,4 @@
-// Sat Aug 24 17:55:00 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-573
-
-// NEW BRANCH > NEW BRANCH  after release 0.1.9 on 24 August circa 17:35 UTC
+// Sat Aug 24 22:24:57 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-579
 
 // next (  - ) increment address and emit hex of byte stored at 1+ current address
 // : next 1 + dup rbyte h. space ; (  - )
@@ -267,12 +265,6 @@ void _COMPOSE (void) {
     _EMIT();
   }
 }
-
-/*
-void _RDUMP (void) { // _dumpRAM();
-  _dumpRAM();
-}
-*/
 
 void _RBYTE (void) { // _getOneByteRAM(); // ( addr -- )
   _getOneByteRAM();
@@ -1485,30 +1477,25 @@ void setup () {
   LINK(466, 462)
   CODE(467, _FLOAD)
 
+// wag (  - )
   NAME(468, 0, 3, 'w', 'a', 'g')
   LINK(469, 465)
   CODE(470, _WAGDS)
 
+// wiggle ( n  - )
   NAME(471, 0, 6, 'w', 'i', 'g')
   LINK(472, 468)
   CODE(473, _WIGGLE)
 
-/* leave a hole */
-
-/*
-  NAME(474, 0, 5, 'r', 'd', 'u')
-  LINK(475, 471) // BUG tnr 22 aug 2019 - may have caused much mayhem - look for others like it ;)
-  CODE(476, _RDUMP)
-*/
-
-  NAME(477, 0, 5, 'r', 'b', 'y')
-  LINK(478, 471) // patch that hole
-  CODE(479, _RBYTE)
+// rbyte ( adrs - n ) // consumes an address and returns a byte stored at that address
+  NAME(474, 0, 5, 'r', 'b', 'y')
+  LINK(475, 471) // patch that hole
+  CODE(476, _RBYTE)
 
 // compose (  - )
-  NAME(480, 0, 2, 'c', 'c', 0) // named as the 'cc' word for now - was 'compose' too long to type blind
-  LINK(481, 477)
-  CODE(482, _COMPOSE)
+  NAME(477, 0, 2, 'c', 'c', 0) // named as the 'cc' word for now - was 'compose' too long to type blind
+  LINK(478, 474)
+  CODE(479, _COMPOSE)
 
 
   // test
@@ -1538,11 +1525,12 @@ void setup () {
   // D = 474; // latest word // D = 259;
   // H = 477; // top of dictionary // H = 262;
 
-  // D = 477; // latest word // D = 259;
-  D = 480; // latest word // D = 259;
+  D = 477; // latest word // D = 259;
+  H = 480; // top of dictionary // H = 262;
 
-  // H = 480; // top of dictionary // H = 262;
-  H = 483; // top of dictionary // H = 262;
+  // D = 480; // latest word // D = 259;
+  // H = 483; // top of dictionary // H = 262;
+
 //  I = 500; // test
   // Serial.begin (38400);
   // while (!Serial);
@@ -1553,12 +1541,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 17:55z");
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 22:24z");
 
-   Serial.println  ("\n      Sat Aug 24 17:55:00 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
-   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-573");
+   Serial.println  ("\n      Sat Aug 24 22:24:57 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
+   Serial.println  ("\n      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-579");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK Hd");
+   Serial.println  ("\n      TEF MEK Hf");
 }
 
 // the loop function runs over and over again forever
