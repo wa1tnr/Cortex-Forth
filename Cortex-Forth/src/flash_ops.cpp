@@ -198,26 +198,31 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     myFile.print("196608 4 - 1148 - min 0 max 1 - 8 0 do\r");
     myFile.print("dup hlist 16 - alist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
 
-// rlist ( addr -- )
-    myFile.print(": rlist cr depth 1 - 0< if 0 then\r");
-    // myFile.print("bottom 16384 + min 0 max 1 - 8 0 do\r");
-    myFile.print("bottom 195584 + 32 - min 0 max 1 - 8 0 do\r");
-    myFile.print("dup rhlist 16 - ralist 32 emit 32 emit 32 emit cr swap drop loop 1 + cr ;\r");
+// rlist ( addr -- addr + report_size )
+    myFile.print(": rlist cr -999 swap bottom 195552 + min 0 max\r");
+    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist cr\r");
+    myFile.print("swap drop loop 1 + swap drop cr ;\r");
+
+/*
+
+: rlist -999 swap cr bottom 195552 + min 0 max
+dup 1 - 8 0 do
+dup rhlist 16 - ralist cr swap drop
+loop 1 + swap drop cr ;
+
+*/
 
 // at the Ok prompt, type:
     myFile.print("wag wag 8 wiggle\r");
 
-
-// canonical for 22 August:
+// canonical for 24 August:
 // rlist and blist
 
 // example:
 //        bottom 464 + rlist cr 84 blist cr
 
-// rdump may be deprecated soon. 22 Aug
+// rdump was deprecated. 24 Aug
 
-// : tdump cr 16 0 do rdump cr loop cr ;
-// DEPRECATE //  myFile.print(": tlist cr 16 0 do rdump cr loop cr ;\r");
     myFile.print(": emits 0 do emit loop ;\r");
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
     myFile.print("69 68 67 66 65 5 emits cr\r");
