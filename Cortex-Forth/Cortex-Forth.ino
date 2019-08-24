@@ -1,7 +1,6 @@
-// Sat Aug 24 16:56:58 UTC 2019 0.1.8 dest: good-compiler-aa-bb  current: * good-comp-tstorm-hah  shred: abn-559
+// Sat Aug 24 17:35:00 UTC 2019 0.1.9 good-compiler-aa-ff  shred: abn-571
 
-// old:
-// Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
+// NEW BRANCH after release 0.1.9 on 24 August circa 17:35 UTC
 
 /*
  $ git branch
