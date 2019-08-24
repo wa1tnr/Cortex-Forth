@@ -1,5 +1,9 @@
 
-bottom 464 + rlist  
+.s
+fload
+.s cr
+bottom 464 + rlist
+.s
 
 \ 200001D0 : 00 00 00 00 D1 42 00 00 04 65 78 69 14 00 00 00   .....B...exi....    
 \ 200001E0 : D5 42 00 00 03 6B 65 79 17 00 00 00 55 5A 00 00   .B...key....UZ..    
@@ -10,6 +14,10 @@ bottom 464 + rlist
 \ 20000230 : 29 00 00 00 F5 42 00 00 04 73 77 61 2C 00 00 00   )....B...swa,...    
 \ 20000240 : 69 43 00 00 04 6F 76 65 2F 00 00 00 95 43 00 00   iC...ove/....C..    
  
-bottom 464 + dup rbyte h. 0 4 + dup rbyte h. D1 1 + dup rbyte h. 42 3 + dup rbyte h. 4 cr  
+\ next ( adrs count  - adrs + count print: h. at addr)
+: next + dup rbyte h. space ;
 
+\ drop at end is optional
+\ go (  - )
+: go bottom 464 next 4 next 1 next 3 next 4 0 do 1 next loop drop cr ;
 
