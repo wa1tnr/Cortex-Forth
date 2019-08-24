@@ -1,6 +1,40 @@
-// Sat Aug 24 17:35:00 UTC 2019 0.1.9 good-compiler-aa-ff  shred: abn-571
+// Sat Aug 24 17:55:00 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-573
 
-// NEW BRANCH after release 0.1.9 on 24 August circa 17:35 UTC
+// NEW BRANCH > NEW BRANCH  after release 0.1.9 on 24 August circa 17:35 UTC
+
+// next (  - ) increment address and emit hex of byte stored at 1+ current address
+// : next 1 + dup rbyte h. space ; (  - )
+
+/* example use
+
+  fload
+  464 bottom + next
+
+  \ without fload:
+  464 536870912 + next
+
+*/
+
+/*
+
+  good-comp-tstorm-hah
+  good-compiler-aa-dd
+  good-compiler-aa-ee
+  good-compiler-aa-ff
+* good-compiler-aa-ff-aa_exp
+  master
+
+All the above are recently related to each other,
+along with 'develop'.
+
+Current branch is now  good-compiler-aa-ff-aa_exp
+and was created with a
+
+ $ git checkout -b  from   good-compiler-aa-ff
+
+Sat Aug 24 17:55:00 UTC 2019
+
+*/
 
 /*
  $ git branch
@@ -1513,12 +1547,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 17:35z");
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 17:55z");
 
-   Serial.println  ("\n      Sat Aug 24 17:35:00 UTC 2019 0.1.9 good-compiler-aa-ff");
-   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-571");
+   Serial.println  ("\n      Sat Aug 24 17:55:00 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
+   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-573");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK Ha");
+   Serial.println  ("\n      TEF MEK Hc");
 }
 
 // the loop function runs over and over again forever
