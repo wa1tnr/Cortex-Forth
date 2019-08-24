@@ -268,9 +268,11 @@ void _COMPOSE (void) {
   }
 }
 
+/*
 void _RDUMP (void) { // _dumpRAM();
   _dumpRAM();
 }
+*/
 
 void _RBYTE (void) { // _getOneByteRAM(); // ( addr -- )
   _getOneByteRAM();
@@ -1491,12 +1493,16 @@ void setup () {
   LINK(472, 468)
   CODE(473, _WIGGLE)
 
+/* leave a hole */
+
+/*
   NAME(474, 0, 5, 'r', 'd', 'u')
   LINK(475, 471) // BUG tnr 22 aug 2019 - may have caused much mayhem - look for others like it ;)
   CODE(476, _RDUMP)
+*/
 
   NAME(477, 0, 5, 'r', 'b', 'y')
-  LINK(478, 474)
+  LINK(478, 471) // patch that hole
   CODE(479, _RBYTE)
 
 // compose (  - )
