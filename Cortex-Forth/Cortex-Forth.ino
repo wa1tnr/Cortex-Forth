@@ -1,6 +1,18 @@
+// Sat Aug 24 16:23:15 UTC 2019 0.1.8 dest: good-compiler-aa-bb  current: * good-comp-tstorm-hah  shred: abn-553
+
+// old:
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
+/*
+ $ git branch
+* good-comp-tstorm-hah - properly pulled and manually updated using rvim and brain ;) (for a change)
+good-compiler-aa-ee - recent work - may already be merged, or abandoned.  Not sure where first instances are.
+
+// also:
 // Sat Aug 24 15:32:03 UTC 2019 - oops stuff fixing
+
+*/
+
 
 extern void _dumpRAM(void);
 extern void _getOneByteRAM(void); // ( addr -- )
@@ -212,7 +224,13 @@ void _COMPOSE (void) {
   while(-1) { // always true
     _KEY();
     _SPACE(); _DUP(); _HDOT(); _SPACE();
+    if (T == 1) Serial.print(" Ctrl+A pressed ");
+    if (T == 2) Serial.print(" Ctrl+B pressed ");
+    if (T == 7) Serial.print(" Ctrl+G BELL pressed ");
+    if (T == 8) Serial.print(" Ctrl+H BACKSPACE pressed ");
     if (T == 15) Serial.print(" Ctrl+O pressed ");
+    if (T == 27) Serial.print(" ESC pressed ");
+    if (T == 127) Serial.print(" RUBOUT pressed \(0x7f\) ");
     _EMIT();
   }
 }
@@ -1496,12 +1514,13 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 22 AUG 2019 17:08z");
+// Sat Aug 24 16:23:15 UTC 2019 0.1.8 dest: good-compiler-aa-bb  current: * good-comp-tstorm-hah  shred: abn-553
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 16:23z");
 
-   Serial.println  ("\n      Thu Aug 22 13:08:32 EDT 2019 0.1.8 good-comp-tstorm-hah");
-   Serial.println  ("\n      +blist +mkdir +write_File +fload   shred: abn-531");
+   Serial.println  ("\n      Sat Aug 24 16:23:15 UTC 2019 0.1.8 good-comp-tstorm-hah");
+   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-553");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK E");
+   Serial.println  ("\n      TEF MEK Gb");
 }
 
 // the loop function runs over and over again forever
