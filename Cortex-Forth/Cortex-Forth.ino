@@ -1,5 +1,7 @@
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
+// Sat Aug 24 15:32:03 UTC 2019 - oops stuff fixing
+
 extern void _dumpRAM(void);
 extern void _getOneByteRAM(void); // ( addr -- )
 
@@ -14,6 +16,31 @@ extern void _getOneByteRAM(void); // ( addr -- )
 // the other method is to construct a 'terminal' from a Trinket M0 and use the UART ;)
 
 // Note: other branches may want to use the UART rather than USB.
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+24 August 2019 15:54 UTC
+.s
+empty  Ok
+fload
+ loading a forth program from flashROM ..
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
+.s
+empty  Ok
+464 bottom + dup rlist
+200001D0 : 00 00 00 00 D1 42 00 00 04 65 78 69 14 00 00 00   .....B...exi....
+200001E0 : D5 42 00 00 03 6B 65 79 17 00 00 00 75 5A 00 00   .B...key....uZ..
+200001F0 : 04 65 6D 69 1A 00 00 00 99 5A 00 00 02 63 72 00   .emi.....Z...cr.
+
+session using the 'cc' (compose) word:
+ Ok
+cc
+ 61  a 62  b 63  c 64  d 65  e 66  f 67  g F   Ctrl+O pressed  F   Ctrl+O pressed  A  
+ A  
+ A  
+ 2E  . 73  s A  
+
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -179,6 +206,15 @@ void _WLIST (void) {
 
 void _WARM (void) {
   NVIC_SystemReset();      // processor software reset
+}
+
+void _COMPOSE (void) {
+  while(-1) { // always true
+    _KEY();
+    _SPACE(); _DUP(); _HDOT(); _SPACE();
+    if (T == 15) Serial.print(" Ctrl+O pressed ");
+    _EMIT();
+  }
 }
 
 void _RDUMP (void) { // _dumpRAM();
@@ -1412,6 +1448,11 @@ void setup () {
   LINK(478, 474)
   CODE(479, _RBYTE)
 
+// compose (  - )
+  NAME(480, 0, 2, 'c', 'c', 0) // named as the 'cc' word for now - was 'compose' too long to type blind
+  LINK(481, 477)
+  CODE(482, _COMPOSE)
+
 
   // test
   DATA(500, lit)
@@ -1440,8 +1481,11 @@ void setup () {
   // D = 474; // latest word // D = 259;
   // H = 477; // top of dictionary // H = 262;
 
-  D = 477; // latest word // D = 259;
-  H = 480; // top of dictionary // H = 262;
+  // D = 477; // latest word // D = 259;
+  D = 480; // latest word // D = 259;
+
+  // H = 480; // top of dictionary // H = 262;
+  H = 483; // top of dictionary // H = 262;
 //  I = 500; // test
   // Serial.begin (38400);
   // while (!Serial);
