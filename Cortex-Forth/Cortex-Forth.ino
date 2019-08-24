@@ -1513,12 +1513,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 16:56z");
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 17:35z");
 
-   Serial.println  ("\n      Sat Aug 24 16:56:58 UTC 2019 0.1.8 good-comp-tstorm-hah");
-   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-559");
+   Serial.println  ("\n      Sat Aug 24 17:35:00 UTC 2019 0.1.9 good-compiler-aa-ff");
+   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-571");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK Gc");
+   Serial.println  ("\n      TEF MEK Ha");
 }
 
 // the loop function runs over and over again forever
