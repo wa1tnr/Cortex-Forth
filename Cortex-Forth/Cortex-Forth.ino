@@ -1,17 +1,109 @@
+// Sat Aug 24 16:56:58 UTC 2019 0.1.8 dest: good-compiler-aa-bb  current: * good-comp-tstorm-hah  shred: abn-559
+
+// old:
+// Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
+
+/*
+ $ git branch
+* good-comp-tstorm-hah - properly pulled and manually updated using rvim and brain ;) (for a change)
+good-compiler-aa-ee - recent work - may already be merged, or abandoned.  Not sure where first instances are.
+
+// also:
+// Sat Aug 24 15:32:03 UTC 2019 - oops stuff fixing
+
+*/
+
+
+extern void _dumpRAM(void);
+extern void _getOneByteRAM(void); // ( addr -- )
+
+// On branch  good-compiler-aa-bb
+
+// identify: kibarthe   tr0mso   cablefour  entwistle  pescanole
+
+// target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa-bb  21 August 2019
+// comm: USB, not the TX/RX pair for the Forth interpreter - on branch  good-compiler-aa-bb
+
+// terminal: minicom (provides keystroke echo) (and color support)
+// the other method is to construct a 'terminal' from a Trinket M0 and use the UART ;)
+
+// Note: other branches may want to use the UART rather than USB.
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+24 August 2019 15:54 UTC
+.s
+empty  Ok
+fload
+ loading a forth program from flashROM ..
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
+.s
+empty  Ok
+464 bottom + dup rlist
+200001D0 : 00 00 00 00 D1 42 00 00 04 65 78 69 14 00 00 00   .....B...exi....
+200001E0 : D5 42 00 00 03 6B 65 79 17 00 00 00 75 5A 00 00   .B...key....uZ..
+200001F0 : 04 65 6D 69 1A 00 00 00 99 5A 00 00 02 63 72 00   .emi.....Z...cr.
+
+session using the 'cc' (compose) word:
+ Ok
+cc
+ 61  a 62  b 63  c 64  d 65  e 66  f 67  g F   Ctrl+O pressed  F   Ctrl+O pressed  A  
+ A  
+ A  
+ 2E  . 73  s A  
+
+*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//   In theory, sfparse can be called just the same as flparse is
+//   called, at present.  They're identical (only at the moment)
+//   (13 Aug 03:23z).
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 /*
   Forth virtual machine
 
   This code is in the public domain.
 
 */
+#include <SdFat.h> // 'File' 10 Aug 16:10z
 
-#define RAM_SIZE 0x1000
+// 0x1200 == 4608 decimal
+
+#define RAM_SIZE 0x1200
 #define S0 0x1000
 #define R0 0x0f00
 #define NAME(m, f, c, x, y, z) {memory.data [m] = f + c + (x << 8) + (y << 16) + (z << 24);}
 #define LINK(m, a) {memory.data [m] = a;}
 #define CODE(m, a) {memory.program [m] = a;}
 #define DATA(m, a) {memory.data [m] = a;}
+#define IMMED 0x80
+
+#include "prequel.h"
+#include "compatibility.h"
+
+#include "common.h"
+
+#define LINE_ENDING 10 // alt: 13
+
+#ifdef HAS_DOTSTAR_LIB
+extern void setup_dotstar(void); // dotstar.cpp
+extern void set_dotStarColors(void);
+extern void wiggleDSManyTimes(void);
+extern void wiggleDotStarOnce(void); // toggle once
+#endif // #ifdef HAS_DOTSTAR_LIB
+
+
+extern void fl_setup(void); // fload.cpp
+extern void flash_setup(void); // flash_ops.cpp
+
+extern File thisFile; // You must include SdFat.h to use 'File' here
 
 // global variables
 union Memory {
@@ -28,6 +120,8 @@ int T = 0; // top of stack
 int H = 0; // dictionary pointer, HERE
 int D = 0; // dictionary list entry point
 int base = 10;
+boolean state = false; // compiling or not
+boolean keyboard_not_file = true; // keyboard or file input, for parsing
 
 /*  A word in the dictionary has these fields:
   name  32b word,  a 32 bit int, made up of byte count and three letters
@@ -39,12 +133,46 @@ int base = 10;
 
 */
 
-
 // primitive definitions
 
+void _LBRAC (void) {
+  state = false; // interpreting
+}
+
+void _RBRAC (void) {
+  state = true; // compiling
+}
 
 void _NOP (void) {
   return;
+}
+
+void _FLOAD (void) { // file load: fload
+  Serial.println(" loading a forth program from flashROM ..");
+     I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
+  // I = 82; //  allows typing but never exits (infinite nesting?)
+  // I = 83; //  simulate 'abort' - this 83 is a #define later on.
+}
+
+void _WAGDS (void) { // 'wag' the dotStar colored lED - ItsyBitsy M4, others
+#ifdef HAS_DOTSTAR_LIB
+  wiggleDotStarOnce();
+#endif // #ifdef HAS_DOTSTAR_LIB
+}
+
+void _WIGGLE (void) { // toggle dotStar a number of times
+/*
+ 124 void _EMIT (void) {
+ 125   char c = T;
+ 126   Serial.write (c);
+ 127   _DROP ();
+ 128 }
+*/
+  for (int i = T; i > 0; i--) {
+    _WAGDS();
+  }
+  _DROP ();
+  // wiggleDotStarOnce();
 }
 
 void _EXIT (void) {
@@ -65,22 +193,54 @@ void _QDUP (void) {
 
 void _KEY (void) {
   _DUP ();
-  while (!Serial1.available ());
-  T = Serial1.read ();
+  while (!Serial.available ());
+  T = Serial.read ();
+//  Serial.write (T);
 }
 
 void _EMIT (void) {
   char c = T;
-  Serial1.write (c);
+  Serial.write (c);
   _DROP ();
 }
 
 void _CR (void) {
-  Serial1.println (" ");
+  Serial.println (" ");
 }
 
 void _OK (void) {
-  if (tib [tib.length () - 1] == 10) Serial1.println (" Ok");
+  if (tib [tib.length () - 1] == LINE_ENDING) Serial.println (" Ok");
+}
+
+void _WLIST (void) {
+  Serial.print ("wiggle wag fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
+}
+
+void _WARM (void) {
+  NVIC_SystemReset();      // processor software reset
+}
+
+void _COMPOSE (void) {
+  while(-1) { // always true
+    _KEY();
+    _SPACE(); _DUP(); _HDOT(); _SPACE();
+    if (T == 1) Serial.print(" Ctrl+A pressed ");
+    if (T == 2) Serial.print(" Ctrl+B pressed ");
+    if (T == 7) Serial.print(" Ctrl+G BELL pressed ");
+    if (T == 8) Serial.print(" Ctrl+H BACKSPACE pressed ");
+    if (T == 15) Serial.print(" Ctrl+O pressed ");
+    if (T == 27) Serial.print(" ESC pressed ");
+    if (T == 127) Serial.print(" RUBOUT pressed \(0x7f\) ");
+    _EMIT();
+  }
+}
+
+void _RDUMP (void) { // _dumpRAM();
+  _dumpRAM();
+}
+
+void _RBYTE (void) { // _getOneByteRAM(); // ( addr -- )
+  _getOneByteRAM();
 }
 
 void _SWAP (void) {
@@ -156,14 +316,6 @@ void _TWOSLASH (void) {
   T = (T >> 1);
 }
 
-void _WARM (void) {
-  NVIC_SystemReset();      // processor software reset
-}
-
-void _WLIST (void) {
-  Serial1.print ("wlist warm 2/ 2* negate abs invert xor or and - + h. space words .s . quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
-}
-
 void _TWOSTAR (void) {
   T = (T << 1);
 }
@@ -200,30 +352,10 @@ void _NEST (void) {
   I = (W + 1);
 }
 
-void _CREATE (void) {
-
-}
-
-void _CONSTANT (void) {
-
-}
-
-void _VARIABLE (void) {
-
-}
-
-void _DO (void) {
-
-}
-
-void _LOOP (void) {
-
-}
-
 void _SHOWTIB (void) {
   W = tib.length ();
   tib [W - 1] = 0;
-  Serial1.print (tib);
+  Serial.print (tib); // tnr // restored to original
 }
 
 // trim leading spaces
@@ -231,23 +363,195 @@ void _PARSE (void) {
   char t;
   tib = "";
   do {
-    while (!Serial1.available ());
-    t = Serial1.peek ();
-    if (t == ' ') t = Serial1.read ();
+    while (!Serial.available ());
+    t = Serial.peek ();
+    if (t == ' ') {
+      t = Serial.read ();
+//      Serial.write (t);
+    }
   } while (t == ' ');
   do {
-    while (!Serial1.available ());
-    t = Serial1.read ();
+    while (!Serial.available ());
+    t = Serial.read ();
+
+#ifdef ECHO_INPUT
+    Serial.write (t);
+#endif
+
     tib = tib + t;
   } while (t > ' ');
+  // tnr, suppressed // Serial.print (tib);
+}
+
+// trim leading spaces
+// parse .. and right now, flparse .. is the only
+// place that acquires input, other than _KEY ..
+// and _KEY is not used internally (at all!)
+
+// This might make for a neat solution to the
+// problem of reading from a file, as only this
+// one (C language) function seems to talk to the
+// serial port, to read from it.
+
+// All other references to the serial port involve
+// writing to it (printing messages to the serial
+// terminal).
+
+
+// change from 3 to 2 - 11 Aug 17:41z
+// change from 2 back to 3 - file isn't closing at the right time.
+
+// 12 Aug 23:42 - way too sensitive manual test for EOF here:
+
+// This Forth does NOT like println() to the file; it wants 'print("foo \r");
+
+#define FLEN_MAX 2
+void _FLPARSE (void) {
+  char t;
+  tib = "";
+  keyboard_not_file = false;
+  if (thisFile) {
+    // Serial.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
+    while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
+      do {
+        t = thisFile.read();
+        char peeked_char = t;
+        tib = peeked_char; // not sure where this goes
+        if (t == ' ') {
+          tib = ""; // unpeek tib
+          t = thisFile.read();
+        }
+      } while (t == ' ');
+      do {
+        t = thisFile.read();
+          tib = tib + t; // was unconditional before 19:01z 10 Aug
+      } while (t > ' ');
+      // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
+      if (thisFile.available() < (FLEN_MAX - 1)) {
+        // Serial.println("\n\n\nSAFETY NET\n\n\n");
+        if (thisFile.available() < (1)) {
+          keyboard_not_file = true;
+          thisFile.close(); // experiment 17:06z 11 Aug
+          Serial.print("\r");
+          Serial.print(FILE_NAME);
+          Serial.println(" was closed - Cortex-Forth.ino LINE 369");
+/*
+          _DDOTS(); // experiment 16:48z 11 Aug
+          _SPACE();
+          _SPACE();
+          Serial.print("xxx");
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          Serial.print("yyy");
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _DEPTH();
+          _DDOTS();
+          _SPACE();
+          _SPACE();
+          Serial.println("\n previous line: _DDOTS();");
+          delay(100);
+          // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
+*/
+        }
+      }
+      // Serial.println("TRAP");
+      return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
+    } // new conditional 17:25z
+    Serial.println(" alt TRAP LINE 334");
+    delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
+  } // if thisfile
+  else {
+    // Serial.print("Trouble at the Old Well, Timmy?");
+    // Serial.print(" I = 90 -- the 'parse' word  ");
+    // Serial.println(" alt TRAP LINE 339");
+    keyboard_not_file = true;
+    I = 90; // I = 90 points to 'parse' - top of original quit loop
+  }
+}
+
+// #define FLEN_MAX 2
+void _SFPARSE (void) { // safe parse
+  char t;
+  tib = "";
+  keyboard_not_file = false;
+  if (thisFile) {
+    // Serial.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
+    while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
+      do {
+        t = thisFile.read();
+        char peeked_char = t;
+        tib = peeked_char; // not sure where this goes
+        if (t == ' ') {
+          tib = ""; // unpeek tib
+          t = thisFile.read();
+        }
+      } while (t == ' ');
+      do {
+        t = thisFile.read();
+          tib = tib + t; // was unconditional before 19:01z 10 Aug
+      } while (t > ' ');
+      // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
+      if (thisFile.available() < (FLEN_MAX - 1)) {
+        // Serial.println("\n\n\nSAFETY NET\n\n\n");
+        if (thisFile.available() < (1)) {
+          keyboard_not_file = true;
+          thisFile.close(); // experiment 17:06z 11 Aug
+          Serial.print("\r");
+          Serial.print(FILE_NAME);
+          Serial.println(" was closed - Cortex-Forth.ino LINE 347");
+/*
+          _DDOTS(); // experiment 16:48z 11 Aug
+          _SPACE();
+          _SPACE();
+          Serial.print("xxx");
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          Serial.print("yyy");
+          _SPACE();
+          _SPACE();
+          _SPACE();
+          _DEPTH();
+          _DDOTS();
+          _SPACE();
+          _SPACE();
+          Serial.println("\n previous line: _DDOTS();");
+          delay(100);
+          // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
+*/
+        }
+      }
+      // Serial.println("TRAP");
+      return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
+    } // new conditional 17:25z
+    Serial.println(" alt TRAP LINE 334");
+    delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
+  } // if thisfile
+  else {
+    // Serial.print("Trouble at the Old Well, Timmy?");
+    // Serial.print(" I = 90 -- the 'parse' word  ");
+    // Serial.println(" alt TRAP LINE 339");
+    keyboard_not_file = true;
+    I = 90; // I = 90 points to 'parse' - top of original quit loop
+  }
 }
 
 void _WORD (void) {
   char t;
-  _DUP ();
+  _DUP (); // what are we dup'ing here
   T = (tib.length () - 1);
   W = T;
   t = tib [0];
+
+  // looks like tib needs the follow-on character here
+
   T |= (t << 8);
   if (W > 1) {
     t = tib [1];
@@ -257,6 +561,8 @@ void _WORD (void) {
     t = tib [2];
     T |= (t << 24);
   }
+  // Serial.print(" ~k~ ");
+  // Serial.println(" --- _WORD  exits --- ");
 }
 
 void _NUMBER (void) {
@@ -269,7 +575,7 @@ void _NUMBER (void) {
     }
     t = tib [i];
     if (!isDigit (t)) {
-      if (tib [0] == '-') T = -T;
+    if (tib [0] == '-') T = -T;
       _DUP ();
       T = -1;
       return;
@@ -280,11 +586,24 @@ void _NUMBER (void) {
     T += t;
   }
   if (tib [0] == '-') T = -T;
+      if (state == true) {
+        _DUP ();
+        T = 1; // forward reference to lit
+        _COMMA (); // lit
+        _COMMA (); // the number
+      }
   _DUP ();
   T = 0;
 }
 
 void _EXECUTE (void) {
+  if (state == true) {
+    if (((memory.data [T]) & 0x80) == 0) {
+      T += 2;
+      _COMMA ();
+      return;
+    }
+  }
   W = (T + 2);
   _DROP ();
   memory.program [W] ();
@@ -295,41 +614,43 @@ void _FIND (void) {
   T = D;
   while (T != 0) {
     W = (memory.data [T]);
-    if (W == X) {
+    if ((W & 0xffffff7f) == X) {
+      // Serial.println("FIND exits - and its a word.");
       return;
     }
     T = memory.data [T + 1];
   }
+  // Serial.println("FIND exits.");
 }
 
 void _DOT (void) {
-  Serial1.print (T);
-  Serial1.write (' ');
+  Serial.print (T);
+  Serial.write (' ');
   _DROP ();
 }
 
 void _HDOT (void) {
-  Serial1.print (T, HEX);
-  Serial1.write (' ');
+  Serial.print (T, HEX);
+  Serial.write (' ');
   _DROP ();
 }
 
 void _DDOTS (void) {
   if (S == S0) {
-    Serial1.print ("empty ");
+    Serial.print ("empty ");
     return;
   }
   _DUP ();
   W = (S0 - 1);
   while (W > (S)) {
-    Serial1.print (memory.data [--W]);
-    Serial1.write (' ');
+    Serial.print (memory.data [--W]);
+    Serial.write (' ');
   }
   _DROP ();
 }
 
 void _SPACE () {
-  Serial1.write (' ');
+  Serial.write (' ');
 }
 
 void _ZEROEQUAL () {
@@ -348,34 +669,30 @@ void _ZEROLESS () {
   T = 0;
 }
 
+void _DOTWORD () {
+  int Y = memory.data [W];
+  int X = (Y & 0xff);
+  Serial.write ('[');
+  Serial.print (X);
+  Serial.write (' ');
+  X = ((Y >> 8) & 0xff);
+  _DUP (); T = X; _EMIT ();
+  X = ((Y >> 16) & 0xff);
+  if (X != 0) { _DUP (); T = X; _EMIT (); }
+  X = ((Y >> 24) & 0xff);
+  if (X != 0) { _DUP (); T = X; _EMIT (); }
+  Serial.print ("] "); 
+}
+
 void _WORDS (void) {
-  int C = 0;
-  int X = 0;
-  int Y = 0;
+  int i = 0;
   W = D;
-  while (W) {
-    Y = memory.data [W];
-    C = (Y & 0xff);
-    X = ((Y >> 8) & 0xff);
-    _DUP (); T = X; _EMIT ();
-    X = ((Y >> 16) & 0xff);
-    if (X != 0) {
-      _DUP (); T = X; _EMIT ();
-    }
-    X = ((Y >> 24) & 0xff);
-    if (X != 0) {
-      _DUP (); T = X; _EMIT ();
-    }
-    C -= 4;
-    while (!(C < 0)) {
-      Serial1.print ("_");
-      C -= 1;
-    }
-    _SPACE ();
+  do {
+    _DOTWORD ();
     W = memory.data [++W];
-  }
-  _CR ();
-//  _DROP ();
+    i += 1;
+    if ((i % 8) == 0) _CR ();
+  } while (memory.data [W + 1]);
 }
 
 void _DEPTH (void) {
@@ -384,13 +701,270 @@ void _DEPTH (void) {
   T = W;
 }
 
+void _DUMP (void) {
+  int a = T;
+  _DROP ();
+  for (int i = 0; i < a; i++) {
+    W = T;
+    Serial.print (memory.data [T++], HEX);
+    // Serial.write (' ');
+    Serial.write (" ~dump_delimiter~ ");
+    _DOTWORD ();
+  }
+}
 
-// do, loop
-// docol, doconst, dovar
+void _HERE (void) {
+  _DUP ();
+  T = H;
+}
 
-// inner interpreter
+void _ALLOT (void) {
+  H += T;
+  _DROP ();
+}
+
+void _HEAD (void) {
+  if ( keyboard_not_file ) {
+    _PARSE ();
+  } else {
+    _FLPARSE ();
+  }
+//  _PARSE ();
+  _WORD ();
+  _COMMA ();
+  _DUP ();
+  T = D;
+  _COMMA ();
+  D = H - 2;
+}
+
+void _DOVAR (void) {
+  _DUP ();
+  T = (W + 1);
+}
+
+void _CREATE (void) {
+  _HEAD ();
+  _DUP ();
+  _DUP ();
+  memory.program [S] = _DOVAR;
+  _DROP ();
+  _COMMA ();
+}
+
+void _COLON (void) {
+  _HEAD ();
+  _DUP ();
+  _DUP ();
+  memory.program [S] = _NEST;
+  _DROP ();
+  _COMMA ();
+  _RBRAC ();
+}
+
+void _SEMI (void) {
+  _DUP ();
+  T = 25; // forward reference to exit 
+  _COMMA (); // compile exit
+  _LBRAC (); // stop compiling
+}
+
+void _DOCONST (void) {
+  _DUP ();
+  T = memory.data [W + 1];
+}
+
+void _CONSTANT (void) {
+  _HEAD ();
+  _DUP ();
+  _DUP ();
+  memory.program [S] = _DOCONST;
+  _DROP ();
+  _COMMA ();
+  _COMMA ();
+}
+
+void _VARIABLE (void) {
+  _CREATE ();
+  H += 1;
+}
+
+void _QUESTION (void) {
+  _FETCH ();
+  _DOT ();
+}
+
+void _R (void) {
+  _DUP ();
+  T = R;
+}
+
+void _DO (void) {
+  memory.data [--R] = T;
+  _DROP ();
+  memory.data [--R] = T;
+  _DROP ();
+}
+
+void _LOOP (void) {
+  int X = memory.data [R++];
+  W = (memory.data [R++] + 1);
+  if (W == X) {
+    I += 1;
+    return;
+  }
+  memory.data [--R] = (W);
+  memory.data [--R] = X;
+  I = memory.data [I];
+}
+
+void _I (void) {
+  _DUP ();
+  T = memory.data [R + 1];
+}
+
+void _CDO (void) {
+  _DUP ();
+  T = 4; // forward reference to ddo
+  _COMMA ();
+  _DUP ();
+  T = H;
+}
+
+void _CLOOP (void) {
+  _DUP ();
+  T = 5; // forward reference to lloop
+  _COMMA ();
+  _COMMA (); // address left on stack by do
+}
+
+void _CBEGIN (void) {
+  _DUP ();
+  T = H;
+}
+
+void _CUNTIL (void) {
+  _DUP ();
+  T = 3; // forward reference to Obranch
+  _COMMA ();
+  _COMMA (); // address left on stack by begin
+}
+
+void _CAGAIN (void) {
+  _DUP ();
+  T = 2; // forward reference to branch
+  _COMMA ();
+  _COMMA (); // address left on stack by begin
+}
+
+void _CIF (void) {
+  _DUP ();
+  T = 3; // forward reference to 0branch
+  _COMMA ();
+  _DUP ();
+  T = H; // address that needs patching later
+  _DUP ();
+  T = 0;
+  _COMMA (); // dummy in address field
+}
+
+void _CWHILE (void) {
+  _CIF ();
+  _SWAP ();
+}
+
+void _CTHEN (void) {
+  _DUP ();
+  T = H;
+  _SWAP ();
+  _STORE ();
+}
+
+void _CREPEAT (void) {
+  _CAGAIN ();
+  _CTHEN ();
+}
+
+void _CELSE (void) {
+  _DUP ();
+  T = 2; // forward reference to branch
+  _COMMA ();
+  _DUP ();
+  T = H; // address that needs patching later
+  _DUP ();
+  T = 0;
+  _COMMA (); // dummy in address field
+  _SWAP ();
+  _CTHEN ();
+}
+
+void _FORGET (void) {
+  _PARSE ();
+  _WORD ();
+  _FIND ();
+  D = memory.data [T + 1];
+  H = T;
+  _DROP ();
+}
+
+void _TICK (void) {
+  Serial.println("WHOOPS - _TICK encountered! ");
+  _PARSE ();
+  _WORD ();
+  _FIND ();
+}
+
+void _CLITERAL (void) {
+  _DUP ();
+  T = 1; // forward reference to lit
+  _COMMA ();
+  _COMMA (); // the number that was already on the stack
+}
+
+void _CFETCH (void) {
+  W = (T % 4);
+  T = memory.data [T / 4];
+  T = (T >> (W * 8) & 0xff);
+} 
+
+void _CSTORE (void) {
+  int X = (T / 4);
+  W = (T % 4);
+  _DROP ();
+  T = (T << (W * 8));
+  T = (T | (memory.data [X] & ~(0xff << (W * 8))));
+  memory.data [X] = T;
+  _DROP ();
+} 
+
+
+void _color_yellow_fg (void) {
+  Serial.print("\033\133"); // ESC [
+  Serial.print("\063\063"); // 33 - yellow fg
+  Serial.print("m");        // for the stanza
+}
+
+void _color_blue_bg (void) {
+  Serial.print("\033\133"); // ESC [
+  Serial.print("\064\064"); // 44 - blue bg
+  Serial.print("m");        // for the stanza
+}
+
+void _color_black_bg (void) {
+  Serial.print("\033\133"); // ESC [
+  Serial.print("\064\060"); // 40 - black bg
+  Serial.print("m");        // for the stanza
+}
+
 
 void setup () {
+#ifdef HAS_DOTSTAR_LIB
+  setup_dotstar(); // turn off dotstar (apa-102 RGB LED)
+  // set_dotStarColors(); // give them some color
+  // wiggleDSManyTimes(); // repeat the toggle
+#endif // #ifdef HAS_DOTSTAR_LIB
+
+  // Serial.begin (38400); while (!Serial);
 
   S = S0; // initialize data stack
   R = R0; // initialize return stack
@@ -404,8 +978,10 @@ void setup () {
 #  define branch 2
   CODE(3, _0BRANCH)
 #  define zbranch 3
-  //  CODE(4, _DO)
-  //  CODE(5, _LOOP)
+  CODE(4, _DO)
+#  define ddo 4
+  CODE(5, _LOOP)
+#  define lloop 5
   CODE(6, _INITR)
 #  define initr 6
   CODE(7, _INITS)
@@ -416,21 +992,21 @@ void setup () {
 #  define ok 9
   // room to expand here
 
-  // words with dictionary links
-
   // trailing space kludge
   NAME(20, 0, 0, 10, 0, 0)
   LINK(21, 0)
   CODE(22, _NOP)
+#define nop 22
   // exit
   NAME(23, 0, 4, 'e', 'x', 'i')
   LINK(24, 20)
   CODE(25, _EXIT)
-  // key
+#  define exit 25
+  // key ( - c)
   NAME(26, 0, 3, 'k', 'e', 'y')
   LINK(27, 23)
   CODE(28, _KEY)
-  // emit
+  // emit ( c - )
   NAME(29, 0, 4, 'e', 'm', 'i')
   LINK(30, 26)
   CODE(31, _EMIT)
@@ -440,72 +1016,74 @@ void setup () {
   LINK(33, 29)
   CODE(34, _CR)
 #  define cr 34
-  // parse
+  // parse // leaves string in tib
   NAME(35, 0, 5, 'p', 'a', 'r')
   LINK(36, 32)
   CODE(37, _PARSE)
 #  define parse 37
-  // word
+  // word ( - n) gets string from tib
   NAME(38, 0, 4, 'w', 'o', 'r')
   LINK(39, 35)
   CODE(40, _WORD)
 #  define wword 40
-  // dup
+  // dup ( n - n n)
   NAME(41, 0, 3, 'd', 'u', 'p')
   LINK(42, 38)
   CODE(43, _DUP)
 #  define dup 43
-  // drop
+  // drop ( n - )
   NAME(44, 0, 4, 'd', 'r', 'o')
   LINK(45, 41)
   CODE(46, _DROP)
 #  define drop 46
-  // swap
+  // swap ( n1 n2 - n2 n1)
   NAME(47, 0, 4, 's', 'w', 'a')
   LINK(48, 44)
   CODE(49, _SWAP)
-  // over
+#  define swap 49
+  // over ( n1 n2 - n1 n2 n1)
   NAME(50, 0, 4, 'o', 'v', 'e')
   LINK(51, 47)
   CODE(52, _OVER)
-  // @
+#  define over 52
+  // @ ( a - n)
   NAME(53, 0, 1, '@', 0, 0)
   LINK(54, 50)
   CODE(55, _FETCH)
-  // !
+  // ! ( n a - )
   NAME(56, 0, 1, '!', 0, 0)
   LINK(57, 53)
   CODE(58, _STORE)
-  // ,
+  // , ( n - )
   NAME(59, 0, 1, ',', 0, 0)
   LINK(60, 56)
   CODE(61, _COMMA)
-  // find
+  // find ( n - a)
   NAME(62, 0, 4, 'f', 'i', 'n')
   LINK(63, 59)
   CODE(64, _FIND)
 #  define find 64
-  // execute
+  // execute ( a)
   NAME(65, 0, 7, 'e', 'x', 'e')
   LINK(66, 62)
   CODE(67, _EXECUTE)
 #  define execute 67
-  // ?dup
+  // ?dup ( n - 0 | n n)
   NAME(68, 0, 3, '?', 'd', 'u')
   LINK(69, 65)
   CODE(70, _QDUP)
 #  define qdup 70
-  // number
+  // number ( - n -f) gets string from tib
   NAME(71, 0, 6, 'n', 'u', 'm')
   LINK(72, 68)
   CODE(73, _NUMBER)
 #  define number 73
-  // depth
+  // depth ( - n)
   NAME(74, 0, 5, 'd', 'e', 'p')
   LINK(75, 71)
   CODE(76, _DEPTH)
 #  define depth 76
-  // 0<
+  // 0< ( n - f)
   NAME(77, 0, 2, '0', '<', 0)
   LINK(78, 74)
   CODE(79, _ZEROLESS)
@@ -542,7 +1120,7 @@ void setup () {
   DATA(103, number)
   DATA(104, zbranch)
   DATA(105, 114) // to ok
-  DATA(106, showtib)
+  DATA(106, nop) // tnr, suppressed with a nop // DATA(106, showtib)
   DATA(107, lit)
   DATA(108, '?')
   DATA(109, emit)
@@ -554,117 +1132,399 @@ void setup () {
   DATA(115, branch)
   DATA(116, 90) // continue quit loop
 
-  // .
-  NAME(117, 0, 1, '.', 0, 0)
-  LINK(118, 86)
-  CODE(119, _DOT)
-#  define dot 119
-  // .s
-  NAME(120, 0, 2, '.', 's', 0)
-  LINK(121, 117)
-  CODE(122, _DDOTS)
-#  define ddots 122
-  // words
-  NAME(123, 0, 5, 'w', 'o', 'r')
-  LINK(124, 120)
-  CODE(125, _WORDS)
-#  define words 125
-  // space
-  NAME(126, 0, 5, 's', 'p', 'a')
-  LINK(127, 123)
-  CODE(128, _SPACE)
-#  define space 128
-  // h.
-  NAME(129, 0, 2, 'h', '.', 0)
-  LINK(130, 126)
-  CODE(131, _HDOT)
-#  define hdot 131
-  // +
-  NAME(132, 0, 1, '+', 0, 0)
-  LINK(133, 129)
-  CODE(134, _PLUS)
-  // -
-  NAME(135, 0, 1, '-', 0, 0)
-  LINK(136, 132)
-  CODE(137, _MINUS)
-  // and
-  NAME(138, 0, 3, 'a', 'n', 'd')
+  // a 'branch' points to a 'DATA' statement
+
+  // - - - - -   large  gap  here   - - - - -
+
+  // flparse // leaves string in tib
+  NAME(135, 0, 7, 'f', 'l', 'p')
+  LINK(136, 86)
+  CODE(137, _FLPARSE)
+#  define flparse 137
+
+  // sfparse // leaves string in tib
+  NAME(138, 0, 7, 's', 'f', 'p')
   LINK(139, 135)
-  CODE(140, _aND)
-  // or
-  NAME(141, 0, 2, 'o', 'r', 0)
-  LINK(142, 138)
-  CODE(143, _OR)
-  // xor
-  NAME(144, 0, 3, 'x', 'o', 'r')
-  LINK(145, 141)
-  CODE(146, _XOR)
-  // invert
-  NAME(147, 0, 6, 'i', 'n', 'v')
-  LINK(148, 144)
-  CODE(149, _INVERT)
-  // abs
-  NAME(150, 0, 3, 'a', 'b', 's')
-  LINK(151, 147)
-  CODE(152, _ABS)
-  // negate
-  NAME(153, 0, 6, 'n', 'e', 'g')
-  LINK(154, 150)
-  CODE(155, _NEGATE)
-  // 2*
-  NAME(156, 0, 2, '2', '*', 0)
-  LINK(157, 153)
-  CODE(158, _TWOSTAR)
-  // 2/
-  NAME(159, 0, 2, '2', '/', 0)
-  LINK(160, 156)
-  CODE(161, _TWOSLASH)
+  CODE(140, _SFPARSE)
+#  define sfparse 140
 
-  // warm
-  NAME(162, 0, 4, 'w', 'a', 'r')
-  LINK(163, 159)
-  CODE(164, _WARM)
 
-  // wlist
-  NAME(165, 0, 5, 'w', 'l', 'i')
-  LINK(166, 162)
-  CODE(167, _WLIST)
+  // flabort
+  NAME(180, 0, 7, 'f', 'l', 'a')
+  LINK(181, 77)
+  CODE(182, _NEST)
+  DATA(183, inits)
+#  define flabort 183
+  // fload loop - again
+  DATA(184, branch)
+  DATA(185, 189)
+  // bye - seems ignored
+  NAME(186, 0, 3, 'b', 'y', 'e')
+  LINK(187, 77) // 0< - may be the same entry point
+  CODE(188, _NEST)
+  DATA(189, initr)
+  // begin quit loop
+  DATA(190, flparse) // latest change
+  DATA(191, wword) // gets string from tib
+  DATA(192, find)
+  DATA(193, qdup)
+  DATA(194, zbranch)
+  DATA(195, 203) // to number
+  DATA(196, execute)
+  DATA(197, depth)
+  DATA(198, zeroless)
+  DATA(199, zbranch)
+  DATA(200, 214) // to ok
+  DATA(201, branch)
+  DATA(202, 206)
+  DATA(203, number)
+  DATA(204, zbranch)
+  DATA(205, 214) // to ok
+  DATA(206, nop) // tnr, suppressed with a nop // DATA(106, showtib)
+  DATA(207, lit)
+  DATA(208, '~') // was '?' in the original
+  DATA(209, emit)
+  DATA(210, cr)
+  DATA(211, inits)
+  DATA(212, branch)
+  DATA(213, 189)
+  DATA(214, ok)
+  DATA(215, branch)
+  DATA(216, 190) // continue quit loop
 
-  D = 165; // latest word
-  H = 168; // top of dictionary
+
+
+
+
+  // sfabort
+  NAME(280, 0, 7, 's', 'f', 'a')
+  LINK(281, 77)
+  CODE(282, _NEST)
+  DATA(283, inits)
+#  define sfabort 283
+  // sfload loop - again
+  DATA(284, branch)
+  DATA(285, 289)
+  // alhoa - seems ignored
+  NAME(286, 0, 5, 'a', 'l', 'o')
+  LINK(287, 77) // 0< - may be the same entry point
+  CODE(288, _NEST)
+  DATA(289, initr)
+  // begin quit loop
+  DATA(290, sfparse) // latest change - - - - - - - - - - - - - - - -
+  DATA(291, wword) // gets string from tib
+  DATA(292, find)
+  DATA(293, qdup)
+  DATA(294, zbranch)
+  DATA(295, 303) // to number
+  DATA(296, execute)
+  DATA(297, depth)
+  DATA(298, zeroless)
+  DATA(299, zbranch)
+  DATA(300, 314) // to ok
+  DATA(301, branch)
+  DATA(302, 306)
+  DATA(303, number)
+  DATA(304, zbranch)
+  DATA(305, 314) // to ok
+  DATA(306, nop) // tnr, suppressed with a nop // DATA(106, showtib)
+  DATA(307, lit)
+  DATA(308, '!') // was '~' in the recent copy of the original
+  DATA(309, emit)
+  DATA(310, cr)
+  DATA(311, inits)
+  DATA(312, branch)
+  DATA(313, 289)
+  DATA(314, ok)
+  DATA(315, branch)
+  DATA(316, 290) // continue quit loop
+
+
+
+  // . ( n - )
+  NAME(317, 0, 1, '.', 0, 0)
+  LINK(318, 138) // 135 // 86 // if this isn't 86 then the quit word is lost -- old: NEAT - links back to the quit word here
+  CODE(319, _DOT)
+#  define dot 319
+  // .s
+  NAME(320, 0, 2, '.', 's', 0)
+  LINK(321, 317)
+  CODE(322, _DDOTS)
+#  define ddots 322
+  // words
+  NAME(323, 0, 5, 'w', 'o', 'r')
+  LINK(324, 320)
+  CODE(325, _WORDS)
+#  define words 325
+  // space
+  NAME(326, 0, 5, 's', 'p', 'a')
+  LINK(327, 323)
+  CODE(328, _SPACE)
+#  define space 328
+  // h. ( n - )
+  NAME(329, 0, 2, 'h', '.', 0)
+  LINK(330, 326)
+  CODE(331, _HDOT)
+#  define hdot 331
+  // + ( n1 n2 - n3)
+  NAME(332, 0, 1, '+', 0, 0)
+  LINK(333, 329)
+  CODE(334, _PLUS)
+#  define plus 334
+  // - ( n1 n2 - n3)
+  NAME(335, 0, 1, '-', 0, 0)
+  LINK(336, 332)
+  CODE(337, _MINUS)
+  // and (n1 n2 - n3)
+  NAME(338, 0, 3, 'a', 'n', 'd')
+  LINK(339, 335)
+  CODE(340, _aND)
+  // or ( n1 n2 - n3)
+  NAME(341, 0, 2, 'o', 'r', 0)
+  LINK(342, 338)
+  CODE(343, _OR)
+  // xor ( n1 n2 - n3)
+  NAME(344, 0, 3, 'x', 'o', 'r')
+  LINK(345, 341)
+  CODE(346, _XOR)
+  // invert ( n1 - n2)
+  NAME(347, 0, 6, 'i', 'n', 'v')
+  LINK(348, 344)
+  CODE(349, _INVERT)
+  // abs ( n1 - n2)
+  NAME(350, 0, 3, 'a', 'b', 's')
+  LINK(351, 347)
+  CODE(352, _ABS)
+  // negate ( n1 - n2)
+  NAME(353, 0, 6, 'n', 'e', 'g')
+  LINK(354, 350)
+  CODE(355, _NEGATE)
+  // 2* ( n1 - n2)
+  NAME(356, 0, 2, '2', '*', 0)
+  LINK(357, 353)
+  CODE(358, _TWOSTAR)
+  // 2/ ( n1 - n2)
+  NAME(359, 0, 2, '2', '/', 0)
+  LINK(360, 356)
+  CODE(361, _TWOSLASH)
+  // dump ( a n - a+n) 
+  NAME(362, 0, 4, 'd', 'u', 'm')
+  LINK(363, 359)
+  CODE(364, _DUMP)
+  // create
+  NAME(365, 0, 6, 'c', 'r', 'e')
+  LINK(366, 362)
+  CODE(367, _CREATE)
+  // here 
+  NAME(368, 0, 4, 'h', 'e', 'r')
+  LINK(369, 365)
+  CODE(370, _HERE)
+  // allot 
+  NAME(371, 0, 5, 'a', 'l', 'l')
+  LINK(372, 368)
+  CODE(373, _ALLOT)
+  // variable 
+  NAME(374, 0, 8, 'v', 'a', 'r')
+  LINK(375, 371)
+  CODE(376, _VARIABLE)
+  // ?
+  NAME(377, 0, 1, '?', 0, 0)
+  LINK(378, 374)
+  CODE(379, _QUESTION)
+  // constant
+  NAME(380, 0, 8, 'c', 'o', 'n')
+  LINK(381, 377)
+  CODE(382, _CONSTANT)
+  // R
+  NAME(383, 0, 1, 'R', 0, 0)
+  LINK(384, 380)
+  CODE(385, _R)
+  // [ 
+  NAME(386, IMMED, 1, '[', 0, 0)
+  LINK(387, 383)
+  CODE(388, _LBRAC)
+  // ]
+  NAME(389, 0, 1, ']', 0, 0)
+  LINK(390, 386)
+  CODE(391, _RBRAC)
+  // :
+  NAME(392, 0, 1, ':', 0, 0)
+  LINK(393, 389)
+  CODE(394, _COLON)
+  // ;
+  NAME(395, IMMED, 1, ';', 0, 0)
+  LINK(396, 392)
+  CODE(397, _SEMI)
+  // i 
+  NAME(398, 0, 1, 'i', 0, 0)
+  LINK(399, 395)
+  CODE(400, _I)
+#  define _i 400
+  // do
+  NAME(401, IMMED, 2, 'd', 'o', 0)
+  LINK(402, 398)
+  CODE(403, _CDO)
+  // loop 
+  NAME(404, IMMED, 4, 'l', 'o', 'o')
+  LINK(405, 401)
+  CODE(406, _CLOOP)
+  // begin 
+  NAME(407, IMMED, 5, 'b', 'e', 'g')
+  LINK(408, 404)
+  CODE(409, _CBEGIN)
+  // until 
+  NAME(410, IMMED, 5, 'u', 'n', 't')
+  LINK(411, 407)
+  CODE(412, _CUNTIL)
+  // if
+  NAME(413, IMMED, 2, 'i', 'f', 0)
+  LINK(414, 410)
+  CODE(415, _CIF)
+  // then
+  NAME(416, IMMED, 4, 't', 'h', 'e')
+  LINK(417, 413)
+  CODE(418, _CTHEN)
+  // else
+  NAME(419, IMMED, 4, 'e', 'l', 's')
+  LINK(420, 416)
+  CODE(421, _CELSE)
+  // forget
+  NAME(422, 0, 6, 'f', 'o', 'r')
+  LINK(423, 419)
+  CODE(424, _FORGET)
+  // '
+  NAME(425, 0, 1, '\'', 0, 0)
+  LINK(426, 422)
+  CODE(427, _TICK)
+  // again
+  NAME(428, IMMED, 5, 'a', 'g', 'a')
+  LINK(429, 425)
+  CODE(430, _CAGAIN)
+  // while
+  NAME(431, IMMED, 5, 'w', 'h', 'i')
+  LINK(432, 428)
+  CODE(433, _CWHILE)
+  // repeat
+  NAME(434, IMMED, 6, 'r', 'e', 'p')
+  LINK(435, 431)
+  CODE(436, _CREPEAT)
+  // literal 
+  NAME(437, IMMED, 7, 'l', 'i', 't')
+  LINK(438, 434)
+  CODE(439, _CLITERAL)
+  // c@ ( b - c) 
+  NAME(440, 0, 2, 'c', '@', 0)
+  LINK(441, 437)
+  CODE(442, _CFETCH)
+#  define cfetch 442
+  // c! ( c b - ) 
+  NAME(443, 0, 2, 'c', '!', 0)
+  LINK(444, 440)
+  CODE(445, _CSTORE)
+  // type ( b c - ) 
+  NAME(446, 0, 4, 't', 'y', 'p')
+  LINK(447, 443)
+  CODE(448, _NEST)
+  DATA(449, over)
+  DATA(450, plus)
+  DATA(451, swap)
+  DATA(452, ddo)
+  DATA(453, _i)
+  DATA(454, cfetch)
+  DATA(455, emit)
+  DATA(456, lloop)
+  DATA(457, 453)
+  DATA(458, exit)
+  // warm (  - )
+  NAME(459, 0, 4, 'w', 'a', 'r')
+  LINK(460, 446)
+  CODE(461, _WARM)
+
+  // wlist (  - )
+  NAME(462, 0, 5, 'w', 'l', 'i')
+  LINK(463, 459)
+  CODE(464, _WLIST)
+
+  // fload (  - )
+  NAME(465, 0, 5, 'f', 'l', 'o')
+  LINK(466, 462)
+  CODE(467, _FLOAD)
+
+  NAME(468, 0, 3, 'w', 'a', 'g')
+  LINK(469, 465)
+  CODE(470, _WAGDS)
+
+  NAME(471, 0, 6, 'w', 'i', 'g')
+  LINK(472, 468)
+  CODE(473, _WIGGLE)
+
+  NAME(474, 0, 5, 'r', 'd', 'u')
+  LINK(475, 471) // BUG tnr 22 aug 2019 - may have caused much mayhem - look for others like it ;)
+  CODE(476, _RDUMP)
+
+  NAME(477, 0, 5, 'r', 'b', 'y')
+  LINK(478, 474)
+  CODE(479, _RBYTE)
+
+// compose (  - )
+  NAME(480, 0, 2, 'c', 'c', 0) // named as the 'cc' word for now - was 'compose' too long to type blind
+  LINK(481, 477)
+  CODE(482, _COMPOSE)
+
 
   // test
-  DATA(200, parse)
-  DATA(201, wword)
-  DATA(202, find)
-  DATA(203, dot)
-  DATA(204, number)
-  DATA(205, dot)
-  DATA(206, dot)
-//  DATA(201, wword)
-//  DATA(202, find)
-//  DATA(203, execute)
-  DATA(207, ddots)
-  DATA(208, showtib)
-  DATA(209, branch)
-  DATA(210, 200)
+  DATA(500, lit)
+  DATA(501, 10) // i
+  DATA(502, lit)
+  DATA(503, 0) // i
+  DATA(504, ddo)
+  DATA(505, 400) // i
+  DATA(506, dot)
+  DATA(507, lloop)
+  DATA(508, 505)
+  DATA(509, 385) // R
+  DATA(510, dot)
+  DATA(511, ddots)
+  DATA(512, cr)
+  DATA(513, branch)
+  DATA(514, 500)
 
+
+  // D = 368; // latest word // D = 259;
+  // H = 371; // top of dictionary // H = 262;
+
+  // D = 471; // latest word // D = 259;
+  // H = 474; // top of dictionary // H = 262;
+
+  // D = 474; // latest word // D = 259;
+  // H = 477; // top of dictionary // H = 262;
+
+  // D = 477; // latest word // D = 259;
+  D = 480; // latest word // D = 259;
+
+  // H = 480; // top of dictionary // H = 262;
+  H = 483; // top of dictionary // H = 262;
+//  I = 500; // test
+  // Serial.begin (38400);
+  // while (!Serial);
+  // delay(100);
+  // fl_setup();
+  flash_setup(); // flash_ops.cpp
   I = abort; // instruction pointer = abort
-//  I = 200; //  test
-  Serial1.begin (38400);
-  while (!Serial1);
-  Serial1.println ("myForth Arm Cortex - release 0.1.8 (reversed-gg) de wa1tnr - use CTRL J and try the words word");
-  //  _WORDS ();
-  //  _DEPTH ();
-  //  _DDOTS ();
+
+   _color_black_bg(); _color_yellow_fg();
+   delay(2000);
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 16:56z");
+
+   Serial.println  ("\n      Sat Aug 24 16:56:58 UTC 2019 0.1.8 good-comp-tstorm-hah");
+   Serial.println  ("\n      +cc +rlist +blist +mkdir +write_File +fload   shred: abn-559");
+   Serial.println  ("\n      words: fload wlist warm");
+   Serial.println  ("\n      TEF MEK Gc");
 }
 
 // the loop function runs over and over again forever
 void loop() {
   W = memory.data [I++];
   memory.program [W] ();
-  //  delay (300);
+//  delay (300);
 }
-
-
-

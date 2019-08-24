@@ -1,0 +1,14 @@
+*.ino_*
+src/SdF*
+src/_f*
+src/br*
+src/*_
+src/flash_ops.cpp_*
+src/fload.cpp_*
+src/fload.cpp_*
+src/pr*
+src/rab*
+xda*
+t.*
+doc/
+_he*

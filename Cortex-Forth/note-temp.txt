@@ -1,0 +1,21 @@
+On branch good-compiler-aa-ee
+Changes not staged for commit:
+
+	modified:   Cortex-Forth.ino
+
+The non-staged changes to Cortex-Forth.ino should
+incorporate all the good changes from all branches,
+as of late (has rlist and blist working well and
+correctly, and also has today's work done on the
+'compose' word ('cc' for short, for now).
+
+Stack seems balanced after an fload - a symptom of
+one of the bugs found and fixed that may get reintroduced
+by mismanagement of git repository branches. ;)
+
+Last commit was on the 22nd of August.
+
+Branch 'good-compiler-aa-ee' was instantiated
+within the last hour, on 24 August.
+
+Sat Aug 24 15:42:18 UTC 2019
