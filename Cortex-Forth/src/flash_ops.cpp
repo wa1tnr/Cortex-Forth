@@ -217,7 +217,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // rdump may be deprecated soon. 22 Aug
 
 // : tdump cr 16 0 do rdump cr loop cr ;
-    myFile.print(": tlist cr 16 0 do rdump cr loop cr ;\r");
+// DEPRECATE //  myFile.print(": tlist cr 16 0 do rdump cr loop cr ;\r");
     myFile.print(": emits 0 do emit loop ;\r");
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
     myFile.print("69 68 67 66 65 5 emits cr\r");
