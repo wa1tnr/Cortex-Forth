@@ -1,3 +1,14 @@
+Sun Aug 25
+
+20000F50 seems to be the top of the dictionary.
+
+here says '904' for a similar location. ;)
+
+0x904 is 2308 decimal, fwiw.
+
+904 decimal is 0x388
+
+0xDE0 (3552 decimal) is closer, there.
 Tue Aug 13
 
 For some reason, if formatted as 'custom' vfat in
