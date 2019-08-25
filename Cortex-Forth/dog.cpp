@@ -1,3 +1,5 @@
+// Sun Aug 25 03:03:25 UTC 2019 merged good-compiler-aa-ff-aa_exp back into good-compiler-aa-ff
+// old:
 // Thu Aug 22 13:08:32 EDT 2019 0.1.8 good-comp-tstorm-hah  shred: abn-531
 
 // On branch  good-comp-tstorm-hah
