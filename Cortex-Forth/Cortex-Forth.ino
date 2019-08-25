@@ -1547,10 +1547,6 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
-// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
-// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
-// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
    Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z");
 
    Serial.println  ("\n      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
