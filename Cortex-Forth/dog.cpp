@@ -1,5 +1,16 @@
 // Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
 
+/*
+
+ $ git branch | egrep compile
+* good-compiler-aa-ff
+  good-compiler-aa-ff-aa_exp
+
+ $ git checkout -b  good-compiler-aa-ff-bb_exp 
+Switched to a new branch 'good-compiler-aa-ff-bb_exp'
+
+*/
+
 // Edited very recently to notify of the merge:
 
 // Sun Aug 25 03:03:25 UTC 2019 merged good-compiler-aa-ff-aa_exp back into good-compiler-aa-ff
