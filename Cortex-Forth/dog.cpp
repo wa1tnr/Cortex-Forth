@@ -1,4 +1,15 @@
+// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
+
+// Edited very recently to notify of the merge:
+
 // Sun Aug 25 03:03:25 UTC 2019 merged good-compiler-aa-ff-aa_exp back into good-compiler-aa-ff
+
+// Also merged this the other way (merged good-compiler-aa-ff
+// into good-compiler-aa-ff-aa_exp, which is the current branch
+// for this one commit you are reading, now).
+
+// Next: will (again) merge this one commit back to good-compiler-aa-ff.
+
 // old:
 // Thu Aug 22 13:08:32 EDT 2019 0.1.8 good-comp-tstorm-hah  shred: abn-531
 

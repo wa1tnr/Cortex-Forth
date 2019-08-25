@@ -1,4 +1,10 @@
+// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
+
+// old:
 // Sat Aug 24 22:24:57 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-579
+
+
+// - - - -   snippet   - - - -
 
 // next (  - ) increment address and emit hex of byte stored at 1+ current address
 // : next 1 + dup rbyte h. space ; (  - )
@@ -1541,12 +1547,16 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 24 AUG 2019 22:24z");
+// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
+// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
+// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
+// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
+   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z");
 
-   Serial.println  ("\n      Sat Aug 24 22:24:57 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
-   Serial.println  ("\n      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-579");
+   Serial.println  ("\n      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
+   Serial.println  ("\n      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-591");
    Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK Hf");
+   Serial.println  ("\n      TEF MEK Hk");
 }
 
 // the loop function runs over and over again forever
