@@ -187,7 +187,7 @@ void _NOP (void) {
 }
 
 void _FLOAD (void) { // file load: fload
-  SERIAL_LOCAL_C.write(" loading a forth program from flashROM ..\r");
+  SERIAL_LOCAL_C.print(" loading a forth program from flashROM ..\r");
      I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
   // I = 82; //  allows typing but never exits (infinite nesting?)
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
@@ -250,11 +250,11 @@ void _CR (void) {
 }
 
 void _OK (void) {
-  if (tib [tib.length () - 1] == LINE_ENDING) SERIAL_LOCAL_C.write (" Ok\r");
+  if (tib [tib.length () - 1] == LINE_ENDING) SERIAL_LOCAL_C.print (" Ok\r");
 }
 
 void _WLIST (void) {
-  SERIAL_LOCAL_C.write ("wiggle wag fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
+  SERIAL_LOCAL_C.print ("wiggle wag fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
 }
 
 void _WARM (void) {
@@ -265,12 +265,12 @@ void _COMPOSE (void) {
   while(-1) { // always true
     _KEY();
     _SPACE(); _DUP(); _HDOT(); _SPACE();
-    if (T == 1) SERIAL_LOCAL_C.write(" Ctrl+A pressed ");
-    if (T == 2) SERIAL_LOCAL_C.write(" Ctrl+B pressed ");
-    if (T == 7) SERIAL_LOCAL_C.write(" Ctrl+G BELL pressed ");
-    if (T == 8) SERIAL_LOCAL_C.write(" Ctrl+H BACKSPACE pressed ");
-    if (T == 15) SERIAL_LOCAL_C.write(" Ctrl+O pressed ");
-    if (T == 27) SERIAL_LOCAL_C.write(" ESC pressed ");
+    if (T == 1) SERIAL_LOCAL_C.print(" Ctrl+A pressed ");
+    if (T == 2) SERIAL_LOCAL_C.print(" Ctrl+B pressed ");
+    if (T == 7) SERIAL_LOCAL_C.print(" Ctrl+G BELL pressed ");
+    if (T == 8) SERIAL_LOCAL_C.print(" Ctrl+H BACKSPACE pressed ");
+    if (T == 15) SERIAL_LOCAL_C.print(" Ctrl+O pressed ");
+    if (T == 27) SERIAL_LOCAL_C.print(" ESC pressed ");
     // if (T == 127) SERIAL_LOCAL_C.print(" RUBOUT pressed \(0x7f\) ");
     if (T == 127) SERIAL_LOCAL_C.print(" RUBOUT pressed 0x7f ");
     _EMIT();
@@ -405,7 +405,7 @@ void _PARSE (void) {
     t = SERIAL_LOCAL_C.peek ();
     if (t == ' ') {
       t = SERIAL_LOCAL_C.read ();
-//      SERIAL_LOCAL_C.write (t);
+//      SERIAL_LOCAL_C.print (t);
     }
   } while (t == ' ');
   do {
@@ -413,12 +413,12 @@ void _PARSE (void) {
     t = SERIAL_LOCAL_C.read ();
 
 #ifdef ECHO_INPUT
-    SERIAL_LOCAL_C.write (t);
+    SERIAL_LOCAL_C.print (t);
 #endif
 
     tib = tib + t;
   } while (t > ' ');
-  // tnr, suppressed // SERIAL_LOCAL_C.write (tib);
+  // tnr, suppressed // SERIAL_LOCAL_C.print (tib);
 }
 
 // trim leading spaces
@@ -467,14 +467,14 @@ void _FLPARSE (void) {
         if (thisFile.available() < (1)) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
-          SERIAL_LOCAL_C.write('\r');
-          SERIAL_LOCAL_C.write(FILE_NAME);
-          SERIAL_LOCAL_C.write(" was closed - Cortex-Forth.ino LINE 369\r");
+          SERIAL_LOCAL_C.print('\r');
+          SERIAL_LOCAL_C.print(FILE_NAME);
+          SERIAL_LOCAL_C.print(" was closed - Cortex-Forth.ino LINE 369\r");
         }
       }
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
-    SERIAL_LOCAL_C.write(" alt TRAP LINE 334\r");
+    SERIAL_LOCAL_C.print(" alt TRAP LINE 334\r");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
@@ -507,14 +507,14 @@ void _SFPARSE (void) { // safe parse
         if (thisFile.available() < (1)) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
-          SERIAL_LOCAL_C.write("\r");
-          SERIAL_LOCAL_C.write(FILE_NAME);
-          SERIAL_LOCAL_C.write(" was closed - Cortex-Forth.ino LINE 347\r");
+          SERIAL_LOCAL_C.print("\r");
+          SERIAL_LOCAL_C.print(FILE_NAME);
+          SERIAL_LOCAL_C.print(" was closed - Cortex-Forth.ino LINE 347\r");
         }
       }
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
-    SERIAL_LOCAL_C.write(" alt TRAP LINE 334\r");
+    SERIAL_LOCAL_C.print(" alt TRAP LINE 334\r");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
@@ -541,8 +541,8 @@ void _WORD (void) {
     t = tib [2];
     T |= (t << 24);
   }
-  // SERIAL_LOCAL_C.write(" ~k~ ");
-  // SERIAL_LOCAL_C.write(" --- _WORD  exits --- \r");
+  // SERIAL_LOCAL_C.print(" ~k~ ");
+  // SERIAL_LOCAL_C.print(" --- _WORD  exits --- \r");
 }
 
 void _NUMBER (void) {
@@ -595,42 +595,44 @@ void _FIND (void) {
   while (T != 0) {
     W = (memory.data [T]);
     if ((W & 0xffffff7f) == X) {
-      // SERIAL_LOCAL_C.write("FIND exits - and its a word.\r");
+      // SERIAL_LOCAL_C.print("FIND exits - and its a word.\r");
       return;
     }
     T = memory.data [T + 1];
   }
-  // SERIAL_LOCAL_C.write("FIND exits.\r");
+  // SERIAL_LOCAL_C.print("FIND exits.\r");
 }
 
 void _DOT (void) {
-  SERIAL_LOCAL_C.write (T);
-  SERIAL_LOCAL_C.write (' ');
+  SERIAL_LOCAL_C.print (T);
+  SERIAL_LOCAL_C.print (' ');
   _DROP ();
 }
 
 void _HDOT (void) {
   SERIAL_LOCAL_C.print (T, HEX);
-  SERIAL_LOCAL_C.write (' ');
+  SERIAL_LOCAL_C.print (' ');
   _DROP ();
 }
 
+// LESSON LEARNED: when it was 'write' not 'print' the "empty " was not printed,
+// but the spaces that made it up were (probably non-printing chars).
 void _DDOTS (void) {
   if (S == S0) {
-    SERIAL_LOCAL_C.write ("empty ");
+    SERIAL_LOCAL_C.print ("empty ");
     return;
   }
   _DUP ();
   W = (S0 - 1);
   while (W > (S)) {
-    SERIAL_LOCAL_C.write (memory.data [--W]);
-    SERIAL_LOCAL_C.write (' ');
+    SERIAL_LOCAL_C.print (memory.data [--W]);
+    SERIAL_LOCAL_C.print (' ');
   }
   _DROP ();
 }
 
 void _SPACE () {
-  SERIAL_LOCAL_C.write (' ');
+  SERIAL_LOCAL_C.print (' ');
 }
 
 void _ZEROEQUAL () {
@@ -652,17 +654,18 @@ void _ZEROLESS () {
 void _DOTWORD () {
   int Y = memory.data [W];
   int X = (Y & 0xff);
-  SERIAL_LOCAL_C.write ('[');
+  SERIAL_LOCAL_C.print ('[');
   SERIAL_LOCAL_C.print (X);
-  SERIAL_LOCAL_C.write (' ');
+  SERIAL_LOCAL_C.print (' ');
   X = ((Y >> 8) & 0xff);
   _DUP (); T = X; _EMIT ();
   X = ((Y >> 16) & 0xff);
   if (X != 0) { _DUP (); T = X; _EMIT (); }
   X = ((Y >> 24) & 0xff);
   if (X != 0) { _DUP (); T = X; _EMIT (); }
+  // SERIAL_LOCAL_C.print ("] "); 
   SERIAL_LOCAL_C.print ("] "); 
-  delay(20); // wild guess kludge tnr 26 August - for 9term only
+  // delay(20); // wild guess kludge tnr 26 August - for 9term only
   // want to stop flooding 9term with too much information sent
   // to it too quickly.
 }
@@ -672,9 +675,9 @@ void _WORDS (void) {
   W = D;
   do {
     _DOTWORD ();
-    delay(20); // USART kludge tnr 26 August
     W = memory.data [++W];
     i += 1;
+// ###bookmark
     if ((i % 8) == 0) _CR ();
   } while (memory.data [W + 1]);
 }
@@ -691,8 +694,8 @@ void _DUMP (void) {
   for (int i = 0; i < a; i++) {
     W = T;
     SERIAL_LOCAL_C.print (memory.data [T++], HEX);
-    // SERIAL_LOCAL_C.write (' ');
-    SERIAL_LOCAL_C.write (" ~dump_delimiter~ ");
+    // SERIAL_LOCAL_C.print (' ');
+    SERIAL_LOCAL_C.print (" ~dump_delimiter~ ");
     _DOTWORD ();
   }
 }
@@ -892,7 +895,7 @@ void _FORGET (void) {
 }
 
 void _TICK (void) {
-  SERIAL_LOCAL_C.write("WHOOPS - _TICK encountered! \r");
+  SERIAL_LOCAL_C.print("WHOOPS - _TICK encountered! \r");
   _PARSE ();
   _WORD ();
   _FIND ();
@@ -923,21 +926,21 @@ void _CSTORE (void) {
 
 
 void _color_yellow_fg (void) {
-  SERIAL_LOCAL_C.write("\033\133"); // ESC [
-  SERIAL_LOCAL_C.write("\063\063"); // 33 - yellow fg
-  SERIAL_LOCAL_C.write("m");        // for the stanza
+  SERIAL_LOCAL_C.print("\033\133"); // ESC [
+  SERIAL_LOCAL_C.print("\063\063"); // 33 - yellow fg
+  SERIAL_LOCAL_C.print("m");        // for the stanza
 }
 
 void _color_blue_bg (void) {
-  SERIAL_LOCAL_C.write("\033\133"); // ESC [
-  SERIAL_LOCAL_C.write("\064\064"); // 44 - blue bg
-  SERIAL_LOCAL_C.write("m");        // for the stanza
+  SERIAL_LOCAL_C.print("\033\133"); // ESC [
+  SERIAL_LOCAL_C.print("\064\064"); // 44 - blue bg
+  SERIAL_LOCAL_C.print("m");        // for the stanza
 }
 
 void _color_black_bg (void) {
-  SERIAL_LOCAL_C.write("\033\133"); // ESC [
-  SERIAL_LOCAL_C.write("\064\060"); // 40 - black bg
-  SERIAL_LOCAL_C.write("m");        // for the stanza
+  SERIAL_LOCAL_C.print("\033\133"); // ESC [
+  SERIAL_LOCAL_C.print("\064\060"); // 40 - black bg
+  SERIAL_LOCAL_C.print("m");        // for the stanza
 }
 
 
@@ -1498,12 +1501,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   SERIAL_LOCAL_C.write  ("\r myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z\r");
+   SERIAL_LOCAL_C.print  ("\r myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z\r");
 
-   SERIAL_LOCAL_C.write  ("      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp\r");
-   SERIAL_LOCAL_C.write  ("      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-591\r");
-   SERIAL_LOCAL_C.write  ("      words: fload wlist warm\r");
-   SERIAL_LOCAL_C.write  ("      TEF MEK Hk\r");
+   SERIAL_LOCAL_C.print  ("      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp\r");
+   SERIAL_LOCAL_C.print  ("      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-591\r");
+   SERIAL_LOCAL_C.print  ("      words: fload wlist warm\r");
+   SERIAL_LOCAL_C.print  ("      TEF MEK Hk\r");
 }
 
 // the loop function runs over and over again forever
