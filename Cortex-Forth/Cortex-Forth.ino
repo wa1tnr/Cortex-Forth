@@ -665,13 +665,15 @@ void _DOTWORD () {
   if (X != 0) { _DUP (); T = X; _EMIT (); }
   // SERIAL_LOCAL_C.print ("] "); 
   SERIAL_LOCAL_C.print ("] "); 
-  // delay(20); // wild guess kludge tnr 26 August - for 9term only
+
+  delay(20); // QUITE GOOD - tnr 26 August - for 9term only
   // want to stop flooding 9term with too much information sent
   // to it too quickly.
+
 }
 
 void _WORDS (void) {
-  int i = 7;
+  int i = 2; // where to set the modulo counter's initial position - flexible
   W = D;
   do {
     _DOTWORD ();
