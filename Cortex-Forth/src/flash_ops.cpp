@@ -112,10 +112,13 @@ void flash_setup(void) {
 
 //  myFile.print("\r");
 
-// ASCII 13 is preferred over CR for 9term.
 
+// delay ( n -- )
+    myFile.print(": delay 0 do 1234 0 do 1 drop loop loop ;\r");
+
+// ASCII 13 is preferred over CR for 9term.
 // crd ( - ) // emit 0x0d
-    myFile.print(": crd 13 emit ;\r");
+    myFile.print(": crd 13 emit 3 delay ;\r");
 
 // max ( n1 n2 -- max )
     myFile.print(": max over over - 0< if swap drop -1 then if exit then swap drop ;\r");
@@ -130,8 +133,6 @@ void flash_setup(void) {
 // >prn ( n -- )
     myFile.print(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
 
-// delay ( n -- )
-    myFile.print(": delay drop 1234 0 do 1 drop loop ;\r");
 
 // ecol ( -- ) \ emit a colon
     myFile.print(": ecol 58 emit ;\r");
@@ -160,27 +161,25 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // rhlist ( addr -- )
     myFile.print(": rhlist hadr 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+    myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 7 delay then loop\r");
     myFile.print("drop ;\r");
 
 // ralist ( addr -- )
     myFile.print(": ralist space space 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup rbyte >prn 100 delay then loop\r");
+    myFile.print("if dup rbyte >prn 7 delay then loop\r");
     myFile.print("drop ;\r");
 
 // hlist ( addr -- )
     myFile.print(": hlist hadr 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
-//  myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+    myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 7 delay then loop\r");
     myFile.print("drop ;\r");
 
 // alist ( addr -- )
     myFile.print(": alist space space 16 + dup 16 - over over\r");
     myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup c@ >prn 100 delay then loop\r");
-//  myFile.print("if dup rbyte >prn 100 delay then loop\r");
+    myFile.print("if dup c@ >prn 7 delay then loop\r");
     myFile.print("drop ;\r");
 
 // bottom ( -- addr )
@@ -189,15 +188,14 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // blist ( addr -- )
     myFile.print(": blist cr -999 swap 196604 1148 - min 0 max\r");
-//  myFile.print("196608 1148 - min 0 max 1 - 8 0 do\r");
-    myFile.print("dup 1 - 8 0 do dup hlist 16 - alist cr\r");
-    myFile.print("swap drop loop 1 + swap drop cr ;\r");
+    myFile.print("dup 1 - 8 0 do dup hlist 16 - alist crd\r");
+    myFile.print("swap drop loop 1 + swap drop crd ;\r");
 
 
 // rlist ( addr -- addr + report_size )
     myFile.print(": rlist cr -999 swap bottom 195552 + min 0 max\r");
-    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist cr\r");
-    myFile.print("swap drop loop 1 + swap drop cr ;\r");
+    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist crd\r");
+    myFile.print("swap drop loop 1 + swap drop crd ;\r");
 
 /*
 
