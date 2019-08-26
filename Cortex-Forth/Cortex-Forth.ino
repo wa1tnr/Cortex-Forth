@@ -1,5 +1,7 @@
 // Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
 
+#define SERIAL_LOCAL_C Serial1
+
 // old:
 // Sat Aug 24 22:24:57 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-579
 
@@ -185,7 +187,7 @@ void _NOP (void) {
 }
 
 void _FLOAD (void) { // file load: fload
-  Serial.println(" loading a forth program from flashROM ..");
+  SERIAL_LOCAL_C.println(" loading a forth program from flashROM ..");
      I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
   // I = 82; //  allows typing but never exits (infinite nesting?)
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
@@ -201,7 +203,7 @@ void _WIGGLE (void) { // toggle dotStar a number of times
 /*
  124 void _EMIT (void) {
  125   char c = T;
- 126   Serial.write (c);
+ 126   SERIAL_LOCAL_C.write (c);
  127   _DROP ();
  128 }
 */
@@ -230,27 +232,27 @@ void _QDUP (void) {
 
 void _KEY (void) {
   _DUP ();
-  while (!Serial.available ());
-  T = Serial.read ();
-//  Serial.write (T);
+  while (!SERIAL_LOCAL_C.available ());
+  T = SERIAL_LOCAL_C.read ();
+//  SERIAL_LOCAL_C.write (T);
 }
 
 void _EMIT (void) {
   char c = T;
-  Serial.write (c);
+  SERIAL_LOCAL_C.write (c);
   _DROP ();
 }
 
 void _CR (void) {
-  Serial.println (" ");
+  SERIAL_LOCAL_C.println (" ");
 }
 
 void _OK (void) {
-  if (tib [tib.length () - 1] == LINE_ENDING) Serial.println (" Ok");
+  if (tib [tib.length () - 1] == LINE_ENDING) SERIAL_LOCAL_C.println (" Ok");
 }
 
 void _WLIST (void) {
-  Serial.print ("wiggle wag fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
+  SERIAL_LOCAL_C.print ("wiggle wag fload wlist warm type c! c@ literal repeat while again ' forget else then if until begin loop do i ; : ] [ R constant ? variable allot here create dump 2/ 2* negate abs invert xor or and - + h. space words .s . flparse quit 0< depth number ?dup execute find , ! @ over swap drop dup word parse cr emit key exit ");
 }
 
 void _WARM (void) {
@@ -261,13 +263,13 @@ void _COMPOSE (void) {
   while(-1) { // always true
     _KEY();
     _SPACE(); _DUP(); _HDOT(); _SPACE();
-    if (T == 1) Serial.print(" Ctrl+A pressed ");
-    if (T == 2) Serial.print(" Ctrl+B pressed ");
-    if (T == 7) Serial.print(" Ctrl+G BELL pressed ");
-    if (T == 8) Serial.print(" Ctrl+H BACKSPACE pressed ");
-    if (T == 15) Serial.print(" Ctrl+O pressed ");
-    if (T == 27) Serial.print(" ESC pressed ");
-    if (T == 127) Serial.print(" RUBOUT pressed \(0x7f\) ");
+    if (T == 1) SERIAL_LOCAL_C.print(" Ctrl+A pressed ");
+    if (T == 2) SERIAL_LOCAL_C.print(" Ctrl+B pressed ");
+    if (T == 7) SERIAL_LOCAL_C.print(" Ctrl+G BELL pressed ");
+    if (T == 8) SERIAL_LOCAL_C.print(" Ctrl+H BACKSPACE pressed ");
+    if (T == 15) SERIAL_LOCAL_C.print(" Ctrl+O pressed ");
+    if (T == 27) SERIAL_LOCAL_C.print(" ESC pressed ");
+    if (T == 127) SERIAL_LOCAL_C.print(" RUBOUT pressed \(0x7f\) ");
     _EMIT();
   }
 }
@@ -388,7 +390,7 @@ void _NEST (void) {
 void _SHOWTIB (void) {
   W = tib.length ();
   tib [W - 1] = 0;
-  Serial.print (tib); // tnr // restored to original
+  SERIAL_LOCAL_C.print (tib); // tnr // restored to original
 }
 
 // trim leading spaces
@@ -396,24 +398,24 @@ void _PARSE (void) {
   char t;
   tib = "";
   do {
-    while (!Serial.available ());
-    t = Serial.peek ();
+    while (!SERIAL_LOCAL_C.available ());
+    t = SERIAL_LOCAL_C.peek ();
     if (t == ' ') {
-      t = Serial.read ();
-//      Serial.write (t);
+      t = SERIAL_LOCAL_C.read ();
+//      SERIAL_LOCAL_C.write (t);
     }
   } while (t == ' ');
   do {
-    while (!Serial.available ());
-    t = Serial.read ();
+    while (!SERIAL_LOCAL_C.available ());
+    t = SERIAL_LOCAL_C.read ();
 
 #ifdef ECHO_INPUT
-    Serial.write (t);
+    SERIAL_LOCAL_C.write (t);
 #endif
 
     tib = tib + t;
   } while (t > ' ');
-  // tnr, suppressed // Serial.print (tib);
+  // tnr, suppressed // SERIAL_LOCAL_C.print (tib);
 }
 
 // trim leading spaces
@@ -444,7 +446,7 @@ void _FLPARSE (void) {
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
-    // Serial.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
+    // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
         t = thisFile.read();
@@ -459,26 +461,26 @@ void _FLPARSE (void) {
         t = thisFile.read();
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
-      // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
+      // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
       if (thisFile.available() < (FLEN_MAX - 1)) {
-        // Serial.println("\n\n\nSAFETY NET\n\n\n");
+        // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < (1)) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
-          Serial.print("\r");
-          Serial.print(FILE_NAME);
-          Serial.println(" was closed - Cortex-Forth.ino LINE 369");
+          SERIAL_LOCAL_C.print("\r");
+          SERIAL_LOCAL_C.print(FILE_NAME);
+          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 369");
 /*
           _DDOTS(); // experiment 16:48z 11 Aug
           _SPACE();
           _SPACE();
-          Serial.print("xxx");
+          SERIAL_LOCAL_C.print("xxx");
           _SPACE();
           _SPACE();
           _SPACE();
           _SPACE();
           _SPACE();
-          Serial.print("yyy");
+          SERIAL_LOCAL_C.print("yyy");
           _SPACE();
           _SPACE();
           _SPACE();
@@ -486,22 +488,22 @@ void _FLPARSE (void) {
           _DDOTS();
           _SPACE();
           _SPACE();
-          Serial.println("\n previous line: _DDOTS();");
+          SERIAL_LOCAL_C.println("\n previous line: _DDOTS();");
           delay(100);
           // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
 */
         }
       }
-      // Serial.println("TRAP");
+      // SERIAL_LOCAL_C.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
-    Serial.println(" alt TRAP LINE 334");
+    SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
-    // Serial.print("Trouble at the Old Well, Timmy?");
-    // Serial.print(" I = 90 -- the 'parse' word  ");
-    // Serial.println(" alt TRAP LINE 339");
+    // SERIAL_LOCAL_C.print("Trouble at the Old Well, Timmy?");
+    // SERIAL_LOCAL_C.print(" I = 90 -- the 'parse' word  ");
+    // SERIAL_LOCAL_C.println(" alt TRAP LINE 339");
     keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
@@ -513,7 +515,7 @@ void _SFPARSE (void) { // safe parse
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
-    // Serial.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
+    // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
         t = thisFile.read();
@@ -528,26 +530,26 @@ void _SFPARSE (void) { // safe parse
         t = thisFile.read();
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
-      // Serial.print("  _"); Serial.print(tib); Serial.print("_  ");
+      // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
       if (thisFile.available() < (FLEN_MAX - 1)) {
-        // Serial.println("\n\n\nSAFETY NET\n\n\n");
+        // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < (1)) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
-          Serial.print("\r");
-          Serial.print(FILE_NAME);
-          Serial.println(" was closed - Cortex-Forth.ino LINE 347");
+          SERIAL_LOCAL_C.print("\r");
+          SERIAL_LOCAL_C.print(FILE_NAME);
+          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 347");
 /*
           _DDOTS(); // experiment 16:48z 11 Aug
           _SPACE();
           _SPACE();
-          Serial.print("xxx");
+          SERIAL_LOCAL_C.print("xxx");
           _SPACE();
           _SPACE();
           _SPACE();
           _SPACE();
           _SPACE();
-          Serial.print("yyy");
+          SERIAL_LOCAL_C.print("yyy");
           _SPACE();
           _SPACE();
           _SPACE();
@@ -555,22 +557,22 @@ void _SFPARSE (void) { // safe parse
           _DDOTS();
           _SPACE();
           _SPACE();
-          Serial.println("\n previous line: _DDOTS();");
+          SERIAL_LOCAL_C.println("\n previous line: _DDOTS();");
           delay(100);
           // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
 */
         }
       }
-      // Serial.println("TRAP");
+      // SERIAL_LOCAL_C.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
-    Serial.println(" alt TRAP LINE 334");
+    SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
-    // Serial.print("Trouble at the Old Well, Timmy?");
-    // Serial.print(" I = 90 -- the 'parse' word  ");
-    // Serial.println(" alt TRAP LINE 339");
+    // SERIAL_LOCAL_C.print("Trouble at the Old Well, Timmy?");
+    // SERIAL_LOCAL_C.print(" I = 90 -- the 'parse' word  ");
+    // SERIAL_LOCAL_C.println(" alt TRAP LINE 339");
     keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
@@ -594,8 +596,8 @@ void _WORD (void) {
     t = tib [2];
     T |= (t << 24);
   }
-  // Serial.print(" ~k~ ");
-  // Serial.println(" --- _WORD  exits --- ");
+  // SERIAL_LOCAL_C.print(" ~k~ ");
+  // SERIAL_LOCAL_C.println(" --- _WORD  exits --- ");
 }
 
 void _NUMBER (void) {
@@ -648,42 +650,42 @@ void _FIND (void) {
   while (T != 0) {
     W = (memory.data [T]);
     if ((W & 0xffffff7f) == X) {
-      // Serial.println("FIND exits - and its a word.");
+      // SERIAL_LOCAL_C.println("FIND exits - and its a word.");
       return;
     }
     T = memory.data [T + 1];
   }
-  // Serial.println("FIND exits.");
+  // SERIAL_LOCAL_C.println("FIND exits.");
 }
 
 void _DOT (void) {
-  Serial.print (T);
-  Serial.write (' ');
+  SERIAL_LOCAL_C.print (T);
+  SERIAL_LOCAL_C.write (' ');
   _DROP ();
 }
 
 void _HDOT (void) {
-  Serial.print (T, HEX);
-  Serial.write (' ');
+  SERIAL_LOCAL_C.print (T, HEX);
+  SERIAL_LOCAL_C.write (' ');
   _DROP ();
 }
 
 void _DDOTS (void) {
   if (S == S0) {
-    Serial.print ("empty ");
+    SERIAL_LOCAL_C.print ("empty ");
     return;
   }
   _DUP ();
   W = (S0 - 1);
   while (W > (S)) {
-    Serial.print (memory.data [--W]);
-    Serial.write (' ');
+    SERIAL_LOCAL_C.print (memory.data [--W]);
+    SERIAL_LOCAL_C.write (' ');
   }
   _DROP ();
 }
 
 void _SPACE () {
-  Serial.write (' ');
+  SERIAL_LOCAL_C.write (' ');
 }
 
 void _ZEROEQUAL () {
@@ -705,16 +707,16 @@ void _ZEROLESS () {
 void _DOTWORD () {
   int Y = memory.data [W];
   int X = (Y & 0xff);
-  Serial.write ('[');
-  Serial.print (X);
-  Serial.write (' ');
+  SERIAL_LOCAL_C.write ('[');
+  SERIAL_LOCAL_C.print (X);
+  SERIAL_LOCAL_C.write (' ');
   X = ((Y >> 8) & 0xff);
   _DUP (); T = X; _EMIT ();
   X = ((Y >> 16) & 0xff);
   if (X != 0) { _DUP (); T = X; _EMIT (); }
   X = ((Y >> 24) & 0xff);
   if (X != 0) { _DUP (); T = X; _EMIT (); }
-  Serial.print ("] "); 
+  SERIAL_LOCAL_C.print ("] "); 
 }
 
 void _WORDS (void) {
@@ -739,9 +741,9 @@ void _DUMP (void) {
   _DROP ();
   for (int i = 0; i < a; i++) {
     W = T;
-    Serial.print (memory.data [T++], HEX);
-    // Serial.write (' ');
-    Serial.write (" ~dump_delimiter~ ");
+    SERIAL_LOCAL_C.print (memory.data [T++], HEX);
+    // SERIAL_LOCAL_C.write (' ');
+    SERIAL_LOCAL_C.write (" ~dump_delimiter~ ");
     _DOTWORD ();
   }
 }
@@ -941,7 +943,7 @@ void _FORGET (void) {
 }
 
 void _TICK (void) {
-  Serial.println("WHOOPS - _TICK encountered! ");
+  SERIAL_LOCAL_C.println("WHOOPS - _TICK encountered! ");
   _PARSE ();
   _WORD ();
   _FIND ();
@@ -972,21 +974,21 @@ void _CSTORE (void) {
 
 
 void _color_yellow_fg (void) {
-  Serial.print("\033\133"); // ESC [
-  Serial.print("\063\063"); // 33 - yellow fg
-  Serial.print("m");        // for the stanza
+  SERIAL_LOCAL_C.print("\033\133"); // ESC [
+  SERIAL_LOCAL_C.print("\063\063"); // 33 - yellow fg
+  SERIAL_LOCAL_C.print("m");        // for the stanza
 }
 
 void _color_blue_bg (void) {
-  Serial.print("\033\133"); // ESC [
-  Serial.print("\064\064"); // 44 - blue bg
-  Serial.print("m");        // for the stanza
+  SERIAL_LOCAL_C.print("\033\133"); // ESC [
+  SERIAL_LOCAL_C.print("\064\064"); // 44 - blue bg
+  SERIAL_LOCAL_C.print("m");        // for the stanza
 }
 
 void _color_black_bg (void) {
-  Serial.print("\033\133"); // ESC [
-  Serial.print("\064\060"); // 40 - black bg
-  Serial.print("m");        // for the stanza
+  SERIAL_LOCAL_C.print("\033\133"); // ESC [
+  SERIAL_LOCAL_C.print("\064\060"); // 40 - black bg
+  SERIAL_LOCAL_C.print("m");        // for the stanza
 }
 
 
@@ -997,7 +999,7 @@ void setup () {
   // wiggleDSManyTimes(); // repeat the toggle
 #endif // #ifdef HAS_DOTSTAR_LIB
 
-  // Serial.begin (38400); while (!Serial);
+  // SERIAL_LOCAL_C.begin (38400); while (!SERIAL_LOCAL_C);
 
   S = S0; // initialize data stack
   R = R0; // initialize return stack
@@ -1538,8 +1540,8 @@ void setup () {
   // H = 483; // top of dictionary // H = 262;
 
 //  I = 500; // test
-  // Serial.begin (38400);
-  // while (!Serial);
+  // SERIAL_LOCAL_C.begin (38400);
+  // while (!SERIAL_LOCAL_C);
   // delay(100);
   // fl_setup();
   flash_setup(); // flash_ops.cpp
@@ -1547,12 +1549,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   Serial.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z");
+   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z");
 
-   Serial.println  ("\n      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
-   Serial.println  ("\n      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-591");
-   Serial.println  ("\n      words: fload wlist warm");
-   Serial.println  ("\n      TEF MEK Hk");
+   SERIAL_LOCAL_C.println  ("\n      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
+   SERIAL_LOCAL_C.println  ("\n      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-591");
+   SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm");
+   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hk");
 }
 
 // the loop function runs over and over again forever
