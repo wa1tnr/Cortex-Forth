@@ -187,7 +187,7 @@ void _NOP (void) {
 }
 
 void _FLOAD (void) { // file load: fload
-  SERIAL_LOCAL_C.println(" loading a forth program from flashROM ..");
+  SERIAL_LOCAL_C.print(" loading a forth program from flashROM ..\r");
      I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
   // I = 82; //  allows typing but never exits (infinite nesting?)
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
@@ -244,11 +244,11 @@ void _EMIT (void) {
 }
 
 void _CR (void) {
-  SERIAL_LOCAL_C.println (" ");
+  SERIAL_LOCAL_C.print ("\r");
 }
 
 void _OK (void) {
-  if (tib [tib.length () - 1] == LINE_ENDING) SERIAL_LOCAL_C.println (" Ok");
+  if (tib [tib.length () - 1] == LINE_ENDING) SERIAL_LOCAL_C.print (" Ok\r");
 }
 
 void _WLIST (void) {
@@ -446,7 +446,6 @@ void _FLPARSE (void) {
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
-    // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
         t = thisFile.read();
@@ -461,49 +460,21 @@ void _FLPARSE (void) {
         t = thisFile.read();
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
-      // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
       if (thisFile.available() < (FLEN_MAX - 1)) {
-        // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < (1)) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
           SERIAL_LOCAL_C.print("\r");
           SERIAL_LOCAL_C.print(FILE_NAME);
-          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 369");
-/*
-          _DDOTS(); // experiment 16:48z 11 Aug
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("xxx");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("yyy");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _DEPTH();
-          _DDOTS();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.println("\n previous line: _DDOTS();");
-          delay(100);
-          // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
-*/
+          SERIAL_LOCAL_C.print(" was closed - Cortex-Forth.ino LINE 369\r");
         }
       }
-      // SERIAL_LOCAL_C.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
-    SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
+    SERIAL_LOCAL_C.print(" alt TRAP LINE 334\r");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
-    // SERIAL_LOCAL_C.print("Trouble at the Old Well, Timmy?");
-    // SERIAL_LOCAL_C.print(" I = 90 -- the 'parse' word  ");
-    // SERIAL_LOCAL_C.println(" alt TRAP LINE 339");
     keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
@@ -515,7 +486,6 @@ void _SFPARSE (void) { // safe parse
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
-    // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
     while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
       do {
         t = thisFile.read();
@@ -530,49 +500,21 @@ void _SFPARSE (void) { // safe parse
         t = thisFile.read();
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
-      // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
       if (thisFile.available() < (FLEN_MAX - 1)) {
-        // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < (1)) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
           SERIAL_LOCAL_C.print("\r");
           SERIAL_LOCAL_C.print(FILE_NAME);
-          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 347");
-/*
-          _DDOTS(); // experiment 16:48z 11 Aug
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("xxx");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("yyy");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _DEPTH();
-          _DDOTS();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.println("\n previous line: _DDOTS();");
-          delay(100);
-          // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
-*/
+          SERIAL_LOCAL_C.print(" was closed - Cortex-Forth.ino LINE 347\r");
         }
       }
-      // SERIAL_LOCAL_C.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     } // new conditional 17:25z
-    SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
+    SERIAL_LOCAL_C.print(" alt TRAP LINE 334\r");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
-    // SERIAL_LOCAL_C.print("Trouble at the Old Well, Timmy?");
-    // SERIAL_LOCAL_C.print(" I = 90 -- the 'parse' word  ");
-    // SERIAL_LOCAL_C.println(" alt TRAP LINE 339");
     keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
@@ -597,7 +539,7 @@ void _WORD (void) {
     T |= (t << 24);
   }
   // SERIAL_LOCAL_C.print(" ~k~ ");
-  // SERIAL_LOCAL_C.println(" --- _WORD  exits --- ");
+  // SERIAL_LOCAL_C.print(" --- _WORD  exits --- \r");
 }
 
 void _NUMBER (void) {
@@ -650,12 +592,12 @@ void _FIND (void) {
   while (T != 0) {
     W = (memory.data [T]);
     if ((W & 0xffffff7f) == X) {
-      // SERIAL_LOCAL_C.println("FIND exits - and its a word.");
+      // SERIAL_LOCAL_C.print("FIND exits - and its a word.\r");
       return;
     }
     T = memory.data [T + 1];
   }
-  // SERIAL_LOCAL_C.println("FIND exits.");
+  // SERIAL_LOCAL_C.print("FIND exits.\r");
 }
 
 void _DOT (void) {
@@ -717,6 +659,9 @@ void _DOTWORD () {
   X = ((Y >> 24) & 0xff);
   if (X != 0) { _DUP (); T = X; _EMIT (); }
   SERIAL_LOCAL_C.print ("] "); 
+  delay(20); // wild guess kludge tnr 26 August - for 9term only
+  // want to stop flooding 9term with too much information sent
+  // to it too quickly.
 }
 
 void _WORDS (void) {
@@ -943,7 +888,7 @@ void _FORGET (void) {
 }
 
 void _TICK (void) {
-  SERIAL_LOCAL_C.println("WHOOPS - _TICK encountered! ");
+  SERIAL_LOCAL_C.print("WHOOPS - _TICK encountered! \r");
   _PARSE ();
   _WORD ();
   _FIND ();
@@ -1549,12 +1494,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z");
+   SERIAL_LOCAL_C.print  ("\r myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 25 AUG 2019 03:10z\r");
 
-   SERIAL_LOCAL_C.println  ("\n      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp");
-   SERIAL_LOCAL_C.println  ("\n      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-591");
-   SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm");
-   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hk");
+   SERIAL_LOCAL_C.print  ("      Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp\r");
+   SERIAL_LOCAL_C.print  ("      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-591\r");
+   SERIAL_LOCAL_C.print  ("      words: fload wlist warm\r");
+   SERIAL_LOCAL_C.print  ("      TEF MEK Hk\r");
 }
 
 // the loop function runs over and over again forever
