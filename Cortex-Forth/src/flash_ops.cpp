@@ -133,7 +133,7 @@ void flash_setup(void) {
     myFile.print(": testcc -1 512 0 do 1 + dup , loop ;\r");
 
 // >prn ( n -- )
-    myFile.print(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
+    myFile.print(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
 
 // delay ( n -- )
     myFile.print(": delay drop 1234 0 do 1 drop loop ;\r");
