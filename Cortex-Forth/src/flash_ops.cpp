@@ -1,6 +1,9 @@
 // flash_ops.cpp  wa1tnr
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
 
+// USART is Serial1 and USB is Serial
+#define SERIAL_LOCAL_F Serial1
+
 /*
   SD card read/write
 
@@ -51,22 +54,22 @@ File myFile;
 
 void mkdir_forth(void) {
   if (!fatfs.exists(WORKING_DIR)) {
-    Serial.print(WORKING_DIR);
-    Serial.println(" directory not found, creating...");
+    SERIAL_LOCAL_F.print(WORKING_DIR);
+    SERIAL_LOCAL_F.println(" directory not found, creating...");
     if (!fatfs.mkdir(WORKING_DIR)) {
-      Serial.print("Error, failed to create ");
-      Serial.print(WORKING_DIR);
-      Serial.println(" directory!");
-      Serial.println("Entering an endless loop (as a trap) after a delay of 4 seconds.");
+      SERIAL_LOCAL_F.print("Error, failed to create ");
+      SERIAL_LOCAL_F.print(WORKING_DIR);
+      SERIAL_LOCAL_F.println(" directory!");
+      SERIAL_LOCAL_F.println("Entering an endless loop (as a trap) after a delay of 4 seconds.");
       delay(4000);
       while(1);
     }
-    Serial.print("Created ");
-    Serial.print(WORKING_DIR);
-    Serial.println(" directory!");
+    SERIAL_LOCAL_F.print("Created ");
+    SERIAL_LOCAL_F.print(WORKING_DIR);
+    SERIAL_LOCAL_F.println(" directory!");
   } else {
-      Serial.print(WORKING_DIR);
-      Serial.println("  directory was previously created.  No worries.  Continuing.. ");
+      SERIAL_LOCAL_F.print(WORKING_DIR);
+      SERIAL_LOCAL_F.println("  directory was previously created.  No worries.  Continuing.. ");
   }
 }
 
@@ -74,24 +77,24 @@ void mkdir_forth(void) {
 
 /*
  75   if (!fatfs.exists("/test")) {
- 76     Serial.println("Test directory not found, creating...");
+ 76     SERIAL_LOCAL_F.println("Test directory not found, creating...");
  77     // Use mkdir to create directory (note you should _not_ have a trailing slash).
  78     if (!fatfs.mkdir("/test")) {
- 79       Serial.println("Error, failed to create test directory!");
+ 79       SERIAL_LOCAL_F.println("Error, failed to create test directory!");
  80       while(1);
  81     }
- 82     Serial.println("Created test directory!");
+ 82     SERIAL_LOCAL_F.println("Created test directory!");
  83   }
 
 */
 void flash_setup(void) {
   // Open serial communications and wait for port to open:
-  Serial.begin(38400);
-  while (!Serial) {
+  SERIAL_LOCAL_F.begin(38400);
+  while (!SERIAL_LOCAL_F) {
     delay(1); // wait for serial port to connect. Needed for native USB port only
   }
 
-  Serial.print("\nInitializing Filesystem on external flash...");
+  SERIAL_LOCAL_F.print("\nInitializing Filesystem on external flash...");
   
   // Init external flash
   flash.begin();
@@ -99,10 +102,10 @@ void flash_setup(void) {
   // Init file system on the flash
   fatfs.begin(&flash);
 
-  Serial.println("initialization done.");
+  SERIAL_LOCAL_F.println("initialization done.");
 
   if (!fatfs.remove(FILE_NAME)) {
-    Serial.print("Failed to remove "); Serial.println(FILE_NAME);
+    SERIAL_LOCAL_F.print("Failed to remove "); SERIAL_LOCAL_F.println(FILE_NAME);
   }
 
 
@@ -116,7 +119,7 @@ void flash_setup(void) {
 
   // if the file opened okay, write to it:
   if (myFile) {
-    Serial.print("Writing to "); Serial.print(FILE_NAME); Serial.print(" ");
+    SERIAL_LOCAL_F.print("Writing to "); SERIAL_LOCAL_F.print(FILE_NAME); SERIAL_LOCAL_F.print(" ");
 
 // file contents - - - - - - - - - - - - - - - -
 
@@ -238,10 +241,10 @@ loop 1 + swap drop cr ;
 
     // close the file:
     myFile.close();
-    Serial.println(" has now been done.");
+    SERIAL_LOCAL_F.println(" has now been done.");
   } else {
     // if the file didn't open, print an error:
-    Serial.print("error opening "); Serial.println(FILE_NAME);
+    SERIAL_LOCAL_F.print("error opening "); SERIAL_LOCAL_F.println(FILE_NAME);
   }
 
   // re-open the file for reading:
@@ -250,29 +253,29 @@ loop 1 + swap drop cr ;
   // thisFile = (File) myFile; // local tnr kludge
 
   if (myFile) {
-    Serial.print(FILE_NAME); Serial.println(" .. will now be read and printed");
-    Serial.println("to the console.  Attention: design has strange line endings!\r\n");
+    SERIAL_LOCAL_F.print(FILE_NAME); SERIAL_LOCAL_F.println(" .. will now be read and printed");
+    SERIAL_LOCAL_F.println("to the console.  Attention: design has strange line endings!\r\n");
 
     // read from the file until there's nothing else in it:
     while (myFile.available()) {
-      Serial.write(myFile.read());
+      SERIAL_LOCAL_F.write(myFile.read());
     }
     // close the file:
     myFile.close();
-    Serial.println("\r\n");
-    Serial.print(FILE_NAME); Serial.println(" .. is now closed, safely.");
+    SERIAL_LOCAL_F.println("\r\n");
+    SERIAL_LOCAL_F.print(FILE_NAME); SERIAL_LOCAL_F.println(" .. is now closed, safely.");
 
     // re-open the file for reading:
 
     File dataFile = fatfs.open(FILE_NAME, FILE_READ);
-    Serial.print(FILE_NAME);
-    Serial.println(" is now re-opened (for reading).");
+    SERIAL_LOCAL_F.print(FILE_NAME);
+    SERIAL_LOCAL_F.println(" is now re-opened (for reading).");
 
     thisFile = (File) dataFile;
     thisFile.rewind();
-    Serial.println("FILE STAYS OPEN (and rewound) (for a possible fload).");
+    SERIAL_LOCAL_F.println("FILE STAYS OPEN (and rewound) (for a possible fload).");
   } else {
     // if the file didn't open, print an error:
-    Serial.print("error opening "); Serial.println(FILE_NAME);
+    SERIAL_LOCAL_F.print("error opening "); SERIAL_LOCAL_F.println(FILE_NAME);
   }
 }
