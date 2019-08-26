@@ -125,6 +125,11 @@ void flash_setup(void) {
 
 //  myFile.print("\r");
 
+// ASCII 13 is preferred over CR for 9term.
+
+// crd ( - ) // emit 0x0d
+    myFile.print(": crd 13 emit ;\r");
+
 // max ( n1 n2 -- max )
     myFile.print(": max over over - 0< if swap drop -1 then if exit then swap drop ;\r");
 
@@ -196,16 +201,16 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     myFile.print(": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r");
 
 // blist ( addr -- )
-    myFile.print(": blist cr -999 swap 196604 1148 - min 0 max\r");
+    myFile.print(": blist crd -999 swap 196604 1148 - min 0 max\r");
 //  myFile.print("196608 1148 - min 0 max 1 - 8 0 do\r");
-    myFile.print("dup 1 - 8 0 do dup hlist 16 - alist cr\r");
-    myFile.print("swap drop loop 1 + swap drop cr ;\r");
+    myFile.print("dup 1 - 8 0 do dup hlist 16 - alist crd\r");
+    myFile.print("swap drop loop 1 + swap drop crd ;\r");
 
 
 // rlist ( addr -- addr + report_size )
-    myFile.print(": rlist cr -999 swap bottom 195552 + min 0 max\r");
-    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist cr\r");
-    myFile.print("swap drop loop 1 + swap drop cr ;\r");
+    myFile.print(": rlist crd -999 swap bottom 195552 + min 0 max\r");
+    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist crd\r");
+    myFile.print("swap drop loop 1 + swap drop crd ;\r");
 
 /*
 
@@ -229,7 +234,7 @@ loop 1 + swap drop cr ;
 
     myFile.print(": emits 0 do emit loop ;\r");
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
-    myFile.print("69 68 67 66 65 5 emits cr\r");
+    myFile.print("69 68 67 66 65 5 emits crd\r");
 
 // - - - exercise blist
 //  myFile.print("variable myvar 439041101 myvar c! myvar 32 - blist\r");
