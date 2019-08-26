@@ -55,38 +55,25 @@ File myFile;
 void mkdir_forth(void) {
   if (!fatfs.exists(WORKING_DIR)) {
     SERIAL_LOCAL_F.print(WORKING_DIR);
-    SERIAL_LOCAL_F.println(" directory not found, creating...");
+    SERIAL_LOCAL_F.print(" directory not found, creating...\r");
     if (!fatfs.mkdir(WORKING_DIR)) {
       SERIAL_LOCAL_F.print("Error, failed to create ");
       SERIAL_LOCAL_F.print(WORKING_DIR);
-      SERIAL_LOCAL_F.println(" directory!");
-      SERIAL_LOCAL_F.println("Entering an endless loop (as a trap) after a delay of 4 seconds.");
+      SERIAL_LOCAL_F.print(" directory!\r");
+      SERIAL_LOCAL_F.print("Entering an endless loop (as a trap) after a delay of 4 seconds.\r");
       delay(4000);
       while(1);
     }
     SERIAL_LOCAL_F.print("Created ");
     SERIAL_LOCAL_F.print(WORKING_DIR);
-    SERIAL_LOCAL_F.println(" directory!");
+    SERIAL_LOCAL_F.print(" directory!\r");
   } else {
       SERIAL_LOCAL_F.print(WORKING_DIR);
-      SERIAL_LOCAL_F.println("  directory was previously created.  No worries.  Continuing.. ");
+      SERIAL_LOCAL_F.print("  directory was previously created.  No worries.  Continuing..\r");
   }
 }
 
-// modeled on:
 
-/*
- 75   if (!fatfs.exists("/test")) {
- 76     SERIAL_LOCAL_F.println("Test directory not found, creating...");
- 77     // Use mkdir to create directory (note you should _not_ have a trailing slash).
- 78     if (!fatfs.mkdir("/test")) {
- 79       SERIAL_LOCAL_F.println("Error, failed to create test directory!");
- 80       while(1);
- 81     }
- 82     SERIAL_LOCAL_F.println("Created test directory!");
- 83   }
-
-*/
 void flash_setup(void) {
   // Open serial communications and wait for port to open:
   SERIAL_LOCAL_F.begin(38400);
@@ -94,7 +81,7 @@ void flash_setup(void) {
     delay(1); // wait for serial port to connect. Needed for native USB port only
   }
 
-  SERIAL_LOCAL_F.print("\nInitializing Filesystem on external flash...");
+  SERIAL_LOCAL_F.print("\rInitializing Filesystem on external flash...");
   
   // Init external flash
   flash.begin();
@@ -102,10 +89,10 @@ void flash_setup(void) {
   // Init file system on the flash
   fatfs.begin(&flash);
 
-  SERIAL_LOCAL_F.println("initialization done.");
+  SERIAL_LOCAL_F.print("\rinitialization done.\r");
 
   if (!fatfs.remove(FILE_NAME)) {
-    SERIAL_LOCAL_F.print("Failed to remove "); SERIAL_LOCAL_F.println(FILE_NAME);
+    SERIAL_LOCAL_F.print("Failed to remove "); SERIAL_LOCAL_F.print(FILE_NAME);
   }
 
 
@@ -201,16 +188,16 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     myFile.print(": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r");
 
 // blist ( addr -- )
-    myFile.print(": blist crd -999 swap 196604 1148 - min 0 max\r");
+    myFile.print(": blist cr -999 swap 196604 1148 - min 0 max\r");
 //  myFile.print("196608 1148 - min 0 max 1 - 8 0 do\r");
-    myFile.print("dup 1 - 8 0 do dup hlist 16 - alist crd\r");
-    myFile.print("swap drop loop 1 + swap drop crd ;\r");
+    myFile.print("dup 1 - 8 0 do dup hlist 16 - alist cr\r");
+    myFile.print("swap drop loop 1 + swap drop cr ;\r");
 
 
 // rlist ( addr -- addr + report_size )
-    myFile.print(": rlist crd -999 swap bottom 195552 + min 0 max\r");
-    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist crd\r");
-    myFile.print("swap drop loop 1 + swap drop crd ;\r");
+    myFile.print(": rlist cr -999 swap bottom 195552 + min 0 max\r");
+    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist cr\r");
+    myFile.print("swap drop loop 1 + swap drop cr ;\r");
 
 /*
 
@@ -234,7 +221,7 @@ loop 1 + swap drop cr ;
 
     myFile.print(": emits 0 do emit loop ;\r");
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
-    myFile.print("69 68 67 66 65 5 emits crd\r");
+    myFile.print("69 68 67 66 65 5 emits cr\r");
 
 // - - - exercise blist
 //  myFile.print("variable myvar 439041101 myvar c! myvar 32 - blist\r");
@@ -246,10 +233,10 @@ loop 1 + swap drop cr ;
 
     // close the file:
     myFile.close();
-    SERIAL_LOCAL_F.println(" has now been done.");
+    SERIAL_LOCAL_F.print(" has now been done.\r");
   } else {
     // if the file didn't open, print an error:
-    SERIAL_LOCAL_F.print("error opening "); SERIAL_LOCAL_F.println(FILE_NAME);
+    SERIAL_LOCAL_F.print("error opening "); SERIAL_LOCAL_F.print(FILE_NAME);
   }
 
   // re-open the file for reading:
@@ -258,8 +245,8 @@ loop 1 + swap drop cr ;
   // thisFile = (File) myFile; // local tnr kludge
 
   if (myFile) {
-    SERIAL_LOCAL_F.print(FILE_NAME); SERIAL_LOCAL_F.println(" .. will now be read and printed");
-    SERIAL_LOCAL_F.println("to the console.  Attention: design has strange line endings!\r\n");
+    SERIAL_LOCAL_F.print(FILE_NAME); SERIAL_LOCAL_F.print(" .. will now be read and printed\r");
+    SERIAL_LOCAL_F.print("to the console.  Attention: design has strange line endings!\r");
 
     // read from the file until there's nothing else in it:
     while (myFile.available()) {
@@ -267,20 +254,20 @@ loop 1 + swap drop cr ;
     }
     // close the file:
     myFile.close();
-    SERIAL_LOCAL_F.println("\r\n");
-    SERIAL_LOCAL_F.print(FILE_NAME); SERIAL_LOCAL_F.println(" .. is now closed, safely.");
+    SERIAL_LOCAL_F.print("\r");
+    SERIAL_LOCAL_F.print(FILE_NAME); SERIAL_LOCAL_F.print(" .. is now closed, safely.\r");
 
     // re-open the file for reading:
 
     File dataFile = fatfs.open(FILE_NAME, FILE_READ);
     SERIAL_LOCAL_F.print(FILE_NAME);
-    SERIAL_LOCAL_F.println(" is now re-opened (for reading).");
+    SERIAL_LOCAL_F.print(" is now re-opened (for reading).\r");
 
     thisFile = (File) dataFile;
     thisFile.rewind();
-    SERIAL_LOCAL_F.println("FILE STAYS OPEN (and rewound) (for a possible fload).");
+    SERIAL_LOCAL_F.print("FILE STAYS OPEN (and rewound) (for a possible fload).\r");
   } else {
     // if the file didn't open, print an error:
-    SERIAL_LOCAL_F.print("error opening "); SERIAL_LOCAL_F.println(FILE_NAME);
+    SERIAL_LOCAL_F.print("error opening "); SERIAL_LOCAL_F.print(FILE_NAME);
   }
 }
