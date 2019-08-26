@@ -1,0 +1,11 @@
+The 9termer branch works with 9term and via
+the USART (both together).
+
+It's designed to deal with strict timing
+constraints (mainly to avoid dropped characters).
+
+Keyboard input latency can suffer if the timings
+are not optimized.
+
+Current platforms are Trinket M0 (for the M0 Terminal program)
+and ItsyBitsyM4 (for this program, Cortex-Forth.ino).
