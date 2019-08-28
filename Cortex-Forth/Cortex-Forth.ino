@@ -448,14 +448,14 @@ void _PARSE (void) {
 
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
 
-#define FLEN_MAX 2
+#define FLEN_MAX 1
 void _FLPARSE (void) {
   char t;
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
     // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
-    while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
+    while (thisFile.available() > FLEN_MAX) {
       do {
         t = thisFile.read();
         char peeked_char = t;
@@ -470,9 +470,9 @@ void _FLPARSE (void) {
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
       // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
-      if (thisFile.available() < (FLEN_MAX - 1)) {
+      if (thisFile.available() < FLEN_MAX) {
         // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
-        if (thisFile.available() < (1)) {
+        if (thisFile.available() < 1) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
           SERIAL_LOCAL_C.print("\r");
@@ -504,7 +504,7 @@ void _FLPARSE (void) {
       }
       // SERIAL_LOCAL_C.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
-    } // new conditional 17:25z
+    }
     SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
@@ -517,14 +517,13 @@ void _FLPARSE (void) {
   }
 }
 
-// #define FLEN_MAX 2
 void _SFPARSE (void) { // safe parse
   char t;
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
     // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
-    while (thisFile.available() > FLEN_MAX) { // new conditional 17:25z
+    while (thisFile.available() > FLEN_MAX) {
       do {
         t = thisFile.read();
         char peeked_char = t;
@@ -539,9 +538,9 @@ void _SFPARSE (void) { // safe parse
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
       // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
-      if (thisFile.available() < (FLEN_MAX - 1)) {
+      if (thisFile.available() < FLEN_MAX) {
         // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
-        if (thisFile.available() < (1)) {
+        if (thisFile.available() < 1) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
           SERIAL_LOCAL_C.print("\r");
@@ -573,7 +572,7 @@ void _SFPARSE (void) { // safe parse
       }
       // SERIAL_LOCAL_C.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
-    } // new conditional 17:25z
+    }
     SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
