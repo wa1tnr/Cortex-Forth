@@ -1,5 +1,11 @@
 // Tue Aug 27 19:44:27 UTC 2019 0.1.9 non-usart-26_aug  shred: abn-611
 
+#undef ECHO_INPUT
+#define ECHO_INPUT // 9term wants echo
+
+#define DEBUG_PARSE_ECHO
+#undef DEBUG_PARSE_ECHO
+
 /*
 Branches: 9termer-aa-,
   good-compiler-aa-ff-bb_exp
@@ -158,6 +164,7 @@ union Memory {
   void (*program []) (void);
 } memory;
 
+int PKF = 0; // Peek Flag set to false initially
 String tib = "";
 int S = S0; // data stack pointer
 int R = R0; // return stack pointer
@@ -401,29 +408,76 @@ void _SHOWTIB (void) {
   SERIAL_LOCAL_C.print (tib); // tnr // restored to original
 }
 
+void _set_PKF(void) {
+  PKF = -1;
+}
+void _reset_PKF(void) {
+  PKF = 0;
+}
+
+int hyster = 0; // no memory
+
 // trim leading spaces
 void _PARSE (void) {
   char t;
   tib = "";
+  _reset_PKF(); // haven't peeked yet
   do {
     while (!SERIAL_LOCAL_C.available ());
-    t = SERIAL_LOCAL_C.peek ();
+
+    // ---------------- set the peek flag:
+    t = SERIAL_LOCAL_C.peek (); _set_PKF();
+
     if (t == ' ') {
+#ifdef DEBUG_PARSE_ECHO
+      SERIAL_LOCAL_C.print ("SPACELY_SPROCKETS"); 
+#endif
+#ifndef DEBUG_PARSE_ECHO
+  #ifdef ECHO_INPUT
+      SERIAL_LOCAL_C.write (t);
+  #endif
+#endif
       t = SERIAL_LOCAL_C.read ();
-//      SERIAL_LOCAL_C.write (t);
     }
   } while (t == ' ');
-  do {
-    while (!SERIAL_LOCAL_C.available ());
-    t = SERIAL_LOCAL_C.read ();
 
+  // ------------------- only a peek gets a write:
+  if (PKF) {
 #ifdef ECHO_INPUT
     SERIAL_LOCAL_C.write (t);
 #endif
+#ifdef DEBUG_PARSE_ECHO
+    SERIAL_LOCAL_C.print ("TRIPWIRE");
+#endif
+  }
+  _reset_PKF();
 
+  do {
+    while (!SERIAL_LOCAL_C.available ());
+    t = SERIAL_LOCAL_C.read ();
     tib = tib + t;
+
+    if (hyster) {
+      if (!PKF) {
+#ifdef ECHO_INPUT
+        SERIAL_LOCAL_C.write (t);
+#endif
+#ifdef DEBUG_PARSE_ECHO
+        SERIAL_LOCAL_C.print ("RESET");
+#endif
+        _set_PKF();
+      } else {
+#ifdef ECHO_INPUT
+        SERIAL_LOCAL_C.write (t);
+#endif
+#ifdef DEBUG_PARSE_ECHO
+        SERIAL_LOCAL_C.print ("non_RESET");
+#endif
+      }
+    }
+    hyster = -1;
   } while (t > ' ');
-  // tnr, suppressed // SERIAL_LOCAL_C.print (tib);
+  hyster = 0; // reset
 }
 
 // trim leading spaces
