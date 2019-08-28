@@ -228,11 +228,11 @@ loop 1 + swap drop cr ;
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
     myFile.print("69 68 67 66 65 5 emits cr\r");
 
-    myFile.print("variable bend variable buff\r");
-    myFile.print("here buff ! 32 allot here bend ! 1 drop\r");
-    myFile.print(": svd buff @ 2701 + blist ; cr\r"); // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
-    myFile.print(": sve buff @ 4 + cr ; cr\r");
-    myFile.print(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ; cr\r");
+    myFile.print("variable bend variable buff here buff !\r");
+    myFile.print("32 allot here bend ! 1 drop\r");
+    myFile.print(": svd buff @ 2701 + blist ;\r"); // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
+    myFile.print(": sve buff @ 4 + cr ;\r");
+    myFile.print(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r");
 
 
 
