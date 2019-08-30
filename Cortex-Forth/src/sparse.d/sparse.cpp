@@ -17,12 +17,30 @@ extern void _WORD(void);
 extern void _ALLOT(void);
 extern void _HERE(void);
 extern void _SWAP(void);
+extern void _DROP(void);
 extern int _COMPOSE(void);
 extern void _KEY(void);
 extern void _DUP(void);
 extern void _CSTORE (void);
+extern void _CFETCH (void);
 
 // extern char* parseStr(void);
+
+void fetchStr(void) { // ( adrs -- )
+    int j = pop();
+    int count = 0;
+    for (int index = (j+1); index < (j + 32); index++) {
+        push(index); count++;
+        _CFETCH();
+        _DUP(); // make a copy of the stored number
+        int rr = pop(); // destroy that copy
+        if (rr == 0) {
+          _DROP();
+          count--;
+        }
+    }
+    push(count);
+}
 
 char* parseStr(void) {
     _HERE();
@@ -49,11 +67,6 @@ char* parseStr(void) {
                 test = pop();
             }
 
-            // Serial.print("DEBUG: test is: "); Serial.print(test);
-
-            // if (test != 32) { Serial.print(" testval: "); Serial.print(test); }
-
-            // top of buffer address passes through here
             push(p);
             _CSTORE();
             p++;
@@ -73,7 +86,7 @@ char* parseStr(void) {
  254 extern void _throw(char*);
  255 extern void _cr();
  256 extern void _bl();
- 261 
+ 261
 
  262 char* parseStr(void) {
  263         _bl(); _word(); cell_t n = dStack_pop();
@@ -87,4 +100,62 @@ char* parseStr(void) {
  272         return str;
  273 }
 
+*/
+
+/* quick log sample session 30 aug 18:56 utc:
+
+ myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 13:33z
+
+      Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-
+
+      +0.2.0-a.0 +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-705
+
+      words: fload wlist warm
+
+      TEF MEK Hn-f
+fload  loading a forth program from flashROM ..
+ABCDE
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
+.s empty ss ?
+: sayit emits space ; .s empty 99 99 99 3 sayigs ?
+99 33 99 3 sayit c!c cr
+.s empty s" gubernatorial ENDstr. fs@ sayit gubernatorial .s empty cr
+s" chenanagins ENDstr. .s 1038 dup fs@ .s 1038 115 110 105 103 97 110 97 110 101 104 99 11 cr
+sayit chenanagins .s 1038 dup blist
+40E : 2D 73 6E 69 67 61 6E 61 6E 65 68 63 00 00 00 00   -snigananehc....
+41E : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+42E : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+43E : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+44E : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+45E : 00 00 07 73 66 61 4D 00 00 00 75 45 00 00 07 00   ...sfaM...uE....
+46E : 00 00 02 00 00 00 21 01 00 00 05 61 6C 6F 4D 00   ......!....aloM.
+47E : 00 00 75 45 00 00 06 00 00 00 8C 00 00 00 28 00   ..uE..........(.
+
+better log:
+
+ myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 13:33z
+
+      Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-
+
+      +0.2.0-a.0 +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-705
+
+      words: fload wlist warm
+
+      TEF MEK Hn-f
+fload  loading a forth program from flashROM ..
+ABCDE 
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
+: sayit emits space space ; .s empty cr  
+.s empty s" KingOfTheRoad ENDstr. .s 1007 dup cr  
+fs@ sayit KingOfTheRoad  .s 1007 cr  
+blist  
+3EF : 0E 64 61 6F 52 65 68 54 66 4F 67 6E 69 4B 00 00   .daoRehTfOgniK.. 
+3FF : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+40F : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+41F : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+42F : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+43F : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+44F : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+45F : 00 07 73 66 61 4D 00 00 00 75 45 00 00 07 00 00   ..sfaM...uE..... 
+ 
 */
