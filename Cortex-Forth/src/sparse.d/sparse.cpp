@@ -69,6 +69,7 @@ char* parseStr(void) {
     // Serial.print("final n is: ");
     // Serial.println(n);
     push(n);
+    Serial.print(" ENDstr. ");
     return str;
 }
 /*
