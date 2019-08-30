@@ -295,7 +295,7 @@ void _COMPOSE (void) {
     _EMIT();
     _SWAP(); // risk of underflow
     _OVER();
-    Serial.print("Tee is: "); Serial.print(T);
+    // DEBUG: // Serial.print("Tee is: "); Serial.print(T);
     if (T == 32) { _DROP(); _DUP(); T = counter--; break; } // unrelated 32 - this one's a space char
     _DROP();
   }
