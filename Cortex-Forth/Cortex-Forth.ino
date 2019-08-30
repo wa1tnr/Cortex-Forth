@@ -290,6 +290,7 @@ void _COMPOSE (void) {
     int tk = ' ';
     counter++;
     _KEY();
+    if (counter > 30) { _DUP(); T = 43; _EMIT(); break; }
     // _SPACE(); _DUP(); _HDOT(); _SPACE();
     if (T == 1) SERIAL_LOCAL_C.print(" Ctrl+A pressed ");
     if (T == 2) SERIAL_LOCAL_C.print(" Ctrl+B pressed ");
@@ -316,10 +317,13 @@ void _FETCHSTR (void) {
 }
 
 void _GETSTR (void) {
+    parseStr();
+/*
     char* vstr = parseStr();
     char sib[32];
     char* buffer = sib;
     strcpy(buffer, vstr);
+*/
     // Serial.print("PARSED STRING: '");
     // Serial.print((char*) vstr, HEX);
     // Serial.print(buffer);
