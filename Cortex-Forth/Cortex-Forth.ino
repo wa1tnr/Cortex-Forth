@@ -1,9 +1,11 @@
-// Fri Aug 30 13:11:40 UTC 2019 0.1.9 non-usart-30_aug-aa-  shred: abn-703");
+// Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-  shred: abn-705");
 /*
+* develop
   non-usart-26_aug
   non-usart-30_aug
-* non-usart-30_aug-aa-
+  non-usart-30_aug-aa-
 */
+
 // On branch non-usart-30_aug
 
 // Tue Aug 27 19:44:27 UTC 2019 0.1.9 non-usart-26_aug  shred: abn-611
@@ -1647,12 +1649,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 13:11z");
+   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 13:33z");
 
-   SERIAL_LOCAL_C.println  ("\n      Fri Aug 30 13:11:40 UTC 2019 0.1.9 non-usart-30_aug-aa-");
-   SERIAL_LOCAL_C.println  ("\n      +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-703");
+   SERIAL_LOCAL_C.println  ("\n      Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-");
+   SERIAL_LOCAL_C.println  ("\n      +0.2.0-a.0 +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-705");
    SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm");
-   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-e");
+   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-f");
 }
 
 // the loop function runs over and over again forever
