@@ -27,47 +27,28 @@ extern void _CSTORE (void);
 char* parseStr(void) {
     _HERE();
     push(32);
-    // push(' ');
-    // _WORD();
     _ALLOT();
     _HERE();
     _SWAP();
     int n = pop(); // bottom address of new string allot'd
     n++; // might want to skip that first byte haha
 
-    // ( here -- here 32 -- here -- here heretop -- heretop here -- heretop )
-
     char* cStr = (char*) n;
     char* str = 0;
     if(cStr) {
         *cStr++;
         _COMPOSE(); // _KEY();
-        // Serial.print(" n in parseStr is now: "); Serial.println(n);
-        // _DUP();
-        // n = pop(); // bottom address of string buffer?
-        // cStr = (char*) n; // our new string, empty tho
-        // strcpy (str, cStr);
-        // Serial.print((int)str, HEX); Serial.println(" wonder what that was");
-        // Serial.print(str, HEX); Serial.println(" wonder what that was");
+        int ln = pop();
         int p = n;
-        for (int i = 32; i>0; i--) {
-            // Serial.print("loop index: "); Serial.print(i); Serial.print("  ");
+        for (int i = ln; i>0; i--) {
             push(p);
             _CSTORE();
-            // Serial.print("p becomes: "); Serial.print(p); Serial.print("  ");
             p++;
             // value address c!
-
-
-            // strcpy(cStr, (char*) pop());
-            // strcpy(str++, (char*) pop());
         }
         push(p); _CSTORE();
         // str = (char*) cStr;
     }
-    // Serial.println("Returning str in parseStr: ");
-    // Serial.print("final n is: ");
-    // Serial.println(n);
     push(n);
     Serial.print(" ENDstr. ");
     return str;
