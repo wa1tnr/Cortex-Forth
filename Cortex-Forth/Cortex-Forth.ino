@@ -309,6 +309,11 @@ void _COMPOSE (void) {
 }
 
 extern char* parseStr(void);
+extern void fetchStr(void);
+
+void _FETCHSTR (void) {
+    fetchStr();
+}
 
 void _GETSTR (void) {
     char* vstr = parseStr();
@@ -1603,6 +1608,12 @@ void setup () {
   LINK(481, 477)
   CODE(482, _GETSTR)
 
+// fs@ ( addr -- )
+// fs@  (  - ) // fetch string
+  NAME(483, 0, 3, 'f', 's', '@')
+  LINK(484, 480)
+  CODE(485, _FETCHSTR)
+
   // test
   DATA(500, lit)
   DATA(501, 10) // i
@@ -1633,11 +1644,14 @@ void setup () {
   // D = 477; // latest word // D = 259;
   // H = 480; // top of dictionary // H = 262;
 
-  D = 480; // latest word // D = 259;
-  H = 483; // top of dictionary // H = 262;
+  // D = 480; // latest word // D = 259;
+  // H = 483; // top of dictionary // H = 262;
 
-  // D = 483; // latest word // D = 259;
-  // H = 486; // top of dictionary // H = 262;
+  D = 483; // latest word // D = 259;
+  H = 486; // top of dictionary // H = 262;
+
+  // D = 486; // latest word // D = 259;
+  // H = 489; // top of dictionary // H = 262;
 
 //  I = 500; // test
   // SERIAL_LOCAL_C.begin (38400);
