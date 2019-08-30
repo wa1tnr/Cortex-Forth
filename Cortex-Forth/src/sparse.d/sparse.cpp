@@ -62,7 +62,7 @@ char* parseStr(void) {
         push(p); _CSTORE();
     }
     push(n);
-    Serial.print(" ENDstr. ");
+    Serial.print("ENDstr. ");
     return str;
 }
 /*
