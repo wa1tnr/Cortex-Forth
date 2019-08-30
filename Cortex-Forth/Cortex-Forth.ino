@@ -283,7 +283,7 @@ void _COMPOSE (void) {
     int tk = ' ';
     counter++;
     _KEY();
-    _SPACE(); _DUP(); _HDOT(); _SPACE();
+    // _SPACE(); _DUP(); _HDOT(); _SPACE();
     if (T == 1) SERIAL_LOCAL_C.print(" Ctrl+A pressed ");
     if (T == 2) SERIAL_LOCAL_C.print(" Ctrl+B pressed ");
     if (T == 7) SERIAL_LOCAL_C.print(" Ctrl+G BELL pressed ");
