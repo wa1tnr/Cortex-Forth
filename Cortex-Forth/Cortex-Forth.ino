@@ -1590,8 +1590,9 @@ void setup () {
   LINK(478, 474)
   CODE(479, _COMPOSE)
 
+// s" ( -- addr )
 // gstr (  - ) // get string
-  NAME(480, 0, 4, 'g', 's', 't') 
+  NAME(480, 0, 2, 's', '"', 0) 
   LINK(481, 477)
   CODE(482, _GETSTR)
 
