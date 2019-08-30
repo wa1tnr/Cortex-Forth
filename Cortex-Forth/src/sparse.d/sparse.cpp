@@ -19,6 +19,8 @@ extern void _HERE(void);
 extern void _SWAP(void);
 extern int _COMPOSE(void);
 extern void _KEY(void);
+extern void _DUP(void);
+extern void _CSTORE (void);
 
 // extern char* parseStr(void);
 
@@ -31,15 +33,40 @@ char* parseStr(void) {
     _HERE();
     _SWAP();
     int n = pop(); // bottom address of new string allot'd
+    n++; // might want to skip that first byte haha
+
+    // ( here -- here 32 -- here -- here heretop -- heretop here -- heretop )
+
     char* cStr = (char*) n;
     char* str = 0;
     if(cStr) {
         *cStr++;
         _COMPOSE(); // _KEY();
-        n = pop();
-        cStr = (char*) n;
-        str = (char*) cStr;
+        Serial.print(" n in parseStr is now: "); Serial.println(n);
+        // _DUP();
+        // n = pop(); // bottom address of string buffer?
+        // cStr = (char*) n; // our new string, empty tho
+        // strcpy (str, cStr);
+        // Serial.print((int)str, HEX); Serial.println(" wonder what that was");
+        // Serial.print(str, HEX); Serial.println(" wonder what that was");
+        int p = n;
+        for (int i = 30; i>0; i--) {
+            Serial.print("p becomes: "); Serial.print(p); Serial.print("  ");
+            p++;
+            // value address c!
+            push(p);
+            _CSTORE();
+
+
+            // strcpy(cStr, (char*) pop());
+            // strcpy(str++, (char*) pop());
+        }
+        // str = (char*) cStr;
     }
+    Serial.println("Returning str in parseStr: ");
+    Serial.print("final n is: ");
+    Serial.println(n);
+    push(n);
     return str;
 }
 /*
