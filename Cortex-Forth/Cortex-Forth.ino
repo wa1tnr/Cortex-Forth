@@ -1,3 +1,6 @@
+// Fri Aug 30 05:42:50 UTC 2019 0.1.9 non-usart-30_aug  shred: abn-701");
+// On branch non-usart-30_aug
+
 // Tue Aug 27 19:44:27 UTC 2019 0.1.9 non-usart-26_aug  shred: abn-611
 
 #undef ECHO_INPUT
@@ -1610,12 +1613,12 @@ void setup () {
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 27 AUG 2019 19:44z");
+   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 05:42z");
 
-   SERIAL_LOCAL_C.println  ("\n      Tue Aug 27 19:44:27 UTC 2019 0.1.9 non-usart-26_aug");
-   SERIAL_LOCAL_C.println  ("\n      ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-611");
+   SERIAL_LOCAL_C.println  ("\n      Fri Aug 30 05:42:50 UTC 2019 0.1.9 non-usart-30_aug");
+   SERIAL_LOCAL_C.println  ("\n      +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-701");
    SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm");
-   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-a");
+   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-c");
 }
 
 // the loop function runs over and over again forever
