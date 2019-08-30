@@ -26,7 +26,8 @@ extern void _CFETCH (void);
 
 // extern char* parseStr(void);
 
-void fetchStr(void) { // ( adrs -- )
+
+void fetchStrBackwards(void) { // ( adrs -- )
     int j = pop();
     int count = 0;
     for (int index = (j+1); index < (j + 32); index++) {
@@ -42,7 +43,31 @@ void fetchStr(void) { // ( adrs -- )
     push(count);
 }
 
-char* parseStr(void) {
+
+void fetchStr(void) { // ( adrs -- )
+    int j = pop();
+    int count = 0;
+    for (int index = (j+1); index < (j + 32); index++) {
+        push(index); count++;
+        _CFETCH();
+        _DUP(); // make a copy of the stored number
+        int rr = pop(); // destroy that copy
+        if (rr == 0) {
+          _DROP();
+          count--;
+          push(count);
+          return;
+        }
+    }
+    // should not reach here:
+    // push(count);
+    push(-399);
+    push(-499);
+    push(-599);
+}
+
+
+void parseStr(void) {
     _HERE();
     push(32);
     _ALLOT();
@@ -75,8 +100,8 @@ char* parseStr(void) {
         push(p); _CSTORE();
     }
     push(n);
-    Serial.print("ENDstr. ");
-    return str;
+    Serial.print(" "); // subtle ending
+    // return str;
 }
 /*
 
