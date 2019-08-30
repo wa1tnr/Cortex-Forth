@@ -43,18 +43,23 @@ char* parseStr(void) {
         int p = n;
         for (int i = ln; i>0; i--) {
             _DUP(); int test = pop();
-            if (test == 32) { Serial.println(" T is 32 "); test = pop();}
 
-            Serial.print("DEBUG: test is: "); Serial.print(test);
+            if (test == 32) {
+                // Serial.println(" T is 32 ");
+                test = pop();
+            }
 
-            if (test != 32) { Serial.print(" testval: "); Serial.print(test); }
+            // Serial.print("DEBUG: test is: "); Serial.print(test);
+
+            // if (test != 32) { Serial.print(" testval: "); Serial.print(test); }
+
+            // top of buffer address passes through here
             push(p);
             _CSTORE();
             p++;
             // value address c!
         }
         push(p); _CSTORE();
-        // str = (char*) cStr;
     }
     push(n);
     Serial.print(" ENDstr. ");
