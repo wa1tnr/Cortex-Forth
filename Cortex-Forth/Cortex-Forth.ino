@@ -287,7 +287,7 @@ void _COMPOSE (void) {
     if (T == 8) SERIAL_LOCAL_C.print(" Ctrl+H BACKSPACE pressed ");
     if (T == 15) SERIAL_LOCAL_C.print(" Ctrl+O pressed ");
     if (T == 27) SERIAL_LOCAL_C.print(" ESC pressed ");
-    if (T == 127) SERIAL_LOCAL_C.print(" RUBOUT pressed \(0x7f\) ");
+    if (T == 127) SERIAL_LOCAL_C.print(" RUBOUT pressed (0x7f) ");
     _EMIT();
   }
 }
