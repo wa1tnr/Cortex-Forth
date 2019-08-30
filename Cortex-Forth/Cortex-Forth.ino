@@ -293,6 +293,7 @@ void _COMPOSE (void) {
     if (T == 127) SERIAL_LOCAL_C.print(" RUBOUT pressed (0x7f) ");
     _DUP();
     _EMIT();
+    _SWAP(); // risk of underflow
   }
 }
 
@@ -300,8 +301,12 @@ extern char* parseStr(void);
 
 void _GETSTR (void) {
     char* vstr = parseStr();
-    Serial.print("PARSED STRING: '");
-    Serial.print(vstr);
+    char sib[32];
+    char* buffer = sib;
+    strcpy(buffer, vstr);
+    // Serial.print("PARSED STRING: '");
+    // Serial.print((char*) vstr, HEX);
+    // Serial.print(buffer);
 }
 
 void _RBYTE (void) { // _getOneByteRAM(); // ( addr -- )
