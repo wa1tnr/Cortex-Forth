@@ -39,8 +39,15 @@ char* parseStr(void) {
         *cStr++;
         _COMPOSE(); // _KEY();
         int ln = pop();
+        ln--; // not ascii 32 delimiter
         int p = n;
         for (int i = ln; i>0; i--) {
+            _DUP(); int test = pop();
+            if (test == 32) { Serial.println(" T is 32 "); test = pop();}
+
+            Serial.print("DEBUG: test is: "); Serial.print(test);
+
+            if (test != 32) { Serial.print(" testval: "); Serial.print(test); }
             push(p);
             _CSTORE();
             p++;
