@@ -42,7 +42,7 @@ char* parseStr(void) {
     if(cStr) {
         *cStr++;
         _COMPOSE(); // _KEY();
-        Serial.print(" n in parseStr is now: "); Serial.println(n);
+        // Serial.print(" n in parseStr is now: "); Serial.println(n);
         // _DUP();
         // n = pop(); // bottom address of string buffer?
         // cStr = (char*) n; // our new string, empty tho
@@ -51,10 +51,10 @@ char* parseStr(void) {
         // Serial.print(str, HEX); Serial.println(" wonder what that was");
         int p = n;
         for (int i = 32; i>0; i--) {
-            Serial.print("loop index: "); Serial.print(i); Serial.print("  ");
+            // Serial.print("loop index: "); Serial.print(i); Serial.print("  ");
             push(p);
             _CSTORE();
-            Serial.print("p becomes: "); Serial.print(p); Serial.print("  ");
+            // Serial.print("p becomes: "); Serial.print(p); Serial.print("  ");
             p++;
             // value address c!
 
@@ -65,9 +65,9 @@ char* parseStr(void) {
         push(p); _CSTORE();
         // str = (char*) cStr;
     }
-    Serial.println("Returning str in parseStr: ");
-    Serial.print("final n is: ");
-    Serial.println(n);
+    // Serial.println("Returning str in parseStr: ");
+    // Serial.print("final n is: ");
+    // Serial.println(n);
     push(n);
     return str;
 }
