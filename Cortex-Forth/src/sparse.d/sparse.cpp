@@ -50,17 +50,19 @@ char* parseStr(void) {
         // Serial.print((int)str, HEX); Serial.println(" wonder what that was");
         // Serial.print(str, HEX); Serial.println(" wonder what that was");
         int p = n;
-        for (int i = 30; i>0; i--) {
+        for (int i = 32; i>0; i--) {
+            Serial.print("loop index: "); Serial.print(i); Serial.print("  ");
+            push(p);
+            _CSTORE();
             Serial.print("p becomes: "); Serial.print(p); Serial.print("  ");
             p++;
             // value address c!
-            push(p);
-            _CSTORE();
 
 
             // strcpy(cStr, (char*) pop());
             // strcpy(str++, (char*) pop());
         }
+        push(p); _CSTORE();
         // str = (char*) cStr;
     }
     Serial.println("Returning str in parseStr: ");
