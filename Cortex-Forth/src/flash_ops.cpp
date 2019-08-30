@@ -224,7 +224,8 @@ loop 1 + swap drop cr ;
 
 // rdump was deprecated. 24 Aug
 
-    myFile.print(": emits 0 do emit loop ;\r");
+    myFile.print(": emits 0 do emit loop space ;\r");
+    myFile.print(": said fs@ emits space cr space ;\r");
     myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
     myFile.print("69 68 67 66 65 5 emits cr\r");
 
