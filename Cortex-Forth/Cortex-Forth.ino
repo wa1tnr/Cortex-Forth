@@ -278,7 +278,10 @@ void _WARM (void) {
 }
 
 void _COMPOSE (void) {
-  while(-1) { // always true
+  int counter = 0;
+  while(counter < 32) { // always true
+    int tk = ' ';
+    counter++;
     _KEY();
     _SPACE(); _DUP(); _HDOT(); _SPACE();
     if (T == 1) SERIAL_LOCAL_C.print(" Ctrl+A pressed ");
@@ -288,8 +291,17 @@ void _COMPOSE (void) {
     if (T == 15) SERIAL_LOCAL_C.print(" Ctrl+O pressed ");
     if (T == 27) SERIAL_LOCAL_C.print(" ESC pressed ");
     if (T == 127) SERIAL_LOCAL_C.print(" RUBOUT pressed (0x7f) ");
+    _DUP();
     _EMIT();
   }
+}
+
+extern char* parseStr(void);
+
+void _GETSTR (void) {
+    char* vstr = parseStr();
+    Serial.print("PARSED STRING: '");
+    Serial.print(vstr);
 }
 
 void _RBYTE (void) { // _getOneByteRAM(); // ( addr -- )
@@ -1569,6 +1581,10 @@ void setup () {
   LINK(478, 474)
   CODE(479, _COMPOSE)
 
+// gstr (  - ) // get string
+  NAME(480, 0, 4, 'g', 's', 't') 
+  LINK(481, 477)
+  CODE(482, _GETSTR)
 
   // test
   DATA(500, lit)
@@ -1597,11 +1613,14 @@ void setup () {
   // D = 474; // latest word // D = 259;
   // H = 477; // top of dictionary // H = 262;
 
-  D = 477; // latest word // D = 259;
-  H = 480; // top of dictionary // H = 262;
+  // D = 477; // latest word // D = 259;
+  // H = 480; // top of dictionary // H = 262;
 
-  // D = 480; // latest word // D = 259;
-  // H = 483; // top of dictionary // H = 262;
+  D = 480; // latest word // D = 259;
+  H = 483; // top of dictionary // H = 262;
+
+  // D = 483; // latest word // D = 259;
+  // H = 486; // top of dictionary // H = 262;
 
 //  I = 500; // test
   // SERIAL_LOCAL_C.begin (38400);
