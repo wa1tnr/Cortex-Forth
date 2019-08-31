@@ -66,6 +66,44 @@ void fetchStrBackwards(void) { // ( adrs -- )
     push(count);
 }
 
+/*
+      +0.2.0-a.0 +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-705
+
+      words: fload wlist warm
+
+      TEF MEK Hn-f
+fload  loading a forth program from flashROM ..
+ABCDE  
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
+s" Hello  11 .s 1013 11 cpmem .s 1013 11 536950436 dup rlist  
+200136A4 : 51 41 53 44 46 4A 4B 4C 51 57 45 52 00 00 00 00   QASDFJKLQWER.... 
+200136B4 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+
+use 536950436
+*/
+/*
+
+did what was asked ;)
+
+to wit:
+     +0.2.0-a.0 +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-705
+
+      words: fload wlist warm
+
+      TEF MEK Hn-f
+fload  loading a forth program from flashROM ..
+ABCDE  
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
+s" Hello_Kitty  .s 1013 10 cpmem .s empty 536950436 rlist  
+200136A4 : B9 04 F5 80 74 44 45 0E D0 15 45 52 00 00 00 00   ....tDE...ER.... 
+200136B4 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+ 
+1013 rlist  
+3F5 : B9 04 F5 80 74 44 45 0E D0 15 F8 01 3F 00 2B F7   ....tDE.....?.+. 
+405 : D0 21 46 0B EB 04 00 4F F4 80 72 04 F5 80 74 01   .!F....O..r...t. 
+
+*/
+
 // this is not knowledge, it's wild guesswork:
 void cpMem2Str(void) { // ( addr ln -- )
     instring[0] = 'Q';
@@ -82,16 +120,20 @@ void cpMem2Str(void) { // ( addr ln -- )
     instring[11] = 'R';
     instring[12] = '\0';
 
-/*
+
     length = pop();
     // char* memAdrs = (char *) pop();
     int adrs = pop();
-    char* address = (char*) adrs;
-    char* memAdrs = address;
-    memcpy(instring, &memAdrs, length);
-*/
+    const void* cvp = (const void*) adrs;
+//  char* address = (char*) adrs;
+//  char* memAdrs = address;
+//  memcpy(instring, &memAdrs, length);
+    memcpy(instring, cvp, length);
+/*
+
 
     push((int)&instring); // notha wileguess
+*/
 }
 
 void fetchStr(void) { // ( adrs -- )
