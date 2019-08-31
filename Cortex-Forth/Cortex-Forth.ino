@@ -1,4 +1,84 @@
 // Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-  shred: abn-705");
+
+#define AUTOLOAD
+#ifdef AUTOLOAD
+  int autoload = -1; // yes, autoload
+#else
+  int autoload =  0;
+#endif
+
+// when defined, the default forth source code file is loaded
+// into the running program's forth interpreter at program startup.
+// this amounts to typing the fload word automatically, though no
+// typing is done by the machine.
+
+// probable mechanism (not yet done): I = 465; or I = 190 ; // which is what _FLOAD does).
+
+// not really trivial since 'abort' is the first word called
+// by the existing mechanism.  Probably want a autoload flag
+// set by the AUTOLOAD define, which the abort word is
+// sensitive to.
+
+/* existing mechanism:
+
+1153 void setup () {
+1154 #ifdef HAS_DOTSTAR_LIB
+1155   setup_dotstar(); // turn off dotstar (apa-102 RGB LED)
+
+1158 #endif // #ifdef HAS_DOTSTAR_LIB
+
+1160   // SERIAL_LOCAL_C.begin (38400); while (!SERIAL_LOCAL_C);
+
+1162   S = S0; // initialize data stack
+1163   R = R0; // initialize return stack
+
+1165   // initialize dictionary
+
+1245 #  define abort 83
+
+1247   // abort
+1248   NAME(80, 0, 5, 'a', 'b', 'o')
+1249   LINK(81, 77)
+1250   CODE(82, _NEST)
+1251   DATA(83, inits)
+1252 #  define abort 83
+1253   // again
+1254   DATA(84, branch)
+1255   DATA(85, 89)
+1256   // quit
+1257   NAME(86, 0, 4, 'q', 'u', 'i')
+1258   LINK(87, 77)
+1259   CODE(88, _NEST)
+1260   DATA(89, initr)
+1261   // begin quit loop
+1262   DATA(90, parse)
+1263   DATA(91, wword)
+1264   DATA(92, find)
+
+1691   I = abort; // instruction pointer = abort
+
+1701      D = 486; // latest word // D = 259;
+1702      H = 489; // top of dictionary // H = 262;
+
+1707 //  I = 500; // test
+
+1712   flash_setup(); // flash_ops.cpp
+1713   I = abort; // instruction pointer = abort
+
+1715    _color_black_bg(); _color_yellow_fg();
+1716    delay(2000);
+1717    SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 13:33z");
+
+1722    SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-f");
+
+1737 // the loop function runs over and over again forever
+1738 void loop() {
+1739   W = memory.data [I++];
+1740   memory.program [W] ();
+1741 //  delay (300);
+1742 }
+*/
+
 /*
 * develop
   non-usart-26_aug
@@ -220,6 +300,18 @@ void _FLOAD (void) { // file load: fload
      I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
   // I = 82; //  allows typing but never exits (infinite nesting?)
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
+}
+
+void _AUTOFLOAD (void) {
+  SERIAL_LOCAL_C.println(" auto-loading ... ");
+  I = 83; // abort
+  I = 190; // fload
+
+/*
+  I = 83; // re-enter abort if required.
+*/
+
+
 }
 
 void _WAGDS (void) { // 'wag' the dotStar colored lED - ItsyBitsy M4, others
@@ -1678,7 +1770,11 @@ void setup () {
   // delay(100);
   // fl_setup();
   flash_setup(); // flash_ops.cpp
+/*
   I = abort; // instruction pointer = abort
+*/
+
+   _AUTOFLOAD(); // I = abort; // instruction pointer = abort
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
