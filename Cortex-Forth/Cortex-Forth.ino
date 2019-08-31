@@ -79,6 +79,9 @@ good-compiler-aa-ee - recent work - may already be merged, or abandoned.  Not su
 
 extern void _dumpRAM(void);
 extern void _getOneByteRAM(void); // ( addr -- )
+extern void cpMem2Str(void);
+extern void parseStr(void);
+extern void fetchStr(void);
 
 // On branch  good-compiler-aa-bb
 
@@ -139,7 +142,8 @@ cc
 
 // 0x1200 == 4608 decimal
 
-#define RAM_SIZE 0x1200
+// #define RAM_SIZE 0x1200
+#define RAM_SIZE 0x4800
 #define S0 0x1000
 #define R0 0x0f00
 #define NAME(m, f, c, x, y, z) {memory.data [m] = f + c + (x << 8) + (y << 16) + (z << 24);}
@@ -284,6 +288,11 @@ void _WARM (void) {
   NVIC_SystemReset();      // processor software reset
 }
 
+void _COPYMEM (void) {
+  // in_the_parse_file
+  cpMem2Str(); // ( addr ln -- )
+}
+
 void _COMPOSE (void) {
   int counter = 0;
   while(counter < 32) { // always true
@@ -309,8 +318,6 @@ void _COMPOSE (void) {
   }
 }
 
-extern char* parseStr(void);
-extern void fetchStr(void);
 
 void _FETCHSTR (void) {
     fetchStr();
@@ -1618,22 +1625,27 @@ void setup () {
   LINK(484, 480)
   CODE(485, _FETCHSTR)
 
+// cpmem ( addr ln - )
+  NAME(486, 0, 5, 'c', 'p', 'm')
+  LINK(487, 483)
+  CODE(488, _COPYMEM)
+
   // test
-  DATA(500, lit)
-  DATA(501, 10) // i
-  DATA(502, lit)
-  DATA(503, 0) // i
-  DATA(504, ddo)
-  DATA(505, 400) // i
-  DATA(506, dot)
-  DATA(507, lloop)
-  DATA(508, 505)
-  DATA(509, 385) // R
-  DATA(510, dot)
-  DATA(511, ddots)
-  DATA(512, cr)
-  DATA(513, branch)
-  DATA(514, 500)
+  DATA(600, lit)
+  DATA(601, 10) // i
+  DATA(602, lit)
+  DATA(603, 0) // i
+  DATA(604, ddo)
+  DATA(605, 400) // i // does not change when the century (400, 500, 600) changes
+  DATA(606, dot)
+  DATA(607, lloop)
+  DATA(608, 605) // this slaves to current address block
+  DATA(609, 385) // R // also does not change with the rest of them
+  DATA(610, dot)
+  DATA(611, ddots)
+  DATA(612, cr)
+  DATA(613, branch)
+  DATA(614, 600) // return to top of this code block
 
 
   // D = 368; // latest word // D = 259;
@@ -1651,11 +1663,14 @@ void setup () {
   // D = 480; // latest word // D = 259;
   // H = 483; // top of dictionary // H = 262;
 
-  D = 483; // latest word // D = 259;
-  H = 486; // top of dictionary // H = 262;
+  // D = 483; // latest word // D = 259;
+  // H = 486; // top of dictionary // H = 262;
 
-  // D = 486; // latest word // D = 259;
-  // H = 489; // top of dictionary // H = 262;
+     D = 486; // latest word // D = 259;
+     H = 489; // top of dictionary // H = 262;
+
+  // D = 489; // next word added
+  // H = 492; // gets these two
 
 //  I = 500; // test
   // SERIAL_LOCAL_C.begin (38400);
