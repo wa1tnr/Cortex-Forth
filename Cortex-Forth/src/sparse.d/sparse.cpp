@@ -118,7 +118,19 @@ void cpMem2Str(void) { // ( addr ln -- )
     instring[9] = 'W';
     instring[10] = 'E';
     instring[11] = 'R';
-    instring[12] = '\0';
+    instring[12] = ' ';
+    instring[13] = 'J';
+    instring[14] = 'E';
+    instring[15] = 'L';
+    instring[16] = 'L';
+    instring[17] = 'Y';
+    instring[18] = '-';
+    instring[19] = 'R';
+    instring[20] = 'O';
+    instring[21] = 'L';
+    instring[22] = 'L';
+    instring[23] = '~';
+    instring[24] = '\0';
 
 
     length = pop();
@@ -129,11 +141,7 @@ void cpMem2Str(void) { // ( addr ln -- )
 //  char* memAdrs = address;
 //  memcpy(instring, &memAdrs, length);
     memcpy(instring, cvp, length);
-/*
-
-
     push((int)&instring); // notha wileguess
-*/
 }
 
 void fetchStr(void) { // ( adrs -- )
