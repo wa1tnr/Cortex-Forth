@@ -13,6 +13,7 @@
 
 extern void push(int n);
 extern int pop(void);
+extern void _SHOWTIB(void);
 extern void _WORD(void);
 extern void _ALLOT(void);
 extern void _HERE(void);
@@ -23,6 +24,28 @@ extern void _KEY(void);
 extern void _DUP(void);
 extern void _CSTORE (void);
 extern void _CFETCH (void);
+
+#define BUFFLEN 128
+char instring[BUFFLEN];
+char tempstring[BUFFLEN];
+int length = 1;
+
+
+
+/*
+  1 #include <stdio.h>
+  2 #include <string.h>
+  3 
+  4 #define BUFFLEN 128
+  5 #define CHOP_LN 5
+  6 
+  7 char instring[BUFFLEN];
+  8 char tempstring[BUFFLEN];
+  9 
+ 10 void init_cutter(void) {
+ 11     strcpy(instring, print_string);
+ 12 }
+*/
 
 // extern char* parseStr(void);
 
@@ -43,6 +66,33 @@ void fetchStrBackwards(void) { // ( adrs -- )
     push(count);
 }
 
+// this is not knowledge, it's wild guesswork:
+void cpMem2Str(void) { // ( addr ln -- )
+    instring[0] = 'Q';
+    instring[1] = 'A';
+    instring[2] = 'S';
+    instring[3] = 'D';
+    instring[4] = 'F';
+    instring[5] = 'J';
+    instring[6] = 'K';
+    instring[7] = 'L';
+    instring[8] = 'Q';
+    instring[9] = 'W';
+    instring[10] = 'E';
+    instring[11] = 'R';
+    instring[12] = '\0';
+
+/*
+    length = pop();
+    // char* memAdrs = (char *) pop();
+    int adrs = pop();
+    char* address = (char*) adrs;
+    char* memAdrs = address;
+    memcpy(instring, &memAdrs, length);
+*/
+
+    push((int)&instring); // notha wileguess
+}
 
 void fetchStr(void) { // ( adrs -- )
     int j = pop();
@@ -52,6 +102,8 @@ void fetchStr(void) { // ( adrs -- )
         _CFETCH();
         _DUP(); // make a copy of the stored number
         int rr = pop(); // destroy that copy
+        if (rr < 21) { _DROP(); push(46); }
+        if (rr > 126) { _DROP(); push(46); }
         if (rr == 0) {
           _DROP();
           count--;
