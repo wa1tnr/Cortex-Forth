@@ -25,6 +25,8 @@ extern void _DUP(void);
 extern void _CSTORE (void);
 extern void _CFETCH (void);
 
+extern const char * myAlphaCcp;
+
 #define BUFFLEN 128
 char instring[BUFFLEN];
 char tempstring[BUFFLEN];
@@ -140,9 +142,44 @@ void cpMem2Str(void) { // ( addr ln -- )
 //  char* address = (char*) adrs;
 //  char* memAdrs = address;
 //  memcpy(instring, &memAdrs, length);
+
+#ifdef WAS_LATEST_STRING_THING
     memcpy(instring, cvp, length);
+#else
+    // memcpy(instring, myAlphaCcp, 22);
+    memcpy(instring, myAlphaCcp, length);
+Serial.println(instring);
+#endif
     push((int)&instring); // notha wileguess
 }
+/*
+     TEF MEK Hn-f
+fload  loading a forth program from flashROM ..
+ABCDE  
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
+s" drseus  .s 1013 77 cpmem abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_____THIS_IS_A_CONST_CHAR
+.s 536950452 rlist  
+200136B4 : 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70   abcdefghijklmnop 
+200136C4 : 71 72 73 74 75 76 77 78 79 7A 41 42 43 44 45 46   qrstuvwxyzABCDEF 
+200136D4 : 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56   GHIJKLMNOPQRSTUV 
+200136E4 : 57 58 59 5A 5F 5F 5F 5F 5F 54 48 49 53 5F 49 53   WXYZ_____THIS_IS 
+200136F4 : 5F 41 5F 43 4F 4E 53 54 5F 43 48 41 52 00 00 00   _A_CONST_CHAR... 
+20013704 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+20013714 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+20013724 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+ 
+s" devia  .s 536950580 1045 swap drop .s 1045 88 cpmem abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_____THIS_IS_A_CONST_CHAR_PTR_string
+rlist  
+200136B4 : 61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70   abcdefghijklmnop 
+200136C4 : 71 72 73 74 75 76 77 78 79 7A 41 42 43 44 45 46   qrstuvwxyzABCDEF 
+200136D4 : 47 48 49 4A 4B 4C 4D 4E 4F 50 51 52 53 54 55 56   GHIJKLMNOPQRSTUV 
+200136E4 : 57 58 59 5A 5F 5F 5F 5F 5F 54 48 49 53 5F 49 53   WXYZ_____THIS_IS 
+200136F4 : 5F 41 5F 43 4F 4E 53 54 5F 43 48 41 52 5F 50 54   _A_CONST_CHAR_PT 
+20013704 : 52 5F 73 74 72 69 6E 67 00 00 00 00 00 00 00 00   R_string........ 
+20013714 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+20013724 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+ 
+*/
 
 void fetchStr(void) { // ( adrs -- )
     int j = pop();
