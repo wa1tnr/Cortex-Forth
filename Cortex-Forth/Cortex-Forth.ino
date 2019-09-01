@@ -1,7 +1,7 @@
-// Sat Aug 31 20:39:32 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-  shred: abn-707");
+// Sat Aug 31 20:39:32 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-  shred: abn-709");
 
 /*
-Sat Aug 31 20:39:32 UTC 2019
+Sun Sep  1 07:37:26 UTC 2019
 On branch non-usart-b-31_aug-aa-
 
 commit 62ca75887268dfb0017e30a1bddb2a7cef115351
@@ -10,6 +10,8 @@ Date:   Sat Aug 31 20:36:26 2019 +0000
     autoload added \nRun the fload word at program init
 */
 
+// swap these two lines, as required:
+#undef AUTOLOAD
 #define AUTOLOAD
 
 // when defined, the default forth source code file is loaded
@@ -17,101 +19,11 @@ Date:   Sat Aug 31 20:36:26 2019 +0000
 // this amounts to typing the fload word automatically, though no
 // typing is done by the machine.
 
-// probable mechanism (not yet done): I = 465; or I = 190 ; // which is what _FLOAD does).
-
-// not really trivial since 'abort' is the first word called
-// by the existing mechanism.  Probably want a autoload flag
-// set by the AUTOLOAD define, which the abort word is
-// sensitive to.
-
-/* existing mechanism:
-
-1153 void setup () {
-1154 #ifdef HAS_DOTSTAR_LIB
-1155   setup_dotstar(); // turn off dotstar (apa-102 RGB LED)
-
-1158 #endif // #ifdef HAS_DOTSTAR_LIB
-
-1160   // SERIAL_LOCAL_C.begin (38400); while (!SERIAL_LOCAL_C);
-
-1162   S = S0; // initialize data stack
-1163   R = R0; // initialize return stack
-
-1165   // initialize dictionary
-
-1245 #  define abort 83
-
-1247   // abort
-1248   NAME(80, 0, 5, 'a', 'b', 'o')
-1249   LINK(81, 77)
-1250   CODE(82, _NEST)
-1251   DATA(83, inits)
-1252 #  define abort 83
-1253   // again
-1254   DATA(84, branch)
-1255   DATA(85, 89)
-1256   // quit
-1257   NAME(86, 0, 4, 'q', 'u', 'i')
-1258   LINK(87, 77)
-1259   CODE(88, _NEST)
-1260   DATA(89, initr)
-1261   // begin quit loop
-1262   DATA(90, parse)
-1263   DATA(91, wword)
-1264   DATA(92, find)
-
-1691   I = abort; // instruction pointer = abort
-
-1701      D = 486; // latest word // D = 259;
-1702      H = 489; // top of dictionary // H = 262;
-
-1707 //  I = 500; // test
-
-1712   flash_setup(); // flash_ops.cpp
-1713   I = abort; // instruction pointer = abort
-
-1715    _color_black_bg(); _color_yellow_fg();
-1716    delay(2000);
-1717    SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 13:33z");
-
-1722    SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-f");
-
-1737 // the loop function runs over and over again forever
-1738 void loop() {
-1739   W = memory.data [I++];
-1740   memory.program [W] ();
-1741 //  delay (300);
-1742 }
-*/
-
-/*
-* develop
-  non-usart-26_aug
-  non-usart-30_aug
-  non-usart-30_aug-aa-
-*/
-
-// On branch non-usart-30_aug
-
-// Tue Aug 27 19:44:27 UTC 2019 0.1.9 non-usart-26_aug  shred: abn-611
-
 #undef ECHO_INPUT
 #define ECHO_INPUT // 9term wants echo
 
 #define DEBUG_PARSE_ECHO
 #undef DEBUG_PARSE_ECHO
-
-/*
-Branches: 9termer-aa-,
-  good-compiler-aa-ff-bb_exp
-  good-compiler-aa-ff-bb_exp-9t-aa
-* non-usart-26_aug
-*/
-
-// Sun Aug 25 03:10:50 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-591
-
-// old:
-// Sat Aug 24 22:24:57 UTC 2019 0.1.9 good-compiler-aa-ff-aa_exp  shred: abn-579
 
 # define SERIAL_LOCAL_C Serial  // Or Serial1  for the usart
 
@@ -130,47 +42,13 @@ Branches: 9termer-aa-,
 
 */
 
-/*
-
-  good-comp-tstorm-hah
-  good-compiler-aa-dd
-  good-compiler-aa-ee
-  good-compiler-aa-ff
-* good-compiler-aa-ff-aa_exp
-  master
-
-All the above are recently related to each other,
-along with 'develop'.
-
-Current branch is now  good-compiler-aa-ff-aa_exp
-and was created with a
-
- $ git checkout -b  from   good-compiler-aa-ff
-
-Sat Aug 24 17:55:00 UTC 2019
-
-*/
-
-/*
- $ git branch
-* good-comp-tstorm-hah - properly pulled and manually updated using rvim and brain ;) (for a change)
-good-compiler-aa-ee - recent work - may already be merged, or abandoned.  Not sure where first instances are.
-
-// also:
-// Sat Aug 24 15:32:03 UTC 2019 - oops stuff fixing
-
-*/
-
-
 extern void _dumpRAM(void);
 extern void _getOneByteRAM(void); // ( addr -- )
 extern void cpMem2Str(void);
 extern void parseStr(void);
 extern void fetchStr(void);
 
-// On branch  good-compiler-aa-bb
-
-// identify: kibarthe   tr0mso   cablefour  entwistle  pescanole
+// identify: nancarole  kibarthe   tr0mso   cablefour  entwistle
 
 // target: ItsyBitsy M4 Express - still current on branch  good-compiler-aa-bb  21 August 2019
 // comm: USB, not the TX/RX pair for the Forth interpreter - on branch  good-compiler-aa-bb
@@ -180,42 +58,6 @@ extern void fetchStr(void);
 
 // Note: other branches may want to use the UART rather than USB.
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
-24 August 2019 15:54 UTC
-.s
-empty  Ok
-fload
- loading a forth program from flashROM ..
-/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 369
-.s
-empty  Ok
-464 bottom + dup rlist
-200001D0 : 00 00 00 00 D1 42 00 00 04 65 78 69 14 00 00 00   .....B...exi....
-200001E0 : D5 42 00 00 03 6B 65 79 17 00 00 00 75 5A 00 00   .B...key....uZ..
-200001F0 : 04 65 6D 69 1A 00 00 00 99 5A 00 00 02 63 72 00   .emi.....Z...cr.
-
-session using the 'cc' (compose) word:
- Ok
-cc
- 61  a 62  b 63  c 64  d 65  e 66  f 67  g F   Ctrl+O pressed  F   Ctrl+O pressed  A  
- A  
- A  
- 2E  . 73  s A  
-
-*/
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//   In theory, sfparse can be called just the same as flparse is
-//   called, at present.  They're identical (only at the moment)
-//   (13 Aug 03:23z).
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*
   Forth virtual machine
@@ -223,7 +65,7 @@ cc
   This code is in the public domain.
 
 */
-#include <SdFat.h> // 'File' 10 Aug 16:10z
+#include <SdFat.h> // 'File'
 
 // 0x1200 == 4608 decimal
 
@@ -252,7 +94,7 @@ extern void wiggleDotStarOnce(void); // toggle once
 #endif // #ifdef HAS_DOTSTAR_LIB
 
 
-extern void fl_setup(void); // fload.cpp
+// extern void fl_setup(void); // fload.cpp
 extern void flash_setup(void); // flash_ops.cpp
 
 extern File thisFile; // You must include SdFat.h to use 'File' here
@@ -303,14 +145,6 @@ void _NOP (void) {
 void _FLOAD (void) { // file load: fload
   SERIAL_LOCAL_C.println(" loading a forth program from flashROM ..");
      I = 190; //  simulate 'quit'  - does not clear the stack. I = 83 (abort) does.
-  // I = 82; //  allows typing but never exits (infinite nesting?)
-  // I = 83; //  simulate 'abort' - this 83 is a #define later on.
-}
-
-void _AUTOLOAD (void) {
-  SERIAL_LOCAL_C.println(" auto-loading ... ");
-  // I = 494;
-  // I=83; I=190; I=83;
 }
 
 void _WAGDS (void) { // 'wag' the dotStar colored lED - ItsyBitsy M4, others
@@ -320,18 +154,10 @@ void _WAGDS (void) { // 'wag' the dotStar colored lED - ItsyBitsy M4, others
 }
 
 void _WIGGLE (void) { // toggle dotStar a number of times
-/*
- 124 void _EMIT (void) {
- 125   char c = T;
- 126   SERIAL_LOCAL_C.write (c);
- 127   _DROP ();
- 128 }
-*/
   for (int i = T; i > 0; i--) {
     _WAGDS();
   }
   _DROP ();
-  // wiggleDotStarOnce();
 }
 
 void _EXIT (void) {
@@ -1758,7 +1584,7 @@ abort:
 
   NAME(492, 0, 3, 'u', 'o', 'l') // 'uol' autoload
   LINK(493, 489)
-  CODE(494, _AUTOLOAD) // just prints a message - does not set I
+  CODE(494, _NOP)
   DATA(495, inits)
   DATA(496, initr)
   DATA(497, fload)
@@ -1800,10 +1626,7 @@ abort:
   flash_setup(); // flash_ops.cpp
 
 #ifdef AUTOLOAD
-   Serial.print(".  Done.  ");
-   Serial.println("  Code re-entry at");
-   Serial.println("\r\nbottom of the setup() function,");
-   Serial.println("r\nto print program sign-on messages.");
+   SERIAL_LOCAL_C.println(" AUTO-LOAD (extra boot code written in Forth) is enabled. ");
    I = autoload;
 #else
    I = abort;
@@ -1815,7 +1638,7 @@ abort:
    SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 31 AUG 2019 20:39z");
 
    SERIAL_LOCAL_C.println  ("\n      Sat Aug 31 20:39:32 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-");
-   SERIAL_LOCAL_C.println  ("\n      +0.2.0-a.0 +autoload +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-707");
+   SERIAL_LOCAL_C.println  ("\n      +0.2.0-a.0 +autoload +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-709");
 
    SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm - do NOT use fload without disabling autoload");
    SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-g");
