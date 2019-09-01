@@ -1,11 +1,16 @@
-// Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-  shred: abn-705");
+// Sat Aug 31 20:39:32 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-  shred: abn-707");
+
+/*
+Sat Aug 31 20:39:32 UTC 2019
+On branch non-usart-b-31_aug-aa-
+
+commit 62ca75887268dfb0017e30a1bddb2a7cef115351
+Date:   Sat Aug 31 20:36:26 2019 +0000
+
+    autoload added \nRun the fload word at program init
+*/
 
 #define AUTOLOAD
-#ifdef AUTOLOAD
-  int autoload = -1; // yes, autoload
-#else
-  int autoload =  0;
-#endif
 
 // when defined, the default forth source code file is loaded
 // into the running program's forth interpreter at program startup.
@@ -302,16 +307,10 @@ void _FLOAD (void) { // file load: fload
   // I = 83; //  simulate 'abort' - this 83 is a #define later on.
 }
 
-void _AUTOFLOAD (void) {
+void _AUTOLOAD (void) {
   SERIAL_LOCAL_C.println(" auto-loading ... ");
-  I = 83; // abort
-  I = 190; // fload
-
-/*
-  I = 83; // re-enter abort if required.
-*/
-
-
+  // I = 494;
+  // I=83; I=190; I=83;
 }
 
 void _WAGDS (void) { // 'wag' the dotStar colored lED - ItsyBitsy M4, others
@@ -1172,6 +1171,11 @@ void _CSTORE (void) {
   _DROP ();
 } 
 
+void _THROWN (void) {
+  Serial.println("TRAP thrown during autoload or elsewhere ..");
+  while(-1); // trap
+  Serial.println("NEVER SEE THIS message at LINE 1177");
+}
 
 void _color_yellow_fg (void) {
   SERIAL_LOCAL_C.print("\033\133"); // ESC [
@@ -1324,6 +1328,23 @@ void setup () {
   CODE(79, _ZEROLESS)
 #  define zeroless 79
 
+/*
+
+abort:
+
+  1. _NEST
+  2. inits
+  3. branch 89, which ..
+  4. initr
+     .. while skipping over the second _NEST at position 88
+  5. parse wword find qdup zbranch .. lost
+
+  So 5.) should be the call to _FLOAD (as fload #define really a number).
+    Any #define near NAME-LINK-CODE's points to CODE not NAME.
+    have defined fload for 467 so use the define(macro).
+  5. fload
+
+*/
   // abort
   NAME(80, 0, 5, 'a', 'b', 'o')
   LINK(81, 77)
@@ -1361,7 +1382,7 @@ void setup () {
   DATA(109, emit)
   DATA(110, cr)
   DATA(111, inits)
-  DATA(112, branch)
+  DATA(112, branch) // most operands for control structures have the branch dest after 'branch' or 'lloop'.
   DATA(113, 89)
   DATA(114, ok)
   DATA(115, branch)
@@ -1684,6 +1705,7 @@ void setup () {
   NAME(465, 0, 5, 'f', 'l', 'o')
   LINK(466, 462)
   CODE(467, _FLOAD)
+  #define fload 467
 
 // wag (  - )
   NAME(468, 0, 3, 'w', 'a', 'g')
@@ -1722,6 +1744,28 @@ void setup () {
   LINK(487, 483)
   CODE(488, _COPYMEM)
 
+  NAME(489, 0, 5, 't', 'h', 'r') // throw
+  LINK(490, 486)
+  CODE(491, _THROWN)
+  #define thrown 491
+
+  // code of 'type' subst. for real autoload aka 'uol' ( b c - ) 
+
+// branch 89 90 106 seen
+// I=83; I=190; I=83;
+// 190 calls flparse and is probably the correct entry point,
+// perhaps after a setup.
+
+  NAME(492, 0, 3, 'u', 'o', 'l') // 'uol' autoload
+  LINK(493, 489)
+  CODE(494, _AUTOLOAD) // just prints a message - does not set I
+  DATA(495, inits)
+  DATA(496, initr)
+  DATA(497, fload)
+  DATA(498, thrown)
+  #define autoload 495
+
+
   // test
   DATA(600, lit)
   DATA(601, 10) // i
@@ -1740,55 +1784,87 @@ void setup () {
   DATA(614, 600) // return to top of this code block
 
 
-  // D = 368; // latest word // D = 259;
-  // H = 371; // top of dictionary // H = 262;
+  // D = 486; // previous latest word ('cpmem') before 'uol' was added
+  // H = 489; // previous top of dictionary (just past 'cpmem')
 
-  // D = 471; // latest word // D = 259;
-  // H = 474; // top of dictionary // H = 262;
+     D = 492; // latest word 'uol' (autoload)
+     H = 499; // longer offset than usual
 
-  // D = 474; // latest word // D = 259;
-  // H = 477; // top of dictionary // H = 262;
+// cpmem 486 thru 488, 489 is 488 + 1
 
-  // D = 477; // latest word // D = 259;
-  // H = 480; // top of dictionary // H = 262;
+  // D = 499; // next word added
+  // H = 502; // gets these two, unless it has DATA in which case H increments by the number of added DATA statements
 
-  // D = 480; // latest word // D = 259;
-  // H = 483; // top of dictionary // H = 262;
+  //  I = 600; // test
 
-  // D = 483; // latest word // D = 259;
-  // H = 486; // top of dictionary // H = 262;
-
-     D = 486; // latest word // D = 259;
-     H = 489; // top of dictionary // H = 262;
-
-  // D = 489; // next word added
-  // H = 492; // gets these two
-
-//  I = 500; // test
-  // SERIAL_LOCAL_C.begin (38400);
-  // while (!SERIAL_LOCAL_C);
-  // delay(100);
-  // fl_setup();
   flash_setup(); // flash_ops.cpp
-/*
-  I = abort; // instruction pointer = abort
-*/
 
-   _AUTOFLOAD(); // I = abort; // instruction pointer = abort
+#ifdef AUTOLOAD
+   Serial.print(".  Done.  ");
+   Serial.println("  Code re-entry at");
+   Serial.println("\r\nbottom of the setup() function,");
+   Serial.println("r\nto print program sign-on messages.");
+   I = autoload;
+#else
+   I = abort;
+   Serial.println("DEBUG: _AUTOLOAD() not active.  I = abort.");
+#endif
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 30 AUG 2019 13:33z");
+   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 31 AUG 2019 20:39z");
 
-   SERIAL_LOCAL_C.println  ("\n      Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-");
-   SERIAL_LOCAL_C.println  ("\n      +0.2.0-a.0 +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-705");
-   SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm");
-   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-f");
+   SERIAL_LOCAL_C.println  ("\n      Sat Aug 31 20:39:32 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-");
+   SERIAL_LOCAL_C.println  ("\n      +0.2.0-a.0 +autoload +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-707");
+
+   SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm - do NOT use fload without disabling autoload");
+   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-g");
 }
+
+/*
+
+ 544 void _NEST (void) {
+ 545   memory.data [--R] = I; Read the current instruction pointer, I and then
+                              decrement the return stack's pointer, R, by one,
+                              and then store I into memory.data[R].
+
+                              define R0 0x0f00
+
+                              R begins life at 0x0f00 and decrements but never
+                              exceeds 0x0f00.
+
+                              The return stack 'remembers' the current instruction
+                              pointer in a push-down stack arrangement, below
+                              relative-location 0 (physically at 0x0f00).
+
+ 546   I = (W + 1);           Read the working register, W, and add 1 to it.
+                              Set the instruction pointer, I, to this location
+                              in the virtual machine's 'program' (it is a small
+                              integer and presently gets nowhere close to 1,000
+                              decimal, in value: it is not a physical RAM address.
+ 547 }
+
+*/
 
 // the loop function runs over and over again forever
 void loop() {
-  W = memory.data [I++];
-  memory.program [W] ();
+  W = memory.data [I++]; // Read the instruction (an ordinary integer)
+                         // stored at the location in the memory.data array
+                         // pointed to by the Instruction Pointer, I
+                         // and store it in the Working register, W --
+                         // and (only afterward) increment I by one.
+
+                         // So: only copy an integer out of an array and
+                         // into a singlton int (W in this case), and
+                         // then increment an integer (I).  That's it.
+
+  memory.program [W] (); // Execute program stored at location W.  This
+                         // is the only time the Virtual Machine takes
+                         // any action (only time it executes a defined
+                         // function/subroutine written in the C language).
+                         // All other actions are written in ordinary C,
+                         // not in the special language/coding that the
+                         // virtual machine is written 'in'.
 //  delay (300);
 }
+
