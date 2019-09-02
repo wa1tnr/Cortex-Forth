@@ -216,9 +216,15 @@ unproven:
 
 proven:
 
+
 : bfc 7 ; cr  
-: bsz 64 ; : bmk bsz 1 - ; cr  
-: bfi swap 1 + bmk and swap ; cr  
+: bsz 16 ; : bmk bsz 1 - ; cr  
+: bfi swap 1 + bmk and bmk 2 - cr
+  cr .s cr cr over over swap
+  cr - 0< cr if
+    swap 1 + bmk and
+         1 + bmk and
+    swap then drop swap ; cr  
 : sxa here dup . bsz allot here swap 1 + ; cr  
 : txb bfi .s cr ; cr  
 : ldelay 1024 0 do 1 delay loop cr ; cr  
@@ -234,6 +240,31 @@ proven:
   again
 ; cr  
 
+
+
+
+
+\ older:
+7 100 bfi   cr  
+
+
+: bfi
+swap 1 + bmk and bmk 2 - .s over over swap
+cr - 0< cr if space space 41 emit space space then
+drop swap ; cr  
+
+7 100
+
+
+bfi  .s  cr  cr 
+
+
+
+
+
+dup bmk swap - 0= if swap bfi exit then swap ;  cr  
+
+swap ; cr  
 
   begin
   47 emit space .s cr
