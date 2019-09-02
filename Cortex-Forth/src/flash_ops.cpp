@@ -262,8 +262,14 @@ loop 1 + swap drop cr ;
 
 // ###bookmark
 
+// variable sfi .s empty sfi .s 1144 drop 44 sfi ! .s empty sfi @ .s 44
 
-      WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
+
+    // sfi knows if the editor has already been initialized, to
+    //    allocate a buffer, or not.
+
+      WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
+    ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
     ) WRITE_FORTH(     ": bfi swap 1 + bmk and bmk 2 - over\r"
     ) WRITE_FORTH(     "over swap - 0< if\r"
     ) WRITE_FORTH(     "swap 1 + bmk and\r"
@@ -273,17 +279,24 @@ loop 1 + swap drop cr ;
 
     ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bfz - 2) .. or zero
 
-    ) WRITE_FORTH(     ": sxa here dup . bsz allot here swap 1 + ;\r"
+//  ) WRITE_FORTH(     ": sxa here dup . bsz allot here swap 1 + ;\r"
+
+// conditionally initialize the buffer:
+
+    ) WRITE_FORTH(     ": sxa sfi @ invert if here dup . bsz allot here swap 1 + -1 sfi ! then ;\r"
+//  ) WRITE_FORTH(     ": sxa sfi @ negate if here dup . bsz allot here swap 1 + ;\r"
 
 //  ) WRITE_FORTH(     ": txb bfi .s cr ;\r"
 
     ) WRITE_FORTH(     ": lxa -99 sxa ;\r"
-    ) WRITE_FORTH(     ": sam lxa\r"
+    ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
     ) WRITE_FORTH(     "bfc swap bfi\r"
     ) WRITE_FORTH(     "over over + begin\r"
     ) WRITE_FORTH(     "key swap c!\r"
-    ) WRITE_FORTH(     "dup blist .s cr\r"
+
+    ) WRITE_FORTH(     "dup blist\r"
     ) WRITE_FORTH(     "drop\r"
+
     ) WRITE_FORTH(     "bfi over over +\r"
     ) WRITE_FORTH(     "again ;\r"
     )
