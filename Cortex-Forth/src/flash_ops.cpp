@@ -269,13 +269,30 @@ loop 1 + swap drop cr ;
     //    allocate a buffer, or not.
 
       WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
+
+// key-stored:
+    ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop\r"
+
     ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
+
+
+// buffer decrement
+    ) WRITE_FORTH(     ": bfd swap 1 - bmk and bmk 2 - over\r"
+    ) WRITE_FORTH(     "over swap - 0< if\r"
+    ) WRITE_FORTH(     "swap 1 + bmk and\r"
+    ) WRITE_FORTH(     "1 + bmk and\r"
+    ) WRITE_FORTH(     "1 + bmk and\r"
+    ) WRITE_FORTH(     "swap then drop swap ;\r"
+
+// buffer increment
     ) WRITE_FORTH(     ": bfi swap 1 + bmk and bmk 2 - over\r"
     ) WRITE_FORTH(     "over swap - 0< if\r"
     ) WRITE_FORTH(     "swap 1 + bmk and\r"
     ) WRITE_FORTH(     "1 + bmk and\r"
     ) WRITE_FORTH(     "1 + bmk and\r"
     ) WRITE_FORTH(     "swap then drop swap ;\r"
+
+
 
     ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bfz - 2) .. or zero
 
@@ -291,12 +308,43 @@ loop 1 + swap drop cr ;
     ) WRITE_FORTH(     ": lxa -99 sxa ;\r"
     ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
     ) WRITE_FORTH(     "bfc swap bfi\r"
-    ) WRITE_FORTH(     "over over + begin\r"
-    ) WRITE_FORTH(     "key swap c!\r"
+    ) WRITE_FORTH(     "over over + 59 emit\r"
+    ) WRITE_FORTH(     "60 emit 61 emit begin\r"
+//  ) WRITE_FORTH(     "key swap c!\r" ( -- addr -- addr key -- key addr -- )
+/*
 
+s" fff  .s 1213   1 + .s 1214   key  .s 1214 80   swap .s 80 1214   c! .s empty 1214 blist                             
+4BE : 50 66 66 00 00 00 3A 01 00 00 16 00 00 00 01 00   Pff...:.........                                       
+1214 c@ emit P
+*/
+
+// good:
+//  ) WRITE_FORTH(     "key dup 9 - 0< if 43 emit then swap c!\r"
+
+    ) WRITE_FORTH(     "254 kst c!\r" // reset kst
+
+
+    ) WRITE_FORTH(     "cr cr .s cr cr 88 emit 89 emit 90 emit space space\r" // after the swap: ( key addr -- )
+
+    ) WRITE_FORTH(     "key dup\r" // ONLY keystroke gained
+
+// send +++ if backspace is pressed:
+    ) WRITE_FORTH(     "9 - 0< if dup kst c!\r"
+    ) WRITE_FORTH(     "cr cr .s cr cr 43 emit 43 emit 43 emit then\r"
+// should be back to just ( addr key -- )
+
+// every iteration, report the stack with legend CDE:
+    ) WRITE_FORTH(     "cr cr .s cr cr 67 emit 68 emit 69 emit space space\r" // after the swap: ( key addr -- )
+
+// if backspace was pressed, report MNO
+    ) WRITE_FORTH(     "kst c@ 9 - 0< if 69 emit 73 emit 71 emit then swap c!\r"
+
+//  ) WRITE_FORTH(     "key dup 9 - 0< if 43 emit cr .s cr bfd bfd cr .s cr then swap c!\r"
+
+// addr -- addr kadr -- addr KST -- addr KST 9 -- addr DIFF -- addr -- 
+//  ) WRITE_FORTH(     "kst c@ 9 - 0< if bfd bfd bfd bfd then\r"
     ) WRITE_FORTH(     "dup blist\r"
     ) WRITE_FORTH(     "drop\r"
-
     ) WRITE_FORTH(     "bfi over over +\r"
     ) WRITE_FORTH(     "again ;\r"
     )
