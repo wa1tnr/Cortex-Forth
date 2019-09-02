@@ -336,7 +336,7 @@ s" fff  .s 1213   1 + .s 1214   key  .s 1214 80   swap .s 80 1214   c! .s empty 
 // every iteration, report the stack with legend CDE:
     ) WRITE_FORTH(     "cr cr .s cr cr 67 emit 68 emit 69 emit space space\r" // after the swap: ( key addr -- )
 
-// if backspace was pressed, report MNO
+// if backspace was pressed, report 
     ) WRITE_FORTH(     "kst c@ 9 - 0< if 69 emit 73 emit 71 emit then swap c!\r"
 
 //  ) WRITE_FORTH(     "key dup 9 - 0< if 43 emit cr .s cr bfd bfd cr .s cr then swap c!\r"
