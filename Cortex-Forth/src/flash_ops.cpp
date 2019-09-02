@@ -93,6 +93,8 @@ void mkdir_forth(void) {
 
 */
 
+#define WRITE_FORTH(a) {myFile.print((a));}
+
 void flash_setup(void) {
   // Open serial communications and wait for port to open:
   Serial.begin(38400);
@@ -144,26 +146,26 @@ void flash_setup(void) {
 //  myFile.print("\r");
 
 // max ( n1 n2 -- max )
-    myFile.print(": max over over - 0< if swap drop -1 then if exit then swap drop ;\r");
+     WRITE_FORTH(": max over over - 0< if swap drop -1 then if exit then swap drop ;\r");
 
 // min ( n1 n2 -- min )
-    myFile.print(": min over over - 0< if drop exit then swap drop ;\r");
+     WRITE_FORTH(": min over over - 0< if drop exit then swap drop ;\r");
 
 // testc ( -- )
 
-    myFile.print(": testcc -1 512 0 do 1 + dup , loop ;\r");
+     WRITE_FORTH(": testcc -1 512 0 do 1 + dup , loop ;\r");
 
 // >prn ( n -- )
-    myFile.print(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
+     WRITE_FORTH(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
 
 // delay ( n -- )
-    myFile.print(": delay drop 1234 0 do 1 drop loop ;\r");
+     WRITE_FORTH(": delay drop 1234 0 do 1 drop loop ;\r");
 
 // ecol ( -- ) \ emit a colon
-    myFile.print(": ecol 58 emit ;\r");
+     WRITE_FORTH(": ecol 58 emit ;\r");
 
 // hadr ( addr -- addr ) print to display
-    myFile.print(": hadr dup 1 + h. ecol space ;\r");
+     WRITE_FORTH(": hadr dup 1 + h. ecol space ;\r");
 /*
 
 Can pack memory efficiently using the comma word:
@@ -184,46 +186,46 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 */
 
 // rhlist ( addr -- )
-    myFile.print(": rhlist hadr 16 + dup 16 - over over\r");
-    myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
-    myFile.print("drop ;\r");
+     WRITE_FORTH(": rhlist hadr 16 + dup 16 - over over\r");
+     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r");
+     WRITE_FORTH("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+     WRITE_FORTH("drop ;\r");
 
 // ralist ( addr -- )
-    myFile.print(": ralist space space 16 + dup 16 - over over\r");
-    myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup rbyte >prn 100 delay then loop\r");
-    myFile.print("drop ;\r");
+     WRITE_FORTH(": ralist space space 16 + dup 16 - over over\r");
+     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r");
+     WRITE_FORTH("if dup rbyte >prn 100 delay then loop\r");
+     WRITE_FORTH("drop ;\r");
 
 // hlist ( addr -- )
-    myFile.print(": hlist hadr 16 + dup 16 - over over\r");
-    myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
-//  myFile.print("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
-    myFile.print("drop ;\r");
+     WRITE_FORTH(": hlist hadr 16 + dup 16 - over over\r");
+     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r");
+     WRITE_FORTH("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+//   WRITE_FORTH("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r");
+     WRITE_FORTH("drop ;\r");
 
 // alist ( addr -- )
-    myFile.print(": alist space space 16 + dup 16 - over over\r");
-    myFile.print("do 1 + over over swap - 1 - 0<\r");
-    myFile.print("if dup c@ >prn 100 delay then loop\r");
-//  myFile.print("if dup rbyte >prn 100 delay then loop\r");
-    myFile.print("drop ;\r");
+     WRITE_FORTH(": alist space space 16 + dup 16 - over over\r");
+     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r");
+     WRITE_FORTH("if dup c@ >prn 100 delay then loop\r");
+//   WRITE_FORTH("if dup rbyte >prn 100 delay then loop\r");
+     WRITE_FORTH("drop ;\r");
 
 // bottom ( -- addr )
-    myFile.print(": bottom 536870912 ;\r");
-    myFile.print(": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r");
+     WRITE_FORTH(": bottom 536870912 ;\r");
+     WRITE_FORTH(": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r");
 
 // blist ( addr -- )
-    myFile.print(": blist cr -999 swap 196604 1148 - min 0 max\r");
-//  myFile.print("196608 1148 - min 0 max 1 - 8 0 do\r");
-    myFile.print("dup 1 - 8 0 do dup hlist 16 - alist cr\r");
-    myFile.print("swap drop loop 1 + swap drop cr ;\r");
+     WRITE_FORTH(": blist cr -999 swap 196604 1148 - min 0 max\r");
+//   WRITE_FORTH("196608 1148 - min 0 max 1 - 8 0 do\r");
+     WRITE_FORTH("dup 1 - 8 0 do dup hlist 16 - alist cr\r");
+     WRITE_FORTH("swap drop loop 1 + swap drop cr ;\r");
 
 
 // rlist ( addr -- addr + report_size )
-    myFile.print(": rlist cr -999 swap bottom 195552 + min 0 max\r");
-    myFile.print("dup 1 - 8 0 do dup rhlist 16 - ralist cr\r");
-    myFile.print("swap drop loop 1 + swap drop cr ;\r");
+     WRITE_FORTH(": rlist cr -999 swap bottom 195552 + min 0 max\r");
+     WRITE_FORTH("dup 1 - 8 0 do dup rhlist 16 - ralist cr\r");
+     WRITE_FORTH("swap drop loop 1 + swap drop cr ;\r");
 
 /*
 
@@ -235,7 +237,7 @@ loop 1 + swap drop cr ;
 */
 
 // at the Ok prompt, type:
-    myFile.print("wag wag 8 wiggle\r");
+     WRITE_FORTH("wag wag 8 wiggle\r");
 
 // canonical for 24 August:
 // rlist and blist
@@ -245,31 +247,33 @@ loop 1 + swap drop cr ;
 
 // rdump was deprecated. 24 Aug
 
-    myFile.print(": emits 0 do emit loop space ;\r");
-    myFile.print(": said fs@ emits space cr space ;\r");
-    myFile.print(": stuffit 69 68 67 66 65 5 ;\r");
-    myFile.print("69 68 67 66 65 5 emits cr\r");
+     WRITE_FORTH(": emits 0 do emit loop space ;\r");
+     WRITE_FORTH(": said fs@ emits space cr space ;\r");
+     WRITE_FORTH(": stuffit 69 68 67 66 65 5 ;\r");
+     WRITE_FORTH("69 68 67 66 65 5 emits cr\r");
 
-    myFile.print("variable bend variable buff here buff !\r");
-    myFile.print("32 allot here bend ! 1 drop\r");
-    myFile.print(": svd buff @ 2701 + blist ;\r"); // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
-    myFile.print(": sve buff @ 4 + cr ;\r");
-//  myFile.print(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r");
+     WRITE_FORTH("variable bend variable buff here buff !\r");
+     WRITE_FORTH("32 allot here bend ! 1 drop\r");
+     WRITE_FORTH(": svd buff @ 2701 + blist ;\r"); // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
+     WRITE_FORTH(": sve buff @ 4 + cr ;\r");
+//   WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r");
 
-#define WRITE_FORTH(a) {myFile.print((a));}
+
+//  WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
+
     WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
 
 
 /*
 */
 
-//  myFile.print(" ;\r");
+//   WRITE_FORTH(" ;\r");
 
 // - - - exercise blist
-//  myFile.print("variable myvar 439041101 myvar c! myvar 32 - blist\r");
+//   WRITE_FORTH("variable myvar 439041101 myvar c! myvar 32 - blist\r");
 //                                         1a2b3c4d
 
-    // myFile.print("wlist cr cr words cr\r");
+    //  WRITE_FORTH("wlist cr cr words cr\r");
 
 // file contents - - - - - - - - - - - - - - - -
 
