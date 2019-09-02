@@ -216,14 +216,44 @@ unproven:
 
 proven:
 
+: bfc 7 ; cr  
 : bsz 64 ; : bmk bsz 1 - ; cr  
 : bfi swap 1 + bmk and swap ; cr  
-: sxa here bsz allot here swap 1 + ; cr  
+: sxa here dup . bsz allot here swap 1 + ; cr  
 : txb bfi .s cr ; cr  
-
 : ldelay 1024 0 do 1 delay loop cr ; cr  
+: lxa -99 sxa ;
+: sam lxa
+  bfc swap bfi over over +
+  begin
+     key swap c!
+     dup blist
+     .s cr
+     drop
+     bfi over over +
+  again
+; cr  
 
-subst above for:
+
+  begin
+  47 emit space .s cr
+  key swap c! dup blist drop
+    cr cr .s cr cr cr bfi .s cr cr
+  46 emit space .s cr
+  again ;  cr   
+
+\ setup. increment. get a key. store. report.
+
+
+; cr   x
+
+: sam -99 sxa bfc swap over over +
+  begin bfi over over key swap c! dup blist drop again ; cr  
+
+\ -99 1160 count 1097
+: sam -99 sxa bfc swap ; cr   \ -99 1160 count 1097  
+
+\ outdated:
 : sam -99 sxa begin ldelay 43 emit .s again ; cr  
 
 junk:
