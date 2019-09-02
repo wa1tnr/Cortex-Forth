@@ -450,21 +450,6 @@ void _PARSE (void) {
 // place that acquires input, other than _KEY ..
 // and _KEY is not used internally (at all!)
 
-// This might make for a neat solution to the
-// problem of reading from a file, as only this
-// one (C language) function seems to talk to the
-// serial port, to read from it.
-
-// All other references to the serial port involve
-// writing to it (printing messages to the serial
-// terminal).
-
-
-// change from 3 to 2 - 11 Aug 17:41z
-// change from 2 back to 3 - file isn't closing at the right time.
-
-// 12 Aug 23:42 - way too sensitive manual test for EOF here:
-
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
 
 #define FLEN_MAX 1
@@ -473,7 +458,6 @@ void _FLPARSE (void) {
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
-    // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
     while (thisFile.available() > FLEN_MAX) {
       do {
         t = thisFile.read();
@@ -486,51 +470,27 @@ void _FLPARSE (void) {
       } while (t == ' ');
       do {
         t = thisFile.read();
-          tib = tib + t; // was unconditional before 19:01z 10 Aug
+          tib = tib + t;
       } while (t > ' ');
-      // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
+      // SERIAL_LOCAL_C.print(tib);
       if (thisFile.available() < FLEN_MAX) {
-        // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
+        // SERIAL_LOCAL_C.println("SAFETY NET");
         if (thisFile.available() < 1) {
           keyboard_not_file = true;
-          thisFile.close(); // experiment 17:06z 11 Aug
+          thisFile.close();
           SERIAL_LOCAL_C.print("\r");
           SERIAL_LOCAL_C.print(FILE_NAME);
           SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 369");
-/*
-          _DDOTS(); // experiment 16:48z 11 Aug
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("xxx");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("yyy");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _DEPTH();
-          _DDOTS();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.println("\n previous line: _DDOTS();");
-          delay(100);
-          // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
-*/
         }
       }
       // SERIAL_LOCAL_C.println("TRAP");
-      return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
+      return;
     }
     SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
-    delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
+    delay(1400);
   } // if thisfile
   else {
-    // SERIAL_LOCAL_C.print("Trouble at the Old Well, Timmy?");
-    // SERIAL_LOCAL_C.print(" I = 90 -- the 'parse' word  ");
-    // SERIAL_LOCAL_C.println(" alt TRAP LINE 339");
+    // SERIAL_LOCAL_C.println(" alt TRAP LINE 493");
     keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
@@ -540,8 +500,12 @@ void _SFPARSE (void) { // safe parse
   char t;
   tib = "";
   keyboard_not_file = false;
+
+/*
+
+assume: this never did get used.  Age it.  It'll break something sooner or later, if it was really needed.
+
   if (thisFile) {
-    // SERIAL_LOCAL_C.println("DEBUG 12 Aug - thisFile does exist - GOOD."); // tnr 12 Aug kludge
     while (thisFile.available() > FLEN_MAX) {
       do {
         t = thisFile.read();
@@ -556,53 +520,33 @@ void _SFPARSE (void) { // safe parse
         t = thisFile.read();
           tib = tib + t; // was unconditional before 19:01z 10 Aug
       } while (t > ' ');
-      // SERIAL_LOCAL_C.print("  _"); SERIAL_LOCAL_C.print(tib); SERIAL_LOCAL_C.print("_  ");
       if (thisFile.available() < FLEN_MAX) {
-        // SERIAL_LOCAL_C.println("\n\n\nSAFETY NET\n\n\n");
         if (thisFile.available() < 1) {
           keyboard_not_file = true;
           thisFile.close(); // experiment 17:06z 11 Aug
           SERIAL_LOCAL_C.print("\r");
           SERIAL_LOCAL_C.print(FILE_NAME);
           SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 347");
-/*
-          _DDOTS(); // experiment 16:48z 11 Aug
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("xxx");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.print("yyy");
-          _SPACE();
-          _SPACE();
-          _SPACE();
-          _DEPTH();
-          _DDOTS();
-          _SPACE();
-          _SPACE();
-          SERIAL_LOCAL_C.println("\n previous line: _DDOTS();");
-          delay(100);
-          // while(-1); // permanent trap 11 Aug 16:45 UTC 2019
-*/
         }
       }
-      // SERIAL_LOCAL_C.println("TRAP");
       return; // EXPERIMENT - this could crash it - not sure why but the TRAP lines are ignored in Forth - but the very last line was not ignored and made it onto the stack (it was a pushed value).
     }
     SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
     delay(1400); // KLUDGE tnr kludge 12 Aug 23:15
   } // if thisfile
   else {
-    // SERIAL_LOCAL_C.print("Trouble at the Old Well, Timmy?");
-    // SERIAL_LOCAL_C.print(" I = 90 -- the 'parse' word  ");
     // SERIAL_LOCAL_C.println(" alt TRAP LINE 339");
     keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
   }
+
+
+// aging code above this line.  02 SEP 2019
+*/
+
 }
+
+
 
 void _WORD (void) {
   char t;
@@ -1293,10 +1237,23 @@ abort:
   LINK(287, 77) // 0< - may be the same entry point
   CODE(288, _NEST)
   DATA(289, initr)
-  // begin quit loop
+  // begin local sfparse quit loop
   DATA(290, sfparse) // latest change - - - - - - - - - - - - - - - -
+
+  // sfparse does nothing, now . . .  02 SEP 2019
+
+  DATA(291, branch)
+  DATA(292, 290) // continue the local quit loop
+
+  // above truncates progress of this definition. 02 SEP 2019
+
+/*
   DATA(291, wword) // gets string from tib
   DATA(292, find)
+*/
+
+// extra cruft leftover:
+
   DATA(293, qdup)
   DATA(294, zbranch)
   DATA(295, 303) // to number
@@ -1319,9 +1276,12 @@ abort:
   DATA(312, branch)
   DATA(313, 289)
   DATA(314, ok)
+
+
   DATA(315, branch)
   DATA(316, 290) // continue quit loop
 
+// <<-- extra cruft leftover  02 SEP 2019
 
 
   // . ( n - )
