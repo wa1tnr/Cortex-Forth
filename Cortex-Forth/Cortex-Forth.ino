@@ -210,13 +210,22 @@ void _COPYMEM (void) {
   cpMem2Str(); // ( addr ln -- )
 }
 
+#define OUCH 32
 void _COMPOSE (void) {
   int counter = 0;
-  while(counter < 32) { // always true
+  while(counter < (OUCH)) {
     int tk = ' ';
     counter++;
     _KEY();
-    if (counter > 30) { _DUP(); T = 43; _EMIT(); break; }
+    if (counter > (OUCH - 1)) {
+        _DUP();
+        SERIAL_LOCAL_C.print(" ERROR INPUT > ");
+        SERIAL_LOCAL_C.print((OUCH - 2)); // 30 chars - one for allot header and one for null terminator
+        SERIAL_LOCAL_C.print("chars ");
+        T = 43;
+        _EMIT();
+        break;
+    }
     // _SPACE(); _DUP(); _HDOT(); _SPACE();
     if (T == 1) SERIAL_LOCAL_C.print(" Ctrl+A pressed ");
     if (T == 2) SERIAL_LOCAL_C.print(" Ctrl+B pressed ");
@@ -242,18 +251,10 @@ void _FETCHSTR (void) {
 
 void _GETSTR (void) {
     parseStr();
-/*
-    char* vstr = parseStr();
-    char sib[32];
-    char* buffer = sib;
-    strcpy(buffer, vstr);
-*/
-    // Serial.print("PARSED STRING: '");
-    // Serial.print((char*) vstr, HEX);
-    // Serial.print(buffer);
 }
 
-void _RBYTE (void) { // _getOneByteRAM(); // ( addr -- )
+// rbyte ( addr -- )
+void _RBYTE (void) {
   _getOneByteRAM();
 }
 
@@ -1554,7 +1555,9 @@ abort:
   CODE(479, _COMPOSE)
 
 // s" ( -- addr )
-// gstr (  - ) // get string
+// length is found by another method.
+// squot squote s_quot s_quote _SQUOT _SQUOTE
+// gstr (  -- addr ) // get string
   NAME(480, 0, 2, 's', '"', 0) 
   LINK(481, 477)
   CODE(482, _GETSTR)
@@ -1626,7 +1629,11 @@ abort:
   flash_setup(); // flash_ops.cpp
 
 #ifdef AUTOLOAD
+#ifdef VERBIAGE_AA
    SERIAL_LOCAL_C.println(" AUTO-LOAD (extra boot code written in Forth) is enabled. ");
+#else
+   SERIAL_LOCAL_C.print(" +AUL ");
+#endif // #ifdef VERBIAGE_AA
    I = autoload;
 #else
    I = abort;
@@ -1635,13 +1642,14 @@ abort:
 
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
-   SERIAL_LOCAL_C.println  ("\n myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 31 AUG 2019 20:39z");
+   SERIAL_LOCAL_C.println  ("");
+   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 31 AUG 2019 20:39z");
+   SERIAL_LOCAL_C.println  ("      Sat Aug 31 20:39:32 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.0 +autoload +squote +fdir_planned ++rlist +cc +blist");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.0 +mkdir +write_File +fload   shred: abn-709");
 
-   SERIAL_LOCAL_C.println  ("\n      Sat Aug 31 20:39:32 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-");
-   SERIAL_LOCAL_C.println  ("\n      +0.2.0-a.0 +autoload +squote +fdir_planned ++rlist +cc +blist +mkdir +write_File +fload   shred: abn-709");
-
-   SERIAL_LOCAL_C.println  ("\n      words: fload wlist warm - do NOT use fload without disabling autoload");
-   SERIAL_LOCAL_C.println  ("\n      TEF MEK Hn-g");
+   SERIAL_LOCAL_C.println  ("      words: fload wlist warm - do NOT use fload without disabling autoload");
+   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-h");
 }
 
 /*
