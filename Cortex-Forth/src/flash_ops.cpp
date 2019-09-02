@@ -277,7 +277,7 @@ loop 1 + swap drop cr ;
 // key-stored:
     ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop\r"
 
-    ) WRITE_FORTH(     ": bsz 64 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
+    ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
 
 
 // buffer decrement
