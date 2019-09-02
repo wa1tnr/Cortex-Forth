@@ -1,5 +1,6 @@
 // flash_ops.cpp  wa1tnr
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
+// x7
 
 /*
   SD card read/write
@@ -329,7 +330,7 @@ s" fff  .s 1213   1 + .s 1214   key  .s 1214 80   swap .s 80 1214   c! .s empty 
     ) WRITE_FORTH(     "key dup\r" // ONLY keystroke gained
 
 // send +++ if backspace is pressed:
-    ) WRITE_FORTH(     "9 - 0< if 199 kst !\r"
+    ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r"
 
 // if backspace was pressed, report 
     ) WRITE_FORTH(     "kst @ 9 - 0< if 1 drop then\r" // fake payload
