@@ -256,13 +256,50 @@ loop 1 + swap drop cr ;
      WRITE_FORTH("32 allot here bend ! 1 drop\r");
      WRITE_FORTH(": svd buff @ 2701 + blist ;\r"); // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
      WRITE_FORTH(": sve buff @ 4 + cr ;\r");
-//   WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r");
+//   WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
+     WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
+     WRITE_FORTH(": bfc 7 ; cr\r"
+
+    ) WRITE_FORTH(     ": bsz 16 ; : bmk bsz 1 - ; cr\r"
+    ) WRITE_FORTH(     ": bfi swap 1 + bmk and bmk 2 - cr\r"
+    ) WRITE_FORTH(     "cr .s cr cr over over swap\r"
+    ) WRITE_FORTH(     "cr - 0< cr if\r"
+    ) WRITE_FORTH(     "swap 1 + bmk and\r"
+    ) WRITE_FORTH(     "1 + bmk and\r"
+    ) WRITE_FORTH(     "1 + bmk and\r"
 
 
-//  WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
+    ) WRITE_FORTH(     "cr .s cr\r"
+    ) WRITE_FORTH(     "swap then drop swap ; cr\r"
 
-    WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
+    ) WRITE_FORTH(     ": sxa here dup . bsz allot here swap 1 + ; cr\r"
 
+    ) WRITE_FORTH(     ": txb bfi .s cr ; cr\r"
+
+    ) WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop cr ; cr\r"
+
+    ) WRITE_FORTH(     ": lxa -99 sxa ; cr\r"
+
+    ) WRITE_FORTH(     ": sam lxa\r"
+
+    ) WRITE_FORTH(     "bfc swap bfi\r"
+
+    ) WRITE_FORTH(     "over over + begin\r"
+
+    ) WRITE_FORTH(     "key swap c!\r"
+
+    ) WRITE_FORTH(     "dup blist .s cr\r"
+
+    ) WRITE_FORTH(     "drop\r"
+
+    ) WRITE_FORTH(     "bfi over over +\r"
+
+    ) WRITE_FORTH(     "again ; cr\r"
+
+    )
+
+
+// \ sam is the name of the built-in editor.
 
 /*
 */
