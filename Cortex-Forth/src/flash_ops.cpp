@@ -288,7 +288,12 @@ loop 1 + swap drop cr ;
     ) WRITE_FORTH(     "swap then drop swap ;\r"
 
 // buffer increment
-    ) WRITE_FORTH(     ": bfi swap 1 + bmk and bmk 2 - over\r"
+// ( count addr -- count+1 addr )
+    ) WRITE_FORTH(     ": bfi\r"
+    ) WRITE_FORTH(     "kst @\r"
+    ) WRITE_FORTH(     "200 - 0< if\r"
+    ) WRITE_FORTH(     "bfd bfd then\r"
+    ) WRITE_FORTH(     "swap 1 + bmk and bmk 2 - over\r"
     ) WRITE_FORTH(     "over swap - 0< if\r"
     ) WRITE_FORTH(     "swap 1 + bmk and\r"
     ) WRITE_FORTH(     "1 + bmk and\r"
@@ -325,19 +330,19 @@ s" fff  .s 1213   1 + .s 1214   key  .s 1214 80   swap .s 80 1214   c! .s empty 
 // good:
 //  ) WRITE_FORTH(     "key dup 9 - 0< if 43 emit then swap c!\r"
 
-    ) WRITE_FORTH(     "254 kst !\r" // reset kst
+    ) WRITE_FORTH(     "254 kst ! 1 drop\r" // reset kst
 
     ) WRITE_FORTH(     "key dup\r" // ONLY keystroke gained
 
 // send +++ if backspace is pressed:
     ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r"
 
-// if backspace was pressed, report 
-    ) WRITE_FORTH(     "kst @ 9 - 0< if 1 drop then\r" // fake payload
 
-    ) WRITE_FORTH( "77 emit 77 emit 77 emit cr .s cr 77 emit 77 emit 77 emit\r"
+// EXPERIMENT
 // everyone store:
-    ) WRITE_FORTH(     "swap c! 1 drop\r"
+    ) WRITE_FORTH(     "kst @ negate 253 + 0< if swap c! then\r"
+    ) WRITE_FORTH(     "kst @ 200 - 0< if swap drop drop then\r"
+
 
 // ###bookmark
 
@@ -351,9 +356,10 @@ s" fff  .s 1213   1 + .s 1214   key  .s 1214 80   swap .s 80 1214   c! .s empty 
 // addr -- addr kadr -- addr KST -- addr KST 9 -- addr DIFF -- addr -- 
 //  ) WRITE_FORTH(     "kst @ 9 - 0< if bfd bfd bfd bfd then\r"
     ) WRITE_FORTH(     "dup blist\r"
-    ) WRITE_FORTH(     "cr cr .s cr cr\r"
+    ) WRITE_FORTH(     "cr .s cr\r"
     ) WRITE_FORTH(     "drop\r"
-    ) WRITE_FORTH(     "bfi over over +\r"
+//  ) WRITE_FORTH(     "kst @ 9 - 0< if 1 drop then\r" // fake payload
+    ) WRITE_FORTH(     "bfi over over + 1 drop\r"
     ) WRITE_FORTH(     "again ;\r"
     )
 
