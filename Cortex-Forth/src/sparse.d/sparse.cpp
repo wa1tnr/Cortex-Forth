@@ -215,11 +215,13 @@ void parseStr(void) {
     int n = pop(); // bottom address of new string allot'd
     n++; // might want to skip that first byte haha
 
+    /* note: no clue as to what has to stay and what can profitably be removed: */
     char* cStr = (char*) n;
     char* str = 0;
     if(cStr) {
         *cStr++;
         _COMPOSE(); // _KEY();
+        // Serial.println("DEBUG intercept AA in parseStr() ");
         int ln = pop();
         ln--; // not ascii 32 delimiter
         int p = n;
