@@ -254,8 +254,10 @@ loop 1 + swap drop cr ;
     myFile.print("32 allot here bend ! 1 drop\r");
     myFile.print(": svd buff @ 2701 + blist ;\r"); // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
     myFile.print(": sve buff @ 4 + cr ;\r");
-    myFile.print(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r");
+//  myFile.print(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r");
 
+#define WRITE_FORTH(a) {myFile.print((a));}
+    WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
 
 
 /*
