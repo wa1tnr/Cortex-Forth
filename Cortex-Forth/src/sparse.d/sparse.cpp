@@ -205,6 +205,34 @@ void fetchStr(void) { // ( adrs -- )
     push(-599);
 }
 
+/* 
+
+unproven:
+
+
+
+\ bfi input:  ( count address -- ? )
+\ -99 3 500
+
+proven:
+
+: bsz 64 ; : bmk bsz 1 - ; cr  
+: bfi swap 1 + bmk and swap ; cr  
+: sxa here bsz allot here swap 1 + ; cr  
+: txb bfi .s cr ; cr  
+
+: ldelay 1024 0 do 1 delay loop cr ; cr  
+
+subst above for:
+: sam -99 sxa begin ldelay 43 emit .s again ; cr  
+
+junk:
+\ : sxa here 64 allot here swap 1 + ; cr
+\ : bfi dup dup bsz - 1 + bmk and ; cr  
+\ : sam sxa begin ldelay 43 emit drop again ;  
+
+
+*/
 
 void parseStr(void) {
     _HERE();
