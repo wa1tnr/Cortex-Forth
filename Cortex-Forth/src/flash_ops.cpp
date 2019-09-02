@@ -263,7 +263,7 @@ loop 1 + swap drop cr ;
 // ###bookmark
 
 
-      WRITE_FORTH(     ": bsz 16 ; : bmk bsz 1 - ;\r"
+      WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
     ) WRITE_FORTH(     ": bfi swap 1 + bmk and bmk 2 - over\r"
     ) WRITE_FORTH(     "over swap - 0< if\r"
     ) WRITE_FORTH(     "swap 1 + bmk and\r"
@@ -271,7 +271,7 @@ loop 1 + swap drop cr ;
     ) WRITE_FORTH(     "1 + bmk and\r"
     ) WRITE_FORTH(     "swap then drop swap ;\r"
 
-    ) WRITE_FORTH(     ": bfc 7 ;\r"
+    ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bfz - 2) .. or zero
 
     ) WRITE_FORTH(     ": sxa here dup . bsz allot here swap 1 + ;\r"
 
