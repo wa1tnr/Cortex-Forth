@@ -224,6 +224,8 @@ proven:
   cr - 0< cr if
     swap 1 + bmk and
          1 + bmk and
+         1 + bmk and
+         cr cr .s cr cr .s cr cr cr .s cr cr cr .s cr cr cr
     swap then drop swap ; cr  
 : sxa here dup . bsz allot here swap 1 + ; cr  
 : txb bfi .s cr ; cr  
