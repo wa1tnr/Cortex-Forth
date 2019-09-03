@@ -254,7 +254,7 @@ loop 1 + swap drop cr ;
     ) WRITE_FORTH(     ": stuffit 69 68 67 66 65 5 ;\r"
     ) WRITE_FORTH(     "69 68 67 66 65 5 emits cr\r"
 
-    ) WRITE_FORTH(     "2048 allot\r"
+    ) WRITE_FORTH(     "2048 allot\r" // 18k address space 03 SEP 2019
     ) WRITE_FORTH(     "variable bend variable buff here buff !\r"
     ) WRITE_FORTH(     "2048 allot here bend ! 1 drop\r"
     ) WRITE_FORTH(     ": svd buff @ 2701 + blist ;\r"  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
@@ -272,6 +272,7 @@ loop 1 + swap drop cr ;
 
     // sfi knows if the editor has already been initialized, to
     //    allocate a buffer, or not.
+    // sfi was mostly disabled for a bug hunt and hasn't been reinstated fully.
 
     ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
 
@@ -279,7 +280,6 @@ loop 1 + swap drop cr ;
     ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop\r"
 
     ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
-
 
 // buffer decrement
     ) WRITE_FORTH(     ": bfd swap 1 - bmk and bmk 2 - over\r"
@@ -316,11 +316,19 @@ loop 1 + swap drop cr ;
     ) WRITE_FORTH(     ": txb bfi .s cr ;\r"
 
     ) WRITE_FORTH(     ": lxa -99 sxa ;\r"
+
+// re-initialization protection:
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
+
     ) WRITE_FORTH(     ": sam lxa\r"
     ) WRITE_FORTH(     "bfc swap bfi\r"
     ) WRITE_FORTH(     "over over + begin\r"
 //  value address !
+
+// backspace ASCII 0x08 related processing 8, 199, 254, kst
+    // 254 stored in kst to indicate reset
+    // 199 stored to indicate backspace key was pressed
+
     ) WRITE_FORTH(     "254 kst ! 1 drop\r" // reset kst
     ) WRITE_FORTH(     "key dup\r" // ONLY keystroke gained
 
@@ -329,18 +337,31 @@ loop 1 + swap drop cr ;
 
 // - - - - standard comparison: 254 vs 199
 // everyone store:
+    // one path chosen from a single pick of one of these two lines
+    // which exchanges 'swap c!' for 'swap drop drop' (the swap was factored out)
     ) WRITE_FORTH(     "kst @ negate 253 + 0< if swap c! then\r"
-    ) WRITE_FORTH(     "kst @ 200 - 0< if swap drop drop then\r"
+    ) WRITE_FORTH(     "kst @ 200 - 0< if drop drop then\r"
 
-
-    ) WRITE_FORTH(     "65 4 + dup dup emit emit emit space space .s space space cr cr\r"
-
-// ###bookmark
-
-// addr -- addr kadr -- addr KST -- addr KST 9 -- addr DIFF -- addr -- 
-    ) WRITE_FORTH(     "dup blist\r"
+// read-only and  stack balanced, after these two lines:
+/*
+    ) WRITE_FORTH(     "dup blist\r"  // blist ( addr -- addr+incr )
     ) WRITE_FORTH(     "drop\r"
-    ) WRITE_FORTH(     "cr .s cr\r"
+*/
+
+/* instead, want a simple emit (to start with):
+*/
+    ) WRITE_FORTH(     "dup alist drop\r" // alist will update your address to the new offset if you let it, so dup for a spare copy of tos, alist, then drop the result
+// since alist works, it can be picked apart, too:
+
+//  ) WRITE_FORTH(     "if dup c@ >prn 100 delay then loop\r"
+
+//  ) WRITE_FORTH(     "dup c@ 21 min 126 max emit\r"
+// since that didn't work, need a stack print to figure out the offset math:
+    ) WRITE_FORTH(     "cr 65 emit 65 emit 65 emit 65 emit 65 emit space space .s space space\r"
+// so it's just 'over over +' to get the address wanted:
+    ) WRITE_FORTH(     "over over + c@ cr .s cr 32 max 126 min emit space\r" // may not want that last space
+
+
     ) WRITE_FORTH(     "bfi over over + 1 drop\r"
     ) WRITE_FORTH(     "again ;\r"
     )
