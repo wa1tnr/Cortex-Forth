@@ -1,3 +1,6 @@
+// Tue Sep  3 09:22:29 UTC 2019 0.2.0-alpha.1 non-usart-c-03_sep-aa-  shred: abn-715");
+// On branch non-usart-c-03_sep-aa-
+
 // Tue Sep  3 08:25:26 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-  shred: abn-711");
 
 /*
@@ -1603,13 +1606,13 @@ abort:
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
    SERIAL_LOCAL_C.println  ("");
-   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 03 SEP 2019 08:25z");
-   SERIAL_LOCAL_C.println  ("      Tue Sep  3 08:25:26 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.0  +sam +autoload +squote +fdir_planned ++rlist +cc");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.0  +blist +mkdir +write_File +fload        shred: abn-711");
+   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 03 SEP 2019 09:22z");
+   SERIAL_LOCAL_C.println  ("      Tue Sep  3 09:22:29 UTC 2019 0.2.0-alpha.1 nnon-usart-c-03_sep-aa-");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +sam +autoload +squote +fdir_planned ++rlist +cc");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-715");
 
    SERIAL_LOCAL_C.println  ("      words: sam fload wlist warm - do NOT use fload without disabling autoload");
-   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-j");
+   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-k");
 }
 
 /*
