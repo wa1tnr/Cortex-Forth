@@ -36,7 +36,10 @@ void forth_words(void) {
 // This is a cpp macro -- the parens can be quite far away
 // from the quoted string:
 
-      WRITE_FORTH(     ": max over over - 0< if \
+// 0= ( n1 -- BOOL ) // not thoroughly tested, but looked good.
+      WRITE_FORTH(     ": 0= dup abs negate 0< invert swap drop ;\r" 
+
+    ) WRITE_FORTH(     ": max over over - 0< if \
                               swap drop -1 then \
                           if \
                               exit then \
@@ -215,7 +218,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r"
 
 
-
 // review:  value address !
 
     ) WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop cr ;\r" 
@@ -295,6 +297,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // send +++ if backspace is pressed:
     ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r" // ONLY time '9' is useful in compare
 
+// new line 16:12z 03 SEP:
+    ) WRITE_FORTH(     "dup 31 - 0< if  31 kst ! then\r" // ONLY time '9' is useful in compare
+
 // - - - - standard comparison: 254 vs 199
 // everyone store:
 
@@ -340,6 +345,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
     ) WRITE_FORTH(     "sbc @ 1 + dup sbc !\r" // sam buffer counter, increment it
+
+    ) WRITE_FORTH(     "sbc @ 2 - 0< if kst @ 28 1 + - 0< if kst @ 28 - 0< if 1 drop then swap dup blist drop swap then then\r"
+
     ) WRITE_FORTH(     "sbc @ 125 - 0< if -1 sbc ! then \
                         bsz - 0< invert if\r" // compare sbc to bsz
     ) WRITE_FORTH(         "cr cr cr \
