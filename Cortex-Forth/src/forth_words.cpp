@@ -44,6 +44,36 @@ void forth_words(void) {
 
 // The quoted string can be extended with a backslash.
 
+// IT IS POSSIBLE to make no apparent mistake, and
+// even so, the compiler _FLPARSE() won't quite accept
+// the definition.
+
+// The system will kick out a tilde ('~') to suggest a
+// problem (as it uses boilerplate from the 'quit' word,
+// which uses a '?' in the same location).
+
+// 1215   DATA(208, '~') // was '?' in the original
+
+// The usual solution is to slighly reorganize the code,
+// or add a trailing '\r' (the entire system is oddly
+// sensitive to line endings and small groups of characters
+// on a line, such as a standalone bang ('!').
+
+// The presence of excess '1 drop' phrases is due to
+// trying to fool the parser into accepting the code
+// as written.
+
+// As this is player-piano (massive playback of a stored
+// file, through the Forth parsing system) it seems a
+// bit more sensitive than the equivalent, live
+// interactive method (through the keyboard and terminal
+// interfaces).
+
+// _FLPARSE() could use a good going-through; its
+// control structure/program flow was determined
+// experimentally (and, somewhat ignorantly ;)
+
+
 // min ( n1 n2 -- min )
       WRITE_FORTH(     ": min over over - 0< if \
                               drop exit then \
@@ -115,16 +145,23 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     ": hlist hadr \
                           16 + dup 16 - over over \
                           do \
-                              1 + over over swap - 1 - 0< if \
+                              1 + over over \
+                              swap - 1 - 0< if \
                                   dup c@ dup 16 - 0< if \
                                       48 emit then \
-                              h. 100 delay then \
+                                  h. 100 delay then \
                           loop \
                           drop ;\r"
 
 // alist ( addr -- )
-    ) WRITE_FORTH(     ": alist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< \
-                        if dup c@ >prn 100 delay then loop drop ;\r"
+    ) WRITE_FORTH(     ": alist space space 16 + dup 16 - over over \
+                          do \
+                              1 + over over \
+                              swap - 1 - 0< if \
+                                  dup c@ >prn \
+                                  100 delay then \
+                          loop \
+                          drop ;\r"
 
 // bottom ( -- addr )
     ) WRITE_FORTH(     ": bottom 536870912 ;\r"
