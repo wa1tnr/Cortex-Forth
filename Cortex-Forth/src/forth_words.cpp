@@ -158,16 +158,14 @@ void forth_words(void) {
 //  myFile.print("\r");
 
 // max ( n1 n2 -- max )
-//    WRITE_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;\r"
+      WRITE_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;\r"
 
 // min ( n1 n2 -- min )
-//  ) WRITE_FORTH(     ": min over over - 0< if drop exit then swap drop ;\r"
-//  ) WRITE_FORTH(     "\n\r"
+    ) WRITE_FORTH(     ": min over over - 0< if drop exit then swap drop ;\r"
 
-      WRITE_FORTH(     ": svi 1 drop ;\r"
-) // temporarily close parens (cpp macro)
 
-/*
+//    WRITE_FORTH(     ": svi 1 drop ;\r"
+
 // testc ( -- )
 
     ) WRITE_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;\r"
@@ -185,6 +183,7 @@ void forth_words(void) {
     ) WRITE_FORTH(     ": hadr dup 1 + h. ecol space ;\r")
 
 
+/*
 // Can pack memory efficiently using the comma word:
 
 \ 0abbccdd    1a2b3c4d
@@ -200,6 +199,7 @@ C00 10 00 00 00 11 00 00 00 12 00 00 00 13 00 00 00 ................
 C10 14 00 00 00 15 00 00 00 16 00 00 00 17 00 00 00 ................
 C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
+*/
 
 
 //  ) WRITE_FORTH(
@@ -324,7 +324,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bsz - 2) .. or zero
 
 // conditionally initialize the buffer:
-*/
 
 
 /*
@@ -333,8 +332,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 */
 
 
-
-/*
 // unconditionally init:
     ) WRITE_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;\r"
     ) WRITE_FORTH(     ": txb bfi .s cr ;\r"
@@ -369,19 +366,23 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     "kst @ 200 - 0< if drop drop then\r"
 
 // read-only and  stack balanced, after these two lines:
+
+
+/*
+
+    OLD OUTPUT LOOP method was to blist everything.
+
+    ) WRITE_FORTH(     "dup blist\r"  // blist ( addr -- addr+incr )
+    ) WRITE_FORTH(     "drop\r"
+
 */
+
 
 
 
 /*
-    ) WRITE_FORTH(     "dup blist\r"  // blist ( addr -- addr+incr )
-    ) WRITE_FORTH(     "drop\r"
-*/
 
-
-
-
-/* instead, want a simple emit (to start with):
+     instead, want a simple emit (to start with):
 
 */
 
@@ -400,7 +401,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // bsz size of the buffer
 // sbc counter for each keystroke given
 
-/*
+
     ) WRITE_FORTH(     "sbc @ 1 + dup sbc !\r" // sam buffer counter, increment it
     ) WRITE_FORTH(     "sbc @ 125 - 0< if -1 sbc ! then\r"
 // nothing -- sbc -- sbc 125 -- DIFF -- BOOL -- consumed at IF to nothing -- -1 -- -1 addr -- nothing
@@ -413,7 +414,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     "bfi over over + 1 drop\r"
     ) WRITE_FORTH(     "again ;\r"
     )
-*/
 
 }
 
