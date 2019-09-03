@@ -1,6 +1,7 @@
 // flash_ops.cpp  wa1tnr
+// Tue Sep  3 08:25:26 UTC 2019
+
 // Wed Aug 21 02:15:00 UTC 2019 0.1.8 good-compiler-aa-bb  shred: abn-515
-// x7
 
 /*
   SD card read/write
@@ -276,6 +277,8 @@ loop 1 + swap drop cr ;
 
     ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
 
+    ) WRITE_FORTH(     "variable sbc -1 sbc !\r" // sam buffer counter
+
 // key-stored:
     ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop\r"
 
@@ -303,7 +306,7 @@ loop 1 + swap drop cr ;
     ) WRITE_FORTH(     "swap then drop swap ;\r"
 // message: here
     ) WRITE_FORTH(     ": mhe 72 emit 101 emit 114 emit 101 emit 58 emit space ;\r"
-    ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bfz - 2) .. or zero
+    ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bsz - 2) .. or zero
 
 // conditionally initialize the buffer:
 
@@ -320,9 +323,11 @@ loop 1 + swap drop cr ;
 // re-initialization protection:
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
 
+
     ) WRITE_FORTH(     ": sam lxa\r"
     ) WRITE_FORTH(     "bfc swap bfi\r"
     ) WRITE_FORTH(     "over over + begin\r"
+    ) WRITE_FORTH(     "sbc @ 1 + sbc !\r" // increment counter
 //  value address !
 
 // backspace ASCII 0x08 related processing 8, 199, 254, kst
@@ -350,17 +355,28 @@ loop 1 + swap drop cr ;
 
 /* instead, want a simple emit (to start with):
 */
-    ) WRITE_FORTH(     "dup alist drop\r" // alist will update your address to the new offset if you let it, so dup for a spare copy of tos, alist, then drop the result
+//  ) WRITE_FORTH(     "dup alist drop\r" // alist will update your address to the new offset if you let it, so dup for a spare copy of tos, alist, then drop the result
 // since alist works, it can be picked apart, too:
 
 //  ) WRITE_FORTH(     "if dup c@ >prn 100 delay then loop\r"
 
 //  ) WRITE_FORTH(     "dup c@ 21 min 126 max emit\r"
 // since that didn't work, need a stack print to figure out the offset math:
-    ) WRITE_FORTH(     "cr 65 emit 65 emit 65 emit 65 emit 65 emit space space .s space space\r"
+//  ) WRITE_FORTH(     "cr 65 emit 65 emit 65 emit 65 emit 65 emit space space .s space space\r"
 // so it's just 'over over +' to get the address wanted:
-    ) WRITE_FORTH(     "over over + c@ cr .s cr 32 max 126 min emit space\r" // may not want that last space
+//  ) WRITE_FORTH(     "over over + c@ cr .s cr 32 max 126 min emit space\r" // may not want that last space
 
+// bsz size of the buffer
+// sbc counter for each keystroke given
+
+    ) WRITE_FORTH(     "sbc @ 1 + dup sbc !\r" // sam buffer counter, increment it
+    ) WRITE_FORTH(     "sbc @ 125 - 0< if -1 sbc ! then\r"
+// nothing -- sbc -- sbc 125 -- DIFF -- BOOL -- consumed at IF to nothing -- -1 -- -1 addr -- nothing
+    ) WRITE_FORTH(     "bsz - 0< invert if\r" // compare sbc to bsz
+    ) WRITE_FORTH(         "cr cr cr 67 emit 67 emit 67 emit cr cr cr\r" // just get their attention
+    ) WRITE_FORTH(     "then 1 drop\r"
+
+    ) WRITE_FORTH(     "over over + c@ 32 max 126 min emit\r" // keyboard echo
 
     ) WRITE_FORTH(     "bfi over over + 1 drop\r"
     ) WRITE_FORTH(     "again ;\r"
