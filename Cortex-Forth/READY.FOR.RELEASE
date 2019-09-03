@@ -1,12 +1,26 @@
-Fri Aug 30 13:39:21 UTC 2019
+Tue Sep  3 08:37:05 UTC 2019
 
-On branch non-usart-30_aug-aa-
+On branch non-usart-b-31_aug-aa-
 
-Fri Aug 30 13:33:11 UTC 2019 0.2.0-alpha.0 non-usart-30_aug-aa-  shred: abn-705");
+Tue Sep  3 08:25:26 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-  shred: abn-711
 
-* develop
-  non-usart-26_aug
-  non-usart-30_aug
-  non-usart-30_aug-aa-
+commit f01251176ec6717d3fe2e7953d26faeb7a63d419
+Author: wa1tnr
+Date:   Tue Sep 3 08:34:05 2019 +0000
 
+    sam basics for 9term -  myForth Arm Cortex
+    
+       de wa1tnr  ItsyBitsyM4 03 SEP 2019 08:25z
+    
+          Tue Sep  3 08:25:26 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-
+    
+          +0.2.0-a.0  +sam +autoload +squote +fdir_planned ++rlist +cc
+          +0.2.0-a.0  +blist +mkdir +write_File +fload        shred: abn-711
+    
+          words: sam fload wlist warm - do NOT use fload without disabling autoload");
+          TEF MEK Hn-j
 
+    Nice, solid stable point in development.
+    
+    Stability is a cheat - here was pushed way up, with
+    an arbitrarily large allot ;)
