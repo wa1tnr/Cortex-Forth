@@ -112,8 +112,15 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 // hlist ( addr -- )
-    ) WRITE_FORTH(     ": hlist hadr 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop \
-                        drop ;\r"
+    ) WRITE_FORTH(     ": hlist hadr \
+                          16 + dup 16 - over over \
+                          do \
+                              1 + over over swap - 1 - 0< if \
+                                  dup c@ dup 16 - 0< if \
+                                      48 emit then \
+                              h. 100 delay then \
+                          loop \
+                          drop ;\r"
 
 // alist ( addr -- )
     ) WRITE_FORTH(     ": alist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< \
