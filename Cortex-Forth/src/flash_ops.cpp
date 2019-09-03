@@ -147,26 +147,26 @@ void flash_setup(void) {
 //  myFile.print("\r");
 
 // max ( n1 n2 -- max )
-     WRITE_FORTH(": max over over - 0< if swap drop -1 then if exit then swap drop ;\r")
+      WRITE_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;\r"
 
 // min ( n1 n2 -- min )
-     WRITE_FORTH(": min over over - 0< if drop exit then swap drop ;\r")
+    ) WRITE_FORTH(     ": min over over - 0< if drop exit then swap drop ;\r"
 
 // testc ( -- )
 
-     WRITE_FORTH(": testcc -1 512 0 do 1 + dup , loop ;\r")
+    ) WRITE_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;\r"
 
 // >prn ( n -- )
-     WRITE_FORTH(": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;\r");
+    ) WRITE_FORTH(     ": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;\r"
 
 // delay ( n -- )
-     WRITE_FORTH(": delay drop 1234 0 do 1 drop loop ;\r")
+    ) WRITE_FORTH(     ": delay drop 1234 0 do 1 drop loop ;\r"
 
 // ecol ( -- ) \ emit a colon
-     WRITE_FORTH(": ecol 58 emit ;\r")
+    ) WRITE_FORTH(     ": ecol 58 emit ;\r"
 
 // hadr ( addr -- addr ) print to display
-     WRITE_FORTH(": hadr dup 1 + h. ecol space ;\r")
+    ) WRITE_FORTH(     ": hadr dup 1 + h. ecol space ;\r")
 /*
 
 Can pack memory efficiently using the comma word:
@@ -186,41 +186,42 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 */
 
+//  ) WRITE_FORTH(
 // rhlist ( addr -- )
-     WRITE_FORTH(": rhlist hadr 16 + dup 16 - over over\r")
-     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r")
-     WRITE_FORTH("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r")
-     WRITE_FORTH("drop ;\r")
+      WRITE_FORTH(     ": rhlist hadr 16 + dup 16 - over over\r"
+    ) WRITE_FORTH(     "do 1 + over over swap - 1 - 0<\r"
+    ) WRITE_FORTH(     "if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r"
+    ) WRITE_FORTH(     "drop ;\r"
 
 // ralist ( addr -- )
-     WRITE_FORTH(": ralist space space 16 + dup 16 - over over\r")
-     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r")
-     WRITE_FORTH("if dup rbyte >prn 100 delay then loop\r")
-     WRITE_FORTH("drop ;\r")
+    ) WRITE_FORTH(     ": ralist space space 16 + dup 16 - over over\r"
+    ) WRITE_FORTH(     "do 1 + over over swap - 1 - 0<\r"
+    ) WRITE_FORTH(     "if dup rbyte >prn 100 delay then loop\r"
+    ) WRITE_FORTH(     "drop ;\r"
 
 // hlist ( addr -- )
-     WRITE_FORTH(": hlist hadr 16 + dup 16 - over over\r")
-     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r")
-     WRITE_FORTH("if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r")
-//   WRITE_FORTH("if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r")
-     WRITE_FORTH("drop ;\r")
+    ) WRITE_FORTH(     ": hlist hadr 16 + dup 16 - over over\r"
+    ) WRITE_FORTH(     "do 1 + over over swap - 1 - 0<\r"
+    ) WRITE_FORTH(     "if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop\r"
+//  ) WRITE_FORTH(     "if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop\r"
+    ) WRITE_FORTH(     "drop ;\r"
 
 // alist ( addr -- )
-     WRITE_FORTH(": alist space space 16 + dup 16 - over over\r")
-     WRITE_FORTH("do 1 + over over swap - 1 - 0<\r")
-     WRITE_FORTH("if dup c@ >prn 100 delay then loop\r")
-//   WRITE_FORTH("if dup rbyte >prn 100 delay then loop\r")
-     WRITE_FORTH("drop ;\r")
+    ) WRITE_FORTH(     ": alist space space 16 + dup 16 - over over\r"
+    ) WRITE_FORTH(     "do 1 + over over swap - 1 - 0<\r"
+    ) WRITE_FORTH(     "if dup c@ >prn 100 delay then loop\r"
+//  ) WRITE_FORTH(     "if dup rbyte >prn 100 delay then loop\r"
+    ) WRITE_FORTH(     "drop ;\r"
 
 // bottom ( -- addr )
-     WRITE_FORTH(": bottom 536870912 ;\r")
-     WRITE_FORTH(": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r")
+    ) WRITE_FORTH(     ": bottom 536870912 ;\r"
+    ) WRITE_FORTH(     ": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r"
 
 // blist ( addr -- )
-     WRITE_FORTH(": blist cr -999 swap 196604 1148 - min 0 max\r")
-//   WRITE_FORTH("196608 1148 - min 0 max 1 - 8 0 do\r")
-     WRITE_FORTH("dup 1 - 8 0 do dup hlist 16 - alist cr\r")
-     WRITE_FORTH("swap drop loop 1 + swap drop cr ;\r")
+    ) WRITE_FORTH(     ": blist cr -999 swap 196604 1148 - min 0 max\r"
+//  ) WRITE_FORTH(     "196608 1148 - min 0 max 1 - 8 0 do\r"
+    ) WRITE_FORTH(     "dup 1 - 8 0 do dup hlist 16 - alist cr\r"
+    ) WRITE_FORTH(     "swap drop loop 1 + swap drop cr ;\r")
 
 
 // rlist ( addr -- addr + report_size )
