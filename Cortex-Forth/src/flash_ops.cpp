@@ -221,13 +221,13 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     ": blist cr -999 swap 196604 1148 - min 0 max\r"
 //  ) WRITE_FORTH(     "196608 1148 - min 0 max 1 - 8 0 do\r"
     ) WRITE_FORTH(     "dup 1 - 8 0 do dup hlist 16 - alist cr\r"
-    ) WRITE_FORTH(     "swap drop loop 1 + swap drop cr ;\r")
+    ) WRITE_FORTH(     "swap drop loop 1 + swap drop cr ;\r"
 
 
 // rlist ( addr -- addr + report_size )
-     WRITE_FORTH(": rlist cr -999 swap bottom 195552 + min 0 max\r")
-     WRITE_FORTH("dup 1 - 8 0 do dup rhlist 16 - ralist cr\r")
-     WRITE_FORTH("swap drop loop 1 + swap drop cr ;\r")
+    ) WRITE_FORTH(     ": rlist cr -999 swap bottom 195552 + min 0 max\r"
+    ) WRITE_FORTH(     "dup 1 - 8 0 do dup rhlist 16 - ralist cr\r"
+    ) WRITE_FORTH(     "swap drop loop 1 + swap drop cr ;\r"
 
 /*
 
@@ -239,7 +239,7 @@ loop 1 + swap drop cr ;
 */
 
 // at the Ok prompt, type:
-     WRITE_FORTH("wag wag 8 wiggle\r")
+    ) WRITE_FORTH(     "wag wag 8 wiggle\r"
 
 // canonical for 24 August:
 // rlist and blist
@@ -249,21 +249,21 @@ loop 1 + swap drop cr ;
 
 // rdump was deprecated. 24 Aug
 
-     WRITE_FORTH(": emits 0 do emit loop space ;\r")
-     WRITE_FORTH(": said fs@ emits space cr space ;\r")
-     WRITE_FORTH(": stuffit 69 68 67 66 65 5 ;\r")
-     WRITE_FORTH("69 68 67 66 65 5 emits cr\r")
+    ) WRITE_FORTH(     ": emits 0 do emit loop space ;\r"
+    ) WRITE_FORTH(     ": said fs@ emits space cr space ;\r"
+    ) WRITE_FORTH(     ": stuffit 69 68 67 66 65 5 ;\r"
+    ) WRITE_FORTH(     "69 68 67 66 65 5 emits cr\r"
 
-     WRITE_FORTH("2048 allot\r")
-     WRITE_FORTH("variable bend variable buff here buff !\r")
-     WRITE_FORTH("2048 allot here bend ! 1 drop\r")
-     WRITE_FORTH(": svd buff @ 2701 + blist ;\r")  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
-     WRITE_FORTH(": sve buff @ 4 + cr ;\r")
-     WRITE_FORTH(": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r")
+    ) WRITE_FORTH(     "2048 allot\r"
+    ) WRITE_FORTH(     "variable bend variable buff here buff !\r"
+    ) WRITE_FORTH(     "2048 allot here bend ! 1 drop\r"
+    ) WRITE_FORTH(     ": svd buff @ 2701 + blist ;\r"  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
+    ) WRITE_FORTH(     ": sve buff @ 4 + cr ;\r"
+    ) WRITE_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r"
 
 // review:  value address !
 
-      WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop cr ;\r") 
+    ) WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop cr ;\r" 
 
 // ###bookmark
 
@@ -273,7 +273,7 @@ loop 1 + swap drop cr ;
     // sfi knows if the editor has already been initialized, to
     //    allocate a buffer, or not.
 
-      WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
+    ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
 
 // key-stored:
     ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop\r"
