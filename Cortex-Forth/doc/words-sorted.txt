@@ -54,6 +54,7 @@ hli hlist horizontal list
 i a counter thing
 if (lengthy) these look like offsets into a detailed instruction step subset -- they roughly index into the code block
 invert
+kbi (was sbc) keyboard index
 key get a keystroke from the serial port
 kst key stored
 [ lbrac (lengthy)
@@ -81,7 +82,6 @@ rhl rhlist (ram hlist)
 rli rlist
 sai said
 sam (invoke editor)
-sbc not sure
 .s dots - print the stack, non-destructively
 ; semicolon (lengthy)
 sfi not sure
