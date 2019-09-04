@@ -187,7 +187,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // loop 1 + swap drop cr ;
 
 // at the Ok prompt, type:
-    ) WRITE_FORTH(     "wag wag 8 wiggle\r"
+//  ) WRITE_FORTH(     "wag wag 8 wiggle\r"
 
 // example:
 //        bottom 464 + rlist cr 84 blist cr
@@ -241,6 +241,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
     ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
 
+// buffer and keyboard conflated in naming due to small namespace for word names ;)
+// so generally a 'b' word and a 'k' word refer to similar things.
+
 // buffer decrement
     ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over \
                         over swap - 0< if \
@@ -252,7 +255,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // ( count addr -- count+1 addr )
     ) WRITE_FORTH(     ": k++ \
                         kst @ \
-                        200 - 0< if \
+                        199 - 0= if \
                         k-- k-- then \
                         swap 1 + bmk and bmk 2 - over \
                         over swap - 0< if \
@@ -279,6 +282,35 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
     ) WRITE_FORTH(     ": lxa -99 sxa ;\r"
 
+
+// sam library:
+
+// ctrl! ( n -- n ) // store any control char as ascii 31, into kst
+// wanted: ascii 15 (Control O)
+    ) WRITE_FORTH(     ": ctrl! dup 31 - 0< if 31 kst ! then ;\r"
+
+// 29 -- 29 29 -- 29 29 31 -- 29 -2 -- 29 BOOL 
+
+// bksp! ( n -- n ) // store CTRL H (ASCII 0x08) as ascii 199, into kst
+    ) WRITE_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then ;\r"
+
+ // print .s to the terminal
+
+    ) WRITE_FORTH(     ": tellme space space 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
+//  ) WRITE_FORTH(     "\r"
+
+// write kst
+    ) WRITE_FORTH(     "107 emit 115 emit 116 emit 58 emit space\r"
+    ) WRITE_FORTH(     "kst @ h. space space space\r"
+
+// write kbi
+    ) WRITE_FORTH(     "107 emit 98 emit 105 emit 58 emit space\r"
+    ) WRITE_FORTH(     "kbi @ h. cr ;\r"
+
+
+
+    ) WRITE_FORTH(     ": tstbb 144 kst ! 155 kbi ! tellme ;\r"
+
 // re-initialization protection:
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
 
@@ -294,13 +326,22 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     // 199 stored to indicate backspace key was pressed
 
     ) WRITE_FORTH(     "254 kst ! 1 drop\r" // reset kst
-    ) WRITE_FORTH(     "key dup\r" // ONLY keystroke gained
+    ) WRITE_FORTH(     "key\r" // ONLY keystroke gained
 
+    ) WRITE_FORTH(     "tellme\r"
+
+    ) WRITE_FORTH(     "bksp! ctrl!\r"
 // send +++ if backspace is pressed:
-    ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r" // ONLY time '9' is useful in compare
+//  ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r" // ONLY time '9' is useful in compare
+
+//  ) WRITE_FORTH(     "bksp!\r"
 
 // new line 16:12z 03 SEP:
-    ) WRITE_FORTH(     "dup 31 - 0< if  31 kst ! then\r" // ONLY time '9' is useful in compare
+// test for ascii 31 or lower (global):
+// if it's 32:
+//  ( n -- n BOOL )
+//  ) WRITE_FORTH(     "dup 31 - 0< if  31 kst ! then\r"
+//  ) WRITE_FORTH(     "ctrl!\r"  //  dup 31 - 0< if  31 kst ! then ;\r"
 
 // - - - - standard comparison: 254 vs 199
 // everyone store:
@@ -308,8 +349,8 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     // one path chosen from a single pick of one of these two lines
     // which exchanges 'swap c!' for 'swap drop drop' (the swap was factored out)
 
-    ) WRITE_FORTH(     "kst @ negate 253 + 0< if swap c! then \
-                        kst @ 200 - 0< if drop drop then\r"
+    ) WRITE_FORTH(     "kst @ 254 - 0= if swap c! then \
+                        kst @ 199 - 0= if drop drop then\r"
 
 /*
 
@@ -348,7 +389,10 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
     ) WRITE_FORTH(     "kbi @ 1 + dup kbi !\r" // sam buffer counter, increment it
 
-    ) WRITE_FORTH(     "kbi @ 2 - 0< if kst @ 28 1 + - 0< if kst @ 28 - 0< if 1 drop then swap dup blist drop swap then then\r"
+//  ) WRITE_FORTH(     "kbi @ 2 - 0< if kst @ 28 1 + - 0< if kst @ 28 - 0< if 1 drop then swap dup blist drop swap then then\r"
+
+    ) WRITE_FORTH(     "cr 8 0 do 44 emit loop tellme\r"
+    ) WRITE_FORTH(     "over blist drop\r"
 
     ) WRITE_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
                         bsz - 0< invert if\r" // compare kbi to bsz
