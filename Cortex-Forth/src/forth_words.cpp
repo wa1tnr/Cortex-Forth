@@ -245,14 +245,21 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // so generally a 'b' word and a 'k' word refer to similar things.
 
 // buffer decrement
+// -99 1 1500  k-- .s -99 0 1500  .. with zero a forbidden location that was reached.
+// however, ONLY k++ calls it, so it's a ruse.
+
     ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over \
                         over swap - 0< if \
                         swap 1 - bmk and \
                         1 - bmk and \
                         1 - bmk and \
-                        swap then drop swap ;\r"
+                        swap then drop\r"
+    ) WRITE_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;\r"
 // buffer increment
 // ( count addr -- count+1 addr )
+
+// k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
+// it also skips forbidden locations 0, 126 and 127.
     ) WRITE_FORTH(     ": k++ \
                         kst @ \
                         199 - 0= if \
@@ -387,20 +394,41 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 
-    ) WRITE_FORTH(     "kbi @ 1 + dup kbi !\r" // sam buffer counter, increment it
+    ) WRITE_FORTH(     "kbi @ 1 + kbi !\r" // sam buffer counter, increment it
 
-//  ) WRITE_FORTH(     "kbi @ 2 - 0< if kst @ 28 1 + - 0< if kst @ 28 - 0< if 1 drop then swap dup blist drop swap then then\r"
+// nothing -- addr -- byte -- byte 1 -- SUM -- SUM SUM -- SUM SUM addr -- SUM
 
+/*
     ) WRITE_FORTH(     "cr 8 0 do 44 emit loop tellme\r"
-    ) WRITE_FORTH(     "over blist drop\r"
 
+    ) WRITE_FORTH(     "kbi @ 2 - 0< if\r"
+    ) WRITE_FORTH(     "kst @ 28 1 + - 0< if\r"
+    ) WRITE_FORTH(     "kst @ 28 - 0< if 1 drop then\r"
+    ) WRITE_FORTH(     "swap dup blist drop swap then then\r"
+*/
+
+//  ) WRITE_FORTH(     "over blist drop\r"
+
+    ) WRITE_FORTH(     "cr 8 0 do 45 emit loop tellme\r"
+
+/*
     ) WRITE_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
                         bsz - 0< invert if\r" // compare kbi to bsz
+
     ) WRITE_FORTH(         "cr cr cr \
                             67 emit 67 emit 67 emit \
                             cr cr cr\r" // just get their attention
+
     ) WRITE_FORTH(     "then 1 drop \
-                        over over + c@ 32 max 126 min emit\r" // keyboard echo
+                        over over +\r"
+
+*/
+    ) WRITE_FORTH(     "cr 8 0 do 46 emit loop tellme\r"
+
+/*
+    ) WRITE_FORTH(     "c@ 32 max 126 min emit\r" // keyboard echo
+*/
+
     ) WRITE_FORTH(     "k++ over over + 1 drop \
                         again ;\r"
     )
