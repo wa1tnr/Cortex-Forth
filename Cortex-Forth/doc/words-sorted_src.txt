@@ -1,0 +1,115 @@
++ as in plus
+- as in minus
+.s dots - print the stack, non-destructively
+. dot - pop TOS and emit a string representation of the integer stored on TOS
+0< zeroless (basis of 0=)
+?dup (qdup, don't know what it is) (related to dup(licate) most likely
+@ fetch
+, comma (allocate dictionary space for an immediate data element)
+' tick anglicized for the ['] tick word
+[ lbrac (lengthy)
+] rbrac (terse)
+?  no idea
+! store
+2/ 2*
+: colon (terse!)
+; semicolon (lengthy)
+>prn to print(er)
+0=
+abs
+aga again (and again with the length)
+ali alist ascii listing (should be align though)
+allot ( n -- addr ) move HERE up by n
+and
+begin (lengthy)
+bfc
+bfd buffer counter decrement (rename k--)
+bfi buffer counter increment (rename k++)
+bli blist
+bmk buffer counter mask (rename kmk)
+bsz buffer size
+ben bend
+bot bottom
+buf buff
+c@ cfetch
+c! cstore
+cc no idea
+constant
+cpm cpmem (copy a string constant into working memory, return its address)
+cr carriage return (move the cursor down the page, usually by emitting 0x0d or 0x0a (or both).
+create
+del delay (maybe) (five letters and nothing comes to mind as delete is six letters)  delay maybe
+depth
+do (lengthy)
+drop remove TOS and deplete the stack size by one
+dump (native, related only to the forth dictionary) (not related closely to the usual dump styled word)
+dup create a new stack entry at TOS and populate with the old TOS (increases stack DEPTH by one)
+eco ecol  (emit colon)
+else (lengthy)
+emit (4 chars) - send the ascii char named in TOS to the terminal, which prints that character based on its ascii code
+emi emits - homebrew emit variant 'emit counted string' where the string is stored on the stack, with its length (as a simple int) stored on TOS
+execute
+find - search the forth dictionary (from most recent word, backwards, most likely)
+flo fload - file load (read a 'file' from (external) SPI or QSPI flashROM (chip)
+flparse file load parse - endemic to loading from a flashROM 'file'
+for forget
+fs@ fs fetch (something about fetching the string entered with s")
+goa go, a (the go word, but does not take the reserved word 'go', but instead adds a single letter a-z to name subprogram)
+h. hdot - hex version of the dot word
+had hadr h-address
+here - indicate just where in the dictionary the end of the dictionary is (free memory pointer)
+hli hlist horizontal list
+i a counter thing
+if (lengthy) these look like offsets into a detailed instruction step subset -- they roughly index into the code block
+invert
+key get a keystroke from the serial port
+kst key stored
+lde long delay
+lit literal and it's 135 bytes in length, possibly an artifact of something unrelated to it
+loop (lengthy)
+lxa
+max
+mhe
+min
+negate
+number - is this a number (neg/positive integer, or zero) that was typed in ascii?
+or
+over ( n1 n2 -- n1 n2 n1 ) (copy 1-under TOS 'over' the intervening byte (TOS before this word was called) and onto (the new) TOS
+parse
+quit
+R
+ral ralist (ram alist)
+rby rbyte
+rep repeat (maybe) 134 bytes in length
+rhl rhlist (ram hlist)
+rli rlist
+s" squote
+sai said
+sam (invoke editor)
+sbc not sure
+sfi not sure
+sfparse safe parse - unused code
+space emit ascii 32
+stu stuffit
+swap exchange TOS with 1-under TOS
+sxa
+svd no clue haha
+sve
+tes probably testcc
+then (lengthy)
+thr throw
+top (something related to the top of memory, 9 letters)
+tos (not yet defined!) return the address of TOS (top of stack)
+txb
+typ type
+until (lengthy)
+uol don't remember now
+variable
+wag wag the LED once (based on the name wiggle, we can 'wag' too haha)
+war warm boot
+whi while same length story
+wig wiggle the LED (blinker)
+wli wlist word listing (type a long string to the terminal describing all vocabulary, tersely but with more detail than the 'natural' 'words' word
+word - parse between spaces for 'words' (a word is a non-whitespace string with a length of one or more bytes)
+words list the dictionary (canonical)
+xor
