@@ -1,0 +1,115 @@
+0= zero_equals
+0< zero_less (basis of 0=)
+2/ 2* two times
+abs absolute
+aga again (lengthy)
+ali alist ascii listing (should be align though)
+allot ( n -- addr ) move HERE up by n
+and logical AND
+- as in minus
++ as in plus
+begin (lengthy)
+ben bend
+bfc
+bfd buffer counter decrement (rename k--)
+bfi buffer counter increment (rename k++)
+bli blist
+bmk buffer counter mask (rename kmk)
+bot bottom
+bsz buffer size
+buf buff
+c@ cfetch
+cc no idea
+c! cstore
+: colon (terse!)
+, comma (allocate dictionary space for an immediate data element)
+constant
+cpm cpmem (copy a string constant into working memory, return its address)
+cr carriage return (move the cursor down the page, usually by emitting 0x0d or 0x0a (or both).
+create
+del delay (maybe) (five letters and nothing comes to mind as delete is six letters)  delay maybe
+depth
+do (lengthy)
+. dot - pop TOS and emit a string representation of the integer stored on TOS
+drop remove TOS and deplete the stack size by one
+dump (native, related only to the forth dictionary) (not related closely to the usual dump styled word)
+dup create a new stack entry at TOS and populate with the old TOS (increases stack DEPTH by one)
+?dup (qdup, don't know what it is) (related to dup(licate) most likely
+eco ecol  (emit colon)
+else (lengthy)
+emi emits - homebrew emit variant 'emit counted string' where the string is stored on the stack, with its length (as a simple int) stored on TOS
+emit (4 chars) - send the ascii char named in TOS to the terminal, which prints that character based on its ascii code
+execute
+@ fetch
+find - search the forth dictionary (from most recent word, backwards, most likely)
+flo fload - file load (read a 'file' from (external) SPI or QSPI flashROM (chip)
+flparse file load parse - endemic to loading from a flashROM 'file'
+for forget
+fs@ fs fetch (something about fetching the string entered with s")
+goa go, a (the go word, but does not take the reserved word 'go', but instead adds a single letter a-z to name subprogram)
+had hadr h-address
+here - indicate just where in the dictionary the end of the dictionary is (free memory pointer)
+h. hdot - hex version of the dot word
+hli hlist horizontal list
+i a counter thing
+if (lengthy) these look like offsets into a detailed instruction step subset -- they roughly index into the code block
+invert
+key get a keystroke from the serial port
+kst key stored
+[ lbrac (lengthy)
+lde long delay
+lit literal and it's 135 bytes in length, possibly an artifact of something unrelated to it
+loop (lengthy)
+lxa
+max
+mhe
+min
+negate
+?  no idea
+number - is this a number (neg/positive integer, or zero) that was typed in ascii?
+or logical OR
+over ( n1 n2 -- n1 n2 n1 ) (copy 1-under TOS 'over' the intervening byte (TOS before this word was called) and onto (the new) TOS
+parse
+>prn to print(er)
+quit
+R primitive forth word 'R' (related to the return stack, maybe it returns the return stack pointer)
+ral ralist (ram alist)
+] rbrac (terse)
+rby rbyte
+rep repeat (maybe) 134 bytes in length
+rhl rhlist (ram hlist)
+rli rlist
+sai said
+sam (invoke editor)
+sbc not sure
+.s dots - print the stack, non-destructively
+; semicolon (lengthy)
+sfi not sure
+sfparse safe parse - unused code
+space emit ascii 32
+s" squote
+! store
+stu stuffit
+svd no clue haha
+sve
+swap exchange TOS with 1-under TOS
+sxa
+tes probably testcc
+then (lengthy)
+thr throw
+' tick anglicized for the ['] tick word
+top (something related to the top of memory, 9 letters)
+tos (not yet defined!) return the address of TOS (top of stack)
+txb
+typ type
+until (lengthy)
+uol don't remember now
+variable
+wag wag the LED once (based on the name wiggle, we can 'wag' too haha)
+war warm boot
+whi while same length story
+wig wiggle the LED (blinker)
+wli wlist word listing (type a long string to the terminal describing all vocabulary, tersely but with more detail than the 'natural' 'words' word
+word - parse between spaces for 'words' (a word is a non-whitespace string with a length of one or more bytes)
+words list the dictionary (canonical)
+xor
