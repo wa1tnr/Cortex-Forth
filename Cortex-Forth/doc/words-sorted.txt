@@ -11,6 +11,7 @@ and logical AND
 begin (lengthy)
 ben bend
 bfc
+bksp! - local vocabulary
 bli blist
 bmk buffer counter mask (rename kmk)
 bot bottom
@@ -25,6 +26,7 @@ constant
 cpm cpmem (copy a string constant into working memory, return its address)
 cr carriage return (move the cursor down the page, usually by emitting 0x0d or 0x0a (or both).
 create
+ctrl! - local vocabulary
 del delay (maybe) (five letters and nothing comes to mind as delete is six letters)  delay maybe
 depth
 do (lengthy)
@@ -94,12 +96,14 @@ svd no clue haha
 sve
 swap exchange TOS with 1-under TOS
 sxa
+tellme - local vocabulary word
 tes probably testcc
 then (lengthy)
 thr throw
 ' tick anglicized for the ['] tick word
 top (something related to the top of memory, 9 letters)
 tos (not yet defined!) return the address of TOS (top of stack)
+tstbb - local vocab: test bb
 txb
 typ type
 until (lengthy)
