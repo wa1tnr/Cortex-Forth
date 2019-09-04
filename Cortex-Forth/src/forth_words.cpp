@@ -242,6 +242,59 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
     ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
 
+
+
+/*
+
+ The_easiest_way_to_   .s 5571 fs@ .s 95 111 116 95 121 97 119 95 116 115 101 
+105 115 97 101 95 101 104 84 19 
+
+104 84 19 s" ss  assi ?                                                                                        
+.s empty s" create_these_long_text_strings_ ERROR INPUT > 30chars + .s 5635 cr                                 
+drop .s empty s" create_these_long_tesxt_  .s 5667 fs@ .s 95 116 120 115 101 116 95 103 110 111 108 95 101 115 
+101 104 116 95 101 116 97 101 114 99 24 
+
+
+s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 14
+
+*/
+  // ) WRITE_FORTH(  " The_easiest_way_to_
+  ) WRITE_FORTH(  ": wep 32 111 116 32 121 97 119 32 116 115 101 105 115 97 101 32 101 104 84 19 emits ;\r"
+
+ // print .s to the terminal
+
+ // ) WRITE_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
+
+ // sbl word ( addr -- same_addr )  'say blist'
+    ) WRITE_FORTH(     ": sbl dup blist drop ;\r"
+
+ // improve tellme to ( n -- ) tell me using a specific char repeated:
+    ) WRITE_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space \
+  46 emit 115 emit space .s space space\r"
+
+//  ) WRITE_FORTH(     "\r"
+
+// write kst
+    ) WRITE_FORTH(     "107 emit 115 emit 116 emit 58 emit space\r"
+    ) WRITE_FORTH(     "kst @ h. space space space\r"
+
+// write kbi
+    ) WRITE_FORTH(     "107 emit 98 emit 105 emit 58 emit space\r"
+    ) WRITE_FORTH(     "kbi @ h. cr ;\r"
+
+
+
+    ) WRITE_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;\r"
+
+
+
+
+
+
+
+
+
+
 // buffer and keyboard conflated in naming due to small namespace for word names ;)
 // so generally a 'b' word and a 'k' word refer to similar things.
 
@@ -294,33 +347,21 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // ctrl! ( n -- n ) // store any control char as ascii 31, into kst
 // wanted: ascii 15 (Control O)
-    ) WRITE_FORTH(     ": ctrl! dup 31 - 0< if 31 kst ! then ;\r"
+    ) WRITE_FORTH(     ": ctrl! dup 31 - 0< if 31 kst ! then 67 tellme ;\r"
 
 // 29 -- 29 29 -- 29 29 31 -- 29 -2 -- 29 BOOL 
 
 // bksp! ( n -- n ) // store CTRL H (ASCII 0x08) as ascii 199, into kst
-    ) WRITE_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then ;\r"
-
- // print .s to the terminal
-
- // ) WRITE_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
-
- // improve tellme to ( n -- ) tell me using a specific char repeated:
-    ) WRITE_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space 46 emit 115 emit space .s space space\r"
-
-//  ) WRITE_FORTH(     "\r"
-
-// write kst
-    ) WRITE_FORTH(     "107 emit 115 emit 116 emit 58 emit space\r"
-    ) WRITE_FORTH(     "kst @ h. space space space\r"
-
-// write kbi
-    ) WRITE_FORTH(     "107 emit 98 emit 105 emit 58 emit space\r"
-    ) WRITE_FORTH(     "kbi @ h. cr ;\r"
+    ) WRITE_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then 80 tellme ;\r"
 
 
 
-    ) WRITE_FORTH(     ": tstbb 144 kst ! 155 kbi ! 67 tellme ;\r"
+
+
+
+
+
+
 
 // re-initialization protection:
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
@@ -341,7 +382,13 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     "254 kst ! 1 drop\r" // reset kst
     ) WRITE_FORTH(     "key\r" // ONLY keystroke gained
 
-    ) WRITE_FORTH(     "68 tellme\r"
+// "right: 114 105 103 104 116 5"
+    ) WRITE_FORTH(     "114 emit 105 emit 103 emit 104 emit 116 emit space\r"
+
+// "after: 97 emit 102 emit 116 emit 101 emit 114 emit"
+    ) WRITE_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr\r"
+
+    ) WRITE_FORTH(     "76 tellme\r"
 
     ) WRITE_FORTH(     "bksp! ctrl!\r"
 // send +++ if backspace is pressed:
@@ -415,7 +462,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 //  ) WRITE_FORTH(     "over blist drop\r"
 
-    ) WRITE_FORTH(     "cr 8 0 do 45 emit loop 69 tellme\r"
+    ) WRITE_FORTH(     "77 tellme\r"
 
 /*
     ) WRITE_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
@@ -429,7 +476,10 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
                         over over +\r"
 
 */
-    ) WRITE_FORTH(     "cr 8 0 do 46 emit loop 70 tellme\r"
+// sbl is a blist that is wrapped in dup and drop
+    ) WRITE_FORTH(     "78 tellme sbl\r"
+
+
 
 /*
     ) WRITE_FORTH(     "c@ 32 max 126 min emit\r" // keyboard echo
