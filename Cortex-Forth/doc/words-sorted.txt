@@ -11,7 +11,6 @@ and logical AND
 begin (lengthy)
 ben bend
 bfc
-bfd buffer counter decrement (rename k--)
 bfi buffer counter increment (rename k++)
 bli blist
 bmk buffer counter mask (rename kmk)
@@ -54,6 +53,7 @@ hli hlist horizontal list
 i a counter thing
 if (lengthy) these look like offsets into a detailed instruction step subset -- they roughly index into the code block
 invert
+k-- (was bfd) buffer counter decrement (rename k--)
 kbi (was sbc) keyboard index
 key get a keystroke from the serial port
 kst key stored

@@ -242,7 +242,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
 
 // buffer decrement
-    ) WRITE_FORTH(     ": bfd swap 1 - bmk and bmk 2 - over \
+    ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over \
                         over swap - 0< if \
                         swap 1 - bmk and \
                         1 - bmk and \
@@ -253,7 +253,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     ": bfi \
                         kst @ \
                         200 - 0< if \
-                        bfd bfd then \
+                        k-- k-- then \
                         swap 1 + bmk and bmk 2 - over \
                         over swap - 0< if \
                         swap 1 + bmk and \
