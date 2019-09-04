@@ -1,7 +1,8 @@
-// Tue Sep  3 09:22:29 UTC 2019 0.2.0-alpha.1 non-usart-c-03_sep-aa-  shred: abn-715");
-// On branch non-usart-c-03_sep-aa-
+// Tue Sep  3 09:22:29 UTC 2019 0.2.0-alpha.1 non-usart-c-03_sep-aa-  shred: abn-717
 
-// Tue Sep  3 08:25:26 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-  shred: abn-711");
+// Wed Sep  4 08:31:05 UTC 2019
+
+// On branch non-usart-c-03_sep-aa-
 
 /*
 Sun Sep  1 07:37:26 UTC 2019
@@ -73,7 +74,8 @@ extern void fetchStr(void);
 // 0x1200 == 4608 decimal
 
 // #define RAM_SIZE 0x1200
-#define RAM_SIZE 0x4800 // ~ 18 kb
+#define RAM_SIZE 0x1200 // Feather M0 Express - program would not compile using 0x4800 - compiler complained about running out of .. memory of some sort
+// #define RAM_SIZE 0x4800 // ~ 18 kb
 #define S0 0x1000
 #define R0 0x0f00
 #define NAME(m, f, c, x, y, z) {memory.data [m] = f + c + (x << 8) + (y << 16) + (z << 24);}
@@ -1606,10 +1608,10 @@ abort:
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
    SERIAL_LOCAL_C.println  ("");
-   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 03 SEP 2019 09:22z");
+   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 04 SEP 2019 08:31z");
    SERIAL_LOCAL_C.println  ("      Tue Sep  3 09:22:29 UTC 2019 0.2.0-alpha.1 nnon-usart-c-03_sep-aa-");
    SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +sam +autoload +squote +fdir_planned ++rlist +cc");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-715");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-717");
 
    SERIAL_LOCAL_C.println  ("      words: sam fload wlist warm - do NOT use fload without disabling autoload");
    SERIAL_LOCAL_C.println  ("      TEF MEK Hn-k");
