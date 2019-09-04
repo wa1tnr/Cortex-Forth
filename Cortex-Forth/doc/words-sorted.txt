@@ -72,6 +72,8 @@ negate
 number - is this a number (neg/positive integer, or zero) that was typed in ascii?
 or logical OR
 over ( n1 n2 -- n1 n2 n1 ) (copy 1-under TOS 'over' the intervening byte (TOS before this word was called) and onto (the new) TOS
+p-- wrapper for k--
+p++ wrapper for k++
 parse
 >prn to print(er)
 quit
@@ -104,7 +106,6 @@ thr throw
 top (something related to the top of memory, 9 letters)
 tos (not yet defined!) return the address of TOS (top of stack)
 tstbb - local vocab: test bb
-txb
 typ type
 until (lengthy)
 uol don't remember now
