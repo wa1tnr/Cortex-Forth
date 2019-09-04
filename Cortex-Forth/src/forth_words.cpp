@@ -233,6 +233,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
 
 // NAME CHANGE: sbc to kbi keyboard index
+// kbi is NOT maintained by k++ and k-- whatsoever.
 
     ) WRITE_FORTH(     "variable kbi -1 kbi !\r" // sam buffer counter
 
@@ -285,7 +286,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // unconditionally init:
     ) WRITE_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;\r"
-    ) WRITE_FORTH(     ": txb k++ .s cr ;\r"
 
     ) WRITE_FORTH(     ": lxa -99 sxa ;\r"
 
@@ -303,7 +303,11 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
  // print .s to the terminal
 
-    ) WRITE_FORTH(     ": tellme space space 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
+ // ) WRITE_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
+
+ // improve tellme to ( n -- ) tell me using a specific char repeated:
+    ) WRITE_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space 46 emit 115 emit space .s space space\r"
+
 //  ) WRITE_FORTH(     "\r"
 
 // write kst
@@ -316,7 +320,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 
-    ) WRITE_FORTH(     ": tstbb 144 kst ! 155 kbi ! tellme ;\r"
+    ) WRITE_FORTH(     ": tstbb 144 kst ! 155 kbi ! 67 tellme ;\r"
 
 // re-initialization protection:
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
@@ -325,6 +329,8 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
                         bfc swap k++ \
                         over over + begin \
                         kbi @ 1 + kbi !\r" // increment counter
+
+// with each iteration through the begin ..
 //  value address !
 
 // backspace ASCII 0x08 related processing 8, 199, 254, kst
@@ -335,7 +341,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     "254 kst ! 1 drop\r" // reset kst
     ) WRITE_FORTH(     "key\r" // ONLY keystroke gained
 
-    ) WRITE_FORTH(     "tellme\r"
+    ) WRITE_FORTH(     "68 tellme\r"
 
     ) WRITE_FORTH(     "bksp! ctrl!\r"
 // send +++ if backspace is pressed:
@@ -394,7 +400,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 
-    ) WRITE_FORTH(     "kbi @ 1 + kbi !\r" // sam buffer counter, increment it
+//  ) WRITE_FORTH(     "kbi @ 1 + kbi !\r" // sam buffer counter, increment it
 
 // nothing -- addr -- byte -- byte 1 -- SUM -- SUM SUM -- SUM SUM addr -- SUM
 
@@ -409,7 +415,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 //  ) WRITE_FORTH(     "over blist drop\r"
 
-    ) WRITE_FORTH(     "cr 8 0 do 45 emit loop tellme\r"
+    ) WRITE_FORTH(     "cr 8 0 do 45 emit loop 69 tellme\r"
 
 /*
     ) WRITE_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
@@ -423,7 +429,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
                         over over +\r"
 
 */
-    ) WRITE_FORTH(     "cr 8 0 do 46 emit loop tellme\r"
+    ) WRITE_FORTH(     "cr 8 0 do 46 emit loop 70 tellme\r"
 
 /*
     ) WRITE_FORTH(     "c@ 32 max 126 min emit\r" // keyboard echo
