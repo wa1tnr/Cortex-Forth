@@ -232,7 +232,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
     ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
 
-    ) WRITE_FORTH(     "variable sbc -1 sbc !\r" // sam buffer counter
+// NAME CHANGE: sbc to kbi keyboard index
+
+    ) WRITE_FORTH(     "variable kbi -1 kbi !\r" // sam buffer counter
 
 // key-stored:
     ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop\r"
@@ -283,7 +285,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITE_FORTH(     ": sam lxa \
                         bfc swap bfi \
                         over over + begin \
-                        sbc @ 1 + sbc !\r" // increment counter
+                        kbi @ 1 + kbi !\r" // increment counter
 //  value address !
 
 // backspace ASCII 0x08 related processing 8, 199, 254, kst
@@ -339,17 +341,17 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 //  ) WRITE_FORTH(     "over over + c@ cr .s cr 32 max 126 min emit space\r" // may not want that last space
 
 // bsz size of the buffer
-// sbc counter for each keystroke given
+// kbi counter for each keystroke given
 
 
 
 
-    ) WRITE_FORTH(     "sbc @ 1 + dup sbc !\r" // sam buffer counter, increment it
+    ) WRITE_FORTH(     "kbi @ 1 + dup kbi !\r" // sam buffer counter, increment it
 
-    ) WRITE_FORTH(     "sbc @ 2 - 0< if kst @ 28 1 + - 0< if kst @ 28 - 0< if 1 drop then swap dup blist drop swap then then\r"
+    ) WRITE_FORTH(     "kbi @ 2 - 0< if kst @ 28 1 + - 0< if kst @ 28 - 0< if 1 drop then swap dup blist drop swap then then\r"
 
-    ) WRITE_FORTH(     "sbc @ 125 - 0< if -1 sbc ! then \
-                        bsz - 0< invert if\r" // compare sbc to bsz
+    ) WRITE_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
+                        bsz - 0< invert if\r" // compare kbi to bsz
     ) WRITE_FORTH(         "cr cr cr \
                             67 emit 67 emit 67 emit \
                             cr cr cr\r" // just get their attention
