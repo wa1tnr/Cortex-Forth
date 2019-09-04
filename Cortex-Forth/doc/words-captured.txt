@@ -1,0 +1,183 @@
+
+
+[3 sam] [3 lxa] [3 txb] [3 sxa] [3 bfc] [3 mhe] [3 bfi] [3 bfd]                                                
+
+sam (invoke editor)
+lxa
+txb
+sxa
+bfc
+mhe
+bfi buffer counter increment (rename k++)
+bfd buffer counter decrement (rename k--)
+
+
+[3 bmk] [3 bsz] [3 kst] [3 sbc] [3 sfi] [6 lde] [3 goa] [3 sve]                                                
+
+bmk buffer counter mask (rename kmk)
+bsz buffer size
+kst key stored
+sbc not sure
+sfi not sure
+lde long delay
+goa go, a (the go word, but does not take the reserved word 'go', but instead adds a single letter a-z to name subprogram)
+sve
+
+[3 svd] [4 buf] [4 ben] [7 stu] [4 sai] [5 emi] [5 rli] [5 bli]                                                
+
+svd no clue haha
+buf buff
+ben bend
+stu stuffit
+sai said
+emi emits (why does this not bother 'emit' with 4?)
+          answer is likely: it also gates for the number of letters in this word, so
+          you have multiple versions of the same base word to choose from, as long
+          as each is a unique length (to type it))
+rli rlist
+bli blist
+
+[9 top] [6 bot] [5 ali] [5 hli] [6 ral] [6 rhl] [4 had] [4 eco]                                                
+
+top (something related to the top of memory, 9 letters)
+bot bottom
+ali alist ascii listing (should be align though)
+hli hlist horizontal list
+ral ralist (ram alist)
+rhl rhlist (ram hlist)
+had hadr h-address
+eco ecol  (emit colon)
+
+[5 del] [4 >pr] [6 tes] [3 min] [3 max] [2 0=] [3 uol] [5 thr]                                                 
+
+del delay (maybe) (five letters and nothing comes to mind as delete is six letters)  delay maybe
+>prn to print(er)
+tes probably testcc
+min
+max
+0=
+uol don't remember now
+thr throw
+
+[5 cpm] [3 fs@] [2 s"] [2 cc] [5 rby] [6 wig] [3 wag] [5 flo]                                                  
+
+cpm cpmem (copy a string constant into working memory, return its address)
+fs@ fs fetch (something about fetching the string entered with s")
+s" squote
+cc no idea
+rby rbyte
+wig wiggle the LED (blinker)
+wag wag the LED once (based on the name wiggle, we can 'wag' too haha)
+flo don't remember
+
+[5 wli] [4 war] [4 typ] [2 c!] [2 c@] [135 lit] [134 rep] [133 whi]                                            
+
+wli wlist word listing (type a long string to the terminal describing all vocabulary, tersely but with more detail than the 'natural' 'words' word
+war warm boot
+typ type
+c! cstore
+c@ cfetch
+lit literal and it's 135 bytes in length, possibly an artifact of something unrelated to it
+rep I don't know -- repeat? also 134 bytes in length
+whi while same length story
+
+
+[133 aga] [1 '] [6 for] [132 els] [132 the] [130 if] [133 unt] [133 beg]                                       
+
+aga again (and again with the length)
+tick anglicized for the ['] tick word
+for forget
+else (lengthy)
+then (lengthy)
+if (lengthy) these look like offsets into a detailed instruction step subset -- they roughly index into the code block
+until (lengthy)
+begin (lengthy)
+
+[132 loo] [130 do] [1 i] [129 ;] [1 :] [1 ]] [129 [] [1 R]                                                     
+
+loop (lengthy)
+do (lengthy)
+i a counter thing
+; semicolon (lengthy)
+: colon (terse!)
+rbrac ] (terse)
+lbrac [ (lengthy)
+R
+
+[8 con] [1 ?] [8 var] [5 all] [4 her] [6 cre] [4 dum] [2 2/]                                                   
+
+constant
+
+?  no idea
+
+variable
+allot
+here
+create
+dump
+2/
+
+[2 2*] [6 neg] [3 abs] [6 inv] [3 xor] [2 or] [3 and] [1 -]                                                    
+
+2*
+negate
+abs
+invert
+xor
+or
+and
+- as in minus
+
+[1 +] [2 h.] [5 spa] [5 wor] [2 .s] [1 .] [7 sfp] [7 flp]                                                      
+
++ as in plus
+h. hdot - hex version of the dot word
+space emit ascii 32
+words list the dictionary (canonical)
+.s dots - print the stack, non-destructively
+. dot - pop TOS and emit a string representation of the integer stored on TOS
+sfp safe parse - unused code
+flp file load parse - endemic to loading from a flashROM 'file'
+
+[4 qui] [2 0<] [5 dep] [6 num] [3 ?du] [7 exe] [4 fin] [1 ,]                                                   
+
+quit
+0< zeroless (basis of 0=)
+depth
+number - is this a number (neg/positive integer, or zero) that was typed in ascii?
+?dup (qdup, don't know what it is) (related to dup(licate) most likely
+execute
+find - search the forth dictionary (from most recent word, backwards, most likely)
+, comma (allocate dictionary space for an immediate data element)
+
+[1 !] [1 @] [4 ove] [4 swa] [4 dro] [3 dup] [4 wor] [5 par]                                                    
+
+! store
+@ fetch
+over (copy 1-under TOS 'over' the intervening byte (TOS before this word was called) and onto (the new) TOS
+swap exchange TOS with 1-under TOS
+drop remove TOS and deplete the stack size by one
+dup create a new stack entry at TOS and populate with the old TOS (increases stack DEPTH by one)
+word - parse between spaces for 'words' (a word is a non-whitespace string with a length of one or more bytes)
+parse
+
+[2 cr] [4 emi] [3 key] [4 exi] 
+
+cr carriage return (move the cursor down the page, usually by emitting 0x0d or 0x0a (or both).
+emit send the ascii char named in TOS to the terminal, which prints that character based on its ascii code
+key get a keystroke from the serial port
+exit
+
+
+
+
+
+
+
+
+
+
+
+
+
+END
