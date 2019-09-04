@@ -250,7 +250,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
                         swap then drop swap ;\r"
 // buffer increment
 // ( count addr -- count+1 addr )
-    ) WRITE_FORTH(     ": bfi \
+    ) WRITE_FORTH(     ": k++ \
                         kst @ \
                         200 - 0< if \
                         k-- k-- then \
@@ -275,7 +275,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // unconditionally init:
     ) WRITE_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;\r"
-    ) WRITE_FORTH(     ": txb bfi .s cr ;\r"
+    ) WRITE_FORTH(     ": txb k++ .s cr ;\r"
 
     ) WRITE_FORTH(     ": lxa -99 sxa ;\r"
 
@@ -283,7 +283,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
 
     ) WRITE_FORTH(     ": sam lxa \
-                        bfc swap bfi \
+                        bfc swap k++ \
                         over over + begin \
                         kbi @ 1 + kbi !\r" // increment counter
 //  value address !
@@ -357,7 +357,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
                             cr cr cr\r" // just get their attention
     ) WRITE_FORTH(     "then 1 drop \
                         over over + c@ 32 max 126 min emit\r" // keyboard echo
-    ) WRITE_FORTH(     "bfi over over + 1 drop \
+    ) WRITE_FORTH(     "k++ over over + 1 drop \
                         again ;\r"
     )
 }
