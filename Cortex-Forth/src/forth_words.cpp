@@ -136,9 +136,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // ralist ( addr -- )
 
-/*
-43 emit 43 emit 43 emit 43 emit \
-*/
 
     ) WRITE_FORTH(     ": ralist space space 16 + dup 16 - over over do \
  1 + over over swap - 1 - 0< if dup rbyte >prn 100 delay then loop drop ;\r"
@@ -384,8 +381,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_FORTH(     "10 tellme 100 tellme drop drop sbl then 109 tellme ;\r"
 
 // hbk handle backspace
-    ) WRITE_FORTH(     ": hbk kst @ space 79 71 78 73 66 5 emits space dup h. space\r"
-    ) WRITE_FORTH(     "199 - 0= if 5 0 do 43 emit loop then ;\r"
+    ) WRITE_FORTH(     ": hbk kst @\r"
+    ) WRITE_FORTH(     "199 - 0= if 1 drop then ;\r"
 
 // re-initialization protection:
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
@@ -417,7 +414,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     ) WRITE_FORTH(     "ctrl! bksp!\r" // reversing these masks a backspace into just a generic control keyset press ;)
 
-    ) WRITE_FORTH(     "hbk 99 emit 98 emit 97 emit 96 emit 95 emit\r"
+    ) WRITE_FORTH(     "hbk\r"
 // send +++ if backspace is pressed:
 //  ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r" // ONLY time '9' is useful in compare
 
