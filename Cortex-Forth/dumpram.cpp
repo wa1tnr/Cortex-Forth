@@ -13,7 +13,7 @@ void push(int n) {
 }
 
 // return top of stack
-int pop() {
+int pop(void) {
   int n = T;
   _DROP(); // take care of stack pointer
   return n;
