@@ -220,7 +220,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // review:  value address !
 
-    ) WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop cr ;\r" 
+    ) WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop ;\r"
 
 // variable sfi .s empty sfi .s 1144 drop 44 sfi ! .s empty sfi @ .s 44
 
@@ -263,25 +263,34 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
  // print .s to the terminal
 
- // ) WRITE_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
-
  // sbl word ( addr -- same_addr )  'say blist'
     ) WRITE_FORTH(     ": sbl dup blist drop ;\r"
 
+ // ) WRITE_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
+
+#define TELLME_LONG
+#undef TELLME_LONG
+
+#ifdef TELLME_LONG
  // improve tellme to ( n -- ) tell me using a specific char repeated:
     ) WRITE_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space \
   46 emit 115 emit space .s space space\r"
-
-//  ) WRITE_FORTH(     "\r"
 
 // write kst
     ) WRITE_FORTH(     "107 emit 115 emit 116 emit 58 emit space\r"
     ) WRITE_FORTH(     "kst @ h. space space space\r"
 
 // write kbi
+// ##bookmark
     ) WRITE_FORTH(     "107 emit 98 emit 105 emit 58 emit space\r"
-    ) WRITE_FORTH(     "kbi @ h. cr ;\r"
+    ) WRITE_FORTH(     "kbi @ h. space space space\r"
+// s" Stack_Depth:_  fs@ .s 95 58 104 116 112 101 68 95 107 99 97 116 83 13 
 
+    ) WRITE_FORTH(     "58 104 116 112 101 68 20 107 99 97 116 83 12\r"
+    ) WRITE_FORTH(     "emits space depth . cr ;\r"
+#else
+    ) WRITE_FORTH(     ": tellme drop ;\r"
+#endif
 
 
     ) WRITE_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;\r"
@@ -302,6 +311,11 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // -99 1 1500  k-- .s -99 0 1500  .. with zero a forbidden location that was reached.
 // however, ONLY k++ calls it, so it's a ruse.
 
+// BUGFIX TODO_: needs drop swap but conditionally.
+// seems okay otherwise.
+
+// ( count addr -- count-1 addr) // maybe maybe
+// -- 
     ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over \
                         over swap - 0< if \
                         swap 1 - bmk and \
@@ -324,6 +338,14 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
                         1 + bmk and \
                         1 + bmk and \
                         swap then drop swap ;\r"
+
+// wrappers p-- and p++
+// : p-- space space k-- space space .s space cr ;
+    ) WRITE_FORTH(     ": p-- space space k-- space space .s space cr ;\r"
+
+// : p++ space space k++ space space .s space cr ;
+    ) WRITE_FORTH(     ": p++ space space k++ space space .s space cr ;\r"
+
 // message: here
     ) WRITE_FORTH(     ": mhe 72 emit 101 emit 114 emit 101 emit 58 emit space ;\r"
     ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bsz - 2) .. or zero
@@ -355,13 +377,15 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then 80 tellme ;\r"
 
 
+// hco handle control o (<32 is any control key so using 31 here)
+    ) WRITE_FORTH(     ": hco kst @ 31 - 0= if kbi @ 1 - kbi !\r"
+    ) WRITE_FORTH(     "99 tellme 99 tellme drop drop swap 1 - swap\r"
+    ) WRITE_FORTH(     "1 1\r"
+    ) WRITE_FORTH(     "10 tellme 100 tellme drop drop sbl then 109 tellme ;\r"
 
-
-
-
-
-
-
+// hbk handle backspace
+    ) WRITE_FORTH(     ": hbk kst @ space 79 71 78 73 66 5 emits space dup h. space\r"
+    ) WRITE_FORTH(     "199 - 0= if 5 0 do 43 emit loop then ;\r"
 
 // re-initialization protection:
 //  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
@@ -383,14 +407,17 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_FORTH(     "key\r" // ONLY keystroke gained
 
 // "right: 114 105 103 104 116 5"
-    ) WRITE_FORTH(     "114 emit 105 emit 103 emit 104 emit 116 emit space\r"
+//  ) WRITE_FORTH(     "114 emit 105 emit 103 emit 104 emit 116 emit space\r"
 
 // "after: 97 emit 102 emit 116 emit 101 emit 114 emit"
-    ) WRITE_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr\r"
+//  ) WRITE_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr\r"
 
     ) WRITE_FORTH(     "76 tellme\r"
 
+
     ) WRITE_FORTH(     "bksp! ctrl!\r"
+
+    ) WRITE_FORTH(     "hbk 99 emit 98 emit 97 emit 96 emit 95 emit\r"
 // send +++ if backspace is pressed:
 //  ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r" // ONLY time '9' is useful in compare
 
@@ -477,7 +504,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 */
 // sbl is a blist that is wrapped in dup and drop
-    ) WRITE_FORTH(     "78 tellme sbl\r"
+//  ) WRITE_FORTH(     "78 tellme sbl\r"
 
 
 
@@ -485,6 +512,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_FORTH(     "c@ 32 max 126 min emit\r" // keyboard echo
 */
 
+    ) WRITE_FORTH(     "hco\r"
     ) WRITE_FORTH(     "k++ over over + 1 drop \
                         again ;\r"
     )
