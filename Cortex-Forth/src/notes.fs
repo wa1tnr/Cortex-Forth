@@ -1,4 +1,9 @@
 
+\ blink D13 using pnwrite and pnmode to setup the GPIO pin:
+: testpmd 1 13 pnmode 1 13 pnwrite ldelay 0 13 pnwrite ldelay ;
+: blinker 8 0 do testpmd loop space 43 emit 43 emit space ;
+
+
 : compx bottom 384 + 32 + tlist 36 blist blist ; \ comment
 
 
