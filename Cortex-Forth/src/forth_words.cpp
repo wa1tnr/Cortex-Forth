@@ -415,7 +415,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_FORTH(     "76 tellme\r"
 
 
-    ) WRITE_FORTH(     "bksp! ctrl!\r"
+    ) WRITE_FORTH(     "ctrl! bksp!\r" // reversing these masks a backspace into just a generic control keyset press ;)
 
     ) WRITE_FORTH(     "hbk 99 emit 98 emit 97 emit 96 emit 95 emit\r"
 // send +++ if backspace is pressed:
