@@ -373,6 +373,13 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // bksp! ( n -- n ) // store CTRL H (ASCII 0x08) as ascii 199, into kst
     ) WRITE_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then 80 tellme ;\r"
 
+    ) WRITE_FORTH(     ": escp! dup 27 - 0= if 227 kst ! then 84 tellme ;\r"
+
+
+    ) WRITE_FORTH(     ": sesc 95 67 83 69 95 83 84 73 95 89 69 72 12 emits ;\r"
+
+// hes handle ESC ascii 27
+    ) WRITE_FORTH(     ": hes kst @ 227 - 0= if sesc drop quit then ;\r"
 
 // hco handle control o (<32 is any control key so using 31 here)
     ) WRITE_FORTH(     ": hco kst @ 31 - 0= if kbi @ 1 - kbi !\r"
@@ -409,10 +416,11 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // "after: 97 emit 102 emit 116 emit 101 emit 114 emit"
 //  ) WRITE_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr\r"
 
-    ) WRITE_FORTH(     "76 tellme\r"
-
 
     ) WRITE_FORTH(     "ctrl! bksp!\r" // reversing these masks a backspace into just a generic control keyset press ;)
+
+    ) WRITE_FORTH(     "escp!\r"
+    ) WRITE_FORTH(     "hes\r"
 
     ) WRITE_FORTH(     "hbk\r"
 // send +++ if backspace is pressed:
