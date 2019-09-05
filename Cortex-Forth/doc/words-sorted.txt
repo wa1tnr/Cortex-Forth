@@ -75,6 +75,8 @@ over ( n1 n2 -- n1 n2 n1 ) (copy 1-under TOS 'over' the intervening byte (TOS be
 p-- wrapper for k--
 p++ wrapper for k++
 parse
+pnmode - proposed pinMode word
+pnwrite - proposed pinWrite word
 >prn to print(er)
 quit
 R primitive forth word 'R' (related to the return stack, maybe it returns the return stack pointer)
