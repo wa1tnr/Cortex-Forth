@@ -51,6 +51,8 @@ extern void _getOneByteRAM(void); // ( addr -- )
 extern void cpMem2Str(void);
 extern void parseStr(void);
 extern void fetchStr(void);
+extern void _PINWRITE(void);
+extern void _PINMODE(void);
 
 // identify: nancarole  kibarthe   tr0mso   cablefour  entwistle
 
@@ -1559,6 +1561,15 @@ abort:
   DATA(498, thrown)
   #define autoload 495
 
+// new 05 sep
+// pmd pnw
+  NAME(499, 0, 6, 'p', 'n', 'm') // 'pnmode' pinMode word
+  LINK(500, 492)
+  CODE(501, _PINMODE)
+
+  NAME(502, 0, 7, 'p', 'n', 'w') // 'pnwrite' pinMode word
+  LINK(503, 499)
+  CODE(504, _PINWRITE)
 
   // test
   DATA(600, lit)
@@ -1581,8 +1592,11 @@ abort:
   // D = 486; // previous latest word ('cpmem') before 'uol' was added
   // H = 489; // previous top of dictionary (just past 'cpmem')
 
-     D = 492; // latest word 'uol' (autoload)
-     H = 499; // longer offset than usual
+  // D = 492;
+  // H = 499; // longer offset than usual
+
+     D = 502; // latest word
+     H = 505; // top of dictionary (here)
 
 // cpmem 486 thru 488, 489 is 488 + 1
 
