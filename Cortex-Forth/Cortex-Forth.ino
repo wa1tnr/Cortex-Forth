@@ -1620,13 +1620,13 @@ abort:
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
    SERIAL_LOCAL_C.println  ("");
-   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 04 SEP 2019 08:31z");
-   SERIAL_LOCAL_C.println  ("      Tue Sep  3 09:22:29 UTC 2019 0.2.0-alpha.1 nnon-usart-c-03_sep-aa-");
+   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 08 SEP 2019 14:47z");
+   SERIAL_LOCAL_C.println  ("      Sun Sep  8 14:47:04 UTC 2019 0.2.0-alpha.1 non-usart-d-08_sep-aa-split-sam-a-");
    SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +sam +autoload +squote +fdir_planned ++rlist +cc");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-717");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-719");
 
    SERIAL_LOCAL_C.println  ("      words: sam fload wlist warm - do NOT use fload without disabling autoload");
-   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-k");
+   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-p");
 }
 
 /*
