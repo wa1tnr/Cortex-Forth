@@ -38,12 +38,11 @@ void forth_words(void) {
 
 // 0= ( n1 -- BOOL ) // not thoroughly tested, but looked good.
 //    WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ;" 
-      WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ;" )
+      WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ; : max over over - 0< if swap drop -1 then if exit then swap drop ; : min over over - 0< if drop exit then swap drop ;" )
+      WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;" )
 
-#ifdef OMIT_THESE
-      WRITELN_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;" )
-      WRITELN_FORTH(     ": min over over - 0< if drop exit then swap drop ;")
 
+#ifdef OMITTED_CODE
 // min ( n1 n2 -- min )
 
 //    WRITELN_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;"   )
@@ -82,17 +81,14 @@ void forth_words(void) {
 
 // testc ( -- )
 
-      WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;"
+//    WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;"
 
 // >prn ( n -- )
-    ) WRITELN_FORTH(     ": >prn 32 over over - 0< if \
-                              46 emit drop drop exit then \
-                          drop 127 1 - over over swap - 0< if \
-                              46 emit drop drop exit then \
-                          drop emit ;"
+      WRITELN_FORTH(     ": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;"
 
 // delay ( n -- )
     ) WRITELN_FORTH(     ": delay drop 1234 0 do 1 drop loop ;"
+
 
 // ecol ( -- ) \ emit a colon
     ) WRITELN_FORTH(     ": ecol 58 emit ;"
@@ -120,46 +116,21 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 // rhlist ( addr -- )
-      WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over \
-                        do \
-                            1 + over over \
-                            swap - 1 - 0< if \
-                                dup rbyte dup 16 - 0< if \
-                                    48 emit then \
-                                h. 100 delay then \
-                        loop \
-                        drop ;"
+      WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop drop ;"
 
 // --- all above good 03 SEP 2019
 
 // ralist ( addr -- )
 
 
-    ) WRITELN_FORTH(     ": ralist space space 16 + dup 16 - over over do \
- 1 + over over swap - 1 - 0< if dup rbyte >prn 100 delay then loop drop ;"
+    ) WRITELN_FORTH(     ": ralist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup rbyte >prn 100 delay then loop drop ;"
 
 
 // hlist ( addr -- )
-    ) WRITELN_FORTH(     ": hlist hadr \
-                          16 + dup 16 - over over \
-                          do \
-                              1 + over over \
-                              swap - 1 - 0< if \
-                                  dup c@ dup 16 - 0< if \
-                                      48 emit then \
-                                  h. 100 delay then \
-                          loop \
-                          drop ;"
+    ) WRITELN_FORTH(     ": hlist hadr 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop drop ;"
 
 // alist ( addr -- )
-    ) WRITELN_FORTH(     ": alist space space 16 + dup 16 - over over \
-                          do \
-                              1 + over over \
-                              swap - 1 - 0< if \
-                                  dup c@ >prn \
-                                  100 delay then \
-                          loop \
-                          drop ;"
+    ) WRITELN_FORTH(     ": alist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup c@ >prn 100 delay then loop drop ;"
 
 // bottom ( -- addr )
     ) WRITELN_FORTH(     ": bottom 536870912 ;"
@@ -167,14 +138,10 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     ": topbottom bottom 16384 + 1024 - 1024 + 16 - ;"
 
 // blist ( addr -- )
-    ) WRITELN_FORTH(     ": blist cr -999 swap 196604 1148 - min 0 max \
-                        dup 1 - 8 0 do dup hlist 16 - alist cr \
-                        swap drop loop 1 + swap drop cr ;"
+    ) WRITELN_FORTH(     ": blist cr -999 swap 196604 1148 - min 0 max dup 1 - 8 0 do dup hlist 16 - alist cr swap drop loop 1 + swap drop cr ;"
 
 // rlist ( addr -- addr + report_size )
-    ) WRITELN_FORTH(     ": rlist cr -999 swap bottom 195552 + min 0 max \
-                        dup 1 - 8 0 do dup rhlist 16 - ralist cr \
-                        swap drop loop 1 + swap drop cr ;"
+    ) WRITELN_FORTH(     ": rlist cr -999 swap bottom 195552 + min 0 max dup 1 - 8 0 do dup rhlist 16 - ralist cr swap drop loop 1 + swap drop cr ;"
 
 // : rlist -999 swap cr bottom 195552 + min 0 max
 // dup 1 - 8 0 do
@@ -188,7 +155,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 //        bottom 464 + rlist cr 84 blist cr
 
 // rdump was deprecated. 24 Aug
-
     ) WRITELN_FORTH(     ": emits 0 do emit loop space ;"
 
     ) WRITELN_FORTH(     ": said fs@ emits space cr space ;"
