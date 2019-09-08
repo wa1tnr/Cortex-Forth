@@ -474,6 +474,7 @@ void _FLPARSE (void) {
   keyboard_not_file = false;
   if (thisFile) {
     while (thisFile.available() > 1 ) { // FLEN_MAX) {
+
       do {
         t = thisFile.read();
         char peeked_char = t;
@@ -483,16 +484,27 @@ void _FLPARSE (void) {
           t = thisFile.read();
         }
       } while (t == ' ');
+
+
       do {
         t = thisFile.read();
           tib = tib + t;
       } while (t > ' ');
+
+      if (thisFile.available() < 3) {
+        do {
+          t = thisFile.read();
+        } while (t < '!'); // strip off 0x20 0x0d 0x0a chars
+      }
+
       // SERIAL_LOCAL_C.print(tib);
+
       Serial.print(" t = "); Serial.print(t, HEX); Serial.print(' ');
-      if (thisFile.available() < 4) { // FLEN_MAX) { // RECENT: 2
+
+      if (thisFile.available() < 1) { // FLEN_MAX) { // RECENT: 2
 // forth/ascii_xfer_a001.txt
         // SERIAL_LOCAL_C.println("SAFETY NET");
-        if (thisFile.available() < 4) { // RECENT: 2
+        if (thisFile.available() < 1) { // RECENT: 2
           keyboard_not_file = true;
           thisFile.close();
           SERIAL_LOCAL_C.print("\r");
@@ -501,6 +513,7 @@ void _FLPARSE (void) {
         }
       }
       // SERIAL_LOCAL_C.println("TRAP");
+      Serial.println("RETURN seen");
       return; /* return for each parsed word, with occasional Ok happening related to that return, but not every single time: */
     }
     SERIAL_LOCAL_C.println(" alt TRAP LINE 502");

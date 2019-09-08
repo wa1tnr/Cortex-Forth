@@ -24,11 +24,11 @@
 #include "SdFat.h"
 #include "../common.h"
 // extern File thisFile;
-// #define WRITE_FORTH(a) {thisFile.print((a));}
+// #define WRITELN_FORTH(a) {thisFile.print((a));}
 
 void forth_words(void) {
 
-//  myFile.print(": hello 5 0 do 43 emit ;\r");
+//  myFile.print(": hello 5 0 do 43 emit ;");
 
 // max ( n1 n2 -- max )
 
@@ -37,13 +37,16 @@ void forth_words(void) {
 // from the quoted string:
 
 // 0= ( n1 -- BOOL ) // not thoroughly tested, but looked good.
-      WRITE_FORTH(     ": 0= dup abs negate 0< invert swap drop ;\r" 
+//    WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ;" 
+      WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ;" )
 
-    ) WRITE_FORTH(     ": max over over - 0< if \
-                              swap drop -1 then \
-                          if \
-                              exit then \
-                          swap drop ;\r"   )
+#ifdef OMIT_THESE
+      WRITELN_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;" )
+      WRITELN_FORTH(     ": min over over - 0< if drop exit then swap drop ;")
+
+// min ( n1 n2 -- min )
+
+//    WRITELN_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;"   )
 
 // The quoted string can be extended with a backslash.
 
@@ -77,30 +80,25 @@ void forth_words(void) {
 // experimentally (and, somewhat ignorantly ;)
 
 
-// min ( n1 n2 -- min )
-      WRITE_FORTH(     ": min over over - 0< if \
-                              drop exit then \
-                          swap drop ;\r"
-
 // testc ( -- )
 
-    ) WRITE_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;\r"
+      WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;"
 
 // >prn ( n -- )
-    ) WRITE_FORTH(     ": >prn 32 over over - 0< if \
+    ) WRITELN_FORTH(     ": >prn 32 over over - 0< if \
                               46 emit drop drop exit then \
                           drop 127 1 - over over swap - 0< if \
                               46 emit drop drop exit then \
-                          drop emit ;\r"
+                          drop emit ;"
 
 // delay ( n -- )
-    ) WRITE_FORTH(     ": delay drop 1234 0 do 1 drop loop ;\r"
+    ) WRITELN_FORTH(     ": delay drop 1234 0 do 1 drop loop ;"
 
 // ecol ( -- ) \ emit a colon
-    ) WRITE_FORTH(     ": ecol 58 emit ;\r"
+    ) WRITELN_FORTH(     ": ecol 58 emit ;"
 
 // hadr ( addr -- addr ) print to display
-    ) WRITE_FORTH(     ": hadr dup 1 + h. ecol space ;\r")
+    ) WRITELN_FORTH(     ": hadr dup 1 + h. ecol space ;")
 
 /*
 // Can pack memory efficiently using the comma word:
@@ -122,7 +120,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 // rhlist ( addr -- )
-      WRITE_FORTH(     ": rhlist hadr 16 + dup 16 - over over \
+      WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over \
                         do \
                             1 + over over \
                             swap - 1 - 0< if \
@@ -130,19 +128,19 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
                                     48 emit then \
                                 h. 100 delay then \
                         loop \
-                        drop ;\r"
+                        drop ;"
 
 // --- all above good 03 SEP 2019
 
 // ralist ( addr -- )
 
 
-    ) WRITE_FORTH(     ": ralist space space 16 + dup 16 - over over do \
- 1 + over over swap - 1 - 0< if dup rbyte >prn 100 delay then loop drop ;\r"
+    ) WRITELN_FORTH(     ": ralist space space 16 + dup 16 - over over do \
+ 1 + over over swap - 1 - 0< if dup rbyte >prn 100 delay then loop drop ;"
 
 
 // hlist ( addr -- )
-    ) WRITE_FORTH(     ": hlist hadr \
+    ) WRITELN_FORTH(     ": hlist hadr \
                           16 + dup 16 - over over \
                           do \
                               1 + over over \
@@ -151,32 +149,32 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
                                       48 emit then \
                                   h. 100 delay then \
                           loop \
-                          drop ;\r"
+                          drop ;"
 
 // alist ( addr -- )
-    ) WRITE_FORTH(     ": alist space space 16 + dup 16 - over over \
+    ) WRITELN_FORTH(     ": alist space space 16 + dup 16 - over over \
                           do \
                               1 + over over \
                               swap - 1 - 0< if \
                                   dup c@ >prn \
                                   100 delay then \
                           loop \
-                          drop ;\r"
+                          drop ;"
 
 // bottom ( -- addr )
-    ) WRITE_FORTH(     ": bottom 536870912 ;\r"
+    ) WRITELN_FORTH(     ": bottom 536870912 ;"
 
-    ) WRITE_FORTH(     ": topbottom bottom 16384 + 1024 - 1024 + 16 - ;\r"
+    ) WRITELN_FORTH(     ": topbottom bottom 16384 + 1024 - 1024 + 16 - ;"
 
 // blist ( addr -- )
-    ) WRITE_FORTH(     ": blist cr -999 swap 196604 1148 - min 0 max \
+    ) WRITELN_FORTH(     ": blist cr -999 swap 196604 1148 - min 0 max \
                         dup 1 - 8 0 do dup hlist 16 - alist cr \
-                        swap drop loop 1 + swap drop cr ;\r"
+                        swap drop loop 1 + swap drop cr ;"
 
 // rlist ( addr -- addr + report_size )
-    ) WRITE_FORTH(     ": rlist cr -999 swap bottom 195552 + min 0 max \
+    ) WRITELN_FORTH(     ": rlist cr -999 swap bottom 195552 + min 0 max \
                         dup 1 - 8 0 do dup rhlist 16 - ralist cr \
-                        swap drop loop 1 + swap drop cr ;\r"
+                        swap drop loop 1 + swap drop cr ;"
 
 // : rlist -999 swap cr bottom 195552 + min 0 max
 // dup 1 - 8 0 do
@@ -184,34 +182,35 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // loop 1 + swap drop cr ;
 
 // at the Ok prompt, type:
-//  ) WRITE_FORTH(     "wag wag 8 wiggle\r"
+//  ) WRITELN_FORTH(     "wag wag 8 wiggle"
 
 // example:
 //        bottom 464 + rlist cr 84 blist cr
 
 // rdump was deprecated. 24 Aug
 
-    ) WRITE_FORTH(     ": emits 0 do emit loop space ;\r"
+    ) WRITELN_FORTH(     ": emits 0 do emit loop space ;"
 
-    ) WRITE_FORTH(     ": said fs@ emits space cr space ;\r"
+    ) WRITELN_FORTH(     ": said fs@ emits space cr space ;"
 
-    ) WRITE_FORTH(     ": stuffit 69 68 67 66 65 5 ;\r"
+    ) WRITELN_FORTH(     ": stuffit 69 68 67 66 65 5 ;"
 
 
 // immediate:
 
-    ) WRITE_FORTH(     "69 68 67 66 65 5 emits cr\r"
+    ) WRITELN_FORTH(     "69 68 67 66 65 5 emits cr"
 
 
 // review:  value address !
 
-    ) WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop ;\r"
+    ) WRITELN_FORTH(     ": ldelay 1024 0 do 1 delay loop ;"
 )
 // end, pickup with sam.cpp from here, forward.
 
+#endif // OMITTED_CODE
 }
 
 // - - - exercise blist
-//   WRITE_FORTH("variable myvar 439041101 myvar c! myvar 32 - blist\r");
+//   WRITELN_FORTH("variable myvar 439041101 myvar c! myvar 32 - blist");
 //                                         1a2b3c4d
 // EOF
