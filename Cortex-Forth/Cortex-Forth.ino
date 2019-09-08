@@ -478,6 +478,7 @@ void _FLPARSE (void) {
       do {
         t = thisFile.read();
         char peeked_char = t;
+        if ((peeked_char != '\r') && (peeked_char != '\n'))
         tib = peeked_char;
         if (t == ' ') {
           tib = ""; // unpeek tib
@@ -488,20 +489,32 @@ void _FLPARSE (void) {
 
       do {
         t = thisFile.read();
+
+        if (tib[0] == '\r') { tib = ""; Serial.println("ALERT tib was '\'r"); }
+        if (tib[0] == '\n') tib = "";
+        if (t == 0x0d) Serial.println("0x0d seen SEEN SEEN");
+
+        if ((t != '\r') && (t != '\n') )
           tib = tib + t;
+          Serial.print(" t was > ' ' ");
       } while (t > ' ');
 
+      Serial.print(" okay so tib is now: "); Serial.print(tib);
+      Serial.print("   tib.length is: "); Serial.println((tib.length () -1));
+
+/*
       if (thisFile.available() < 3) {
         do {
           t = thisFile.read();
         } while (t < '!'); // strip off 0x20 0x0d 0x0a chars
       }
-
+*/
+      Serial.print("available: "); Serial.println( thisFile.available());
       // SERIAL_LOCAL_C.print(tib);
 
       Serial.print(" t = "); Serial.print(t, HEX); Serial.print(' ');
 
-      if (thisFile.available() < 1) { // FLEN_MAX) { // RECENT: 2
+      if (thisFile.available() < 2) { // FLEN_MAX) { // RECENT: 2
 // forth/ascii_xfer_a001.txt
         // SERIAL_LOCAL_C.println("SAFETY NET");
         if (thisFile.available() < 1) { // RECENT: 2
@@ -511,12 +524,25 @@ void _FLPARSE (void) {
           SERIAL_LOCAL_C.print(FILE_NAME);
           SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 496");
         }
+        if (thisFile.available() == 1) {
+          t = thisFile.read();
+          if (thisFile.available() == 0) { thisFile.close(); Serial.println("THE FILE was closed."); }
+        }
       }
       // SERIAL_LOCAL_C.println("TRAP");
       Serial.println("RETURN seen");
       return; /* return for each parsed word, with occasional Ok happening related to that return, but not every single time: */
     }
     SERIAL_LOCAL_C.println(" alt TRAP LINE 502");
+    while(-1);
+    delay(1400);
+    delay(1400);
+    delay(1400);
+    delay(1400);
+    delay(1400);
+    delay(1400);
+    delay(1400);
+    delay(1400);
     delay(1400);
   } // if thisfile
   else {

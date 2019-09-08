@@ -131,9 +131,11 @@ void flash_setup(void) {
   Serial.print(" ckpt BB ");
 #endif // #ifdef VERBIAGE_AA
 
+
   if (!fatfs.remove(FILE_NAME)) {
     Serial.print("Failed to remove "); Serial.println(FILE_NAME);
   }
+
 
 
 #ifdef WANT_MKDIR_FORTH
