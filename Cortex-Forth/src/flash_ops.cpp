@@ -27,6 +27,8 @@
 #include "Adafruit_SPIFlash.h"
 
 extern void forth_words(void);
+extern void sam_editor(void);
+
 
 #undef WANT_MKDIR_FORTH
 #define WANT_MKDIR_FORTH
@@ -156,6 +158,7 @@ void flash_setup(void) {
 // file contents - - - - - - - - - - - - - - - -
 
     forth_words();
+    sam_editor(); // future: sam.fs and named file loading
 
 // file contents - - - - - - - - - - - - - - - -
 
