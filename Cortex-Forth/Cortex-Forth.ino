@@ -473,7 +473,7 @@ void _FLPARSE (void) {
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
-    while (thisFile.available() > 0 ) { // FLEN_MAX) {
+    while (thisFile.available() > 1 ) { // FLEN_MAX) {
       do {
         t = thisFile.read();
         char peeked_char = t;
@@ -488,9 +488,11 @@ void _FLPARSE (void) {
           tib = tib + t;
       } while (t > ' ');
       // SERIAL_LOCAL_C.print(tib);
-      if (thisFile.available() < 2) { // FLEN_MAX) {
+      Serial.print(" t = "); Serial.print(t, HEX); Serial.print(' ');
+      if (thisFile.available() < 4) { // FLEN_MAX) { // RECENT: 2
+// forth/ascii_xfer_a001.txt
         // SERIAL_LOCAL_C.println("SAFETY NET");
-        if (thisFile.available() < 2) {
+        if (thisFile.available() < 4) { // RECENT: 2
           keyboard_not_file = true;
           thisFile.close();
           SERIAL_LOCAL_C.print("\r");
