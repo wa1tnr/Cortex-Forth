@@ -89,7 +89,8 @@ extern void _PINMODE(void);
 
 #include "common.h"
 
-#define LINE_ENDING 10 // alt: 13
+#define LINE_ENDING 10
+#define ALT_LINE_ENDING 13
 
 #ifdef HAS_DOTSTAR_LIB
 extern void setup_dotstar(void); // dotstar.cpp
@@ -199,7 +200,15 @@ void _CR (void) {
 }
 
 void _OK (void) {
+#ifdef OLD_OK_HANDLER
   if (tib [tib.length () - 1] == LINE_ENDING) SERIAL_LOCAL_C.println (" Ok");
+#else // default: use new OK handler:
+  if ((
+          tib [tib.length () - 1] == LINE_ENDING
+      ) || (
+          tib [tib.length () - 1] == ALT_LINE_ENDING
+      )) SERIAL_LOCAL_C.println (" Ok");
+#endif
 }
 
 void _WLIST (void) {
@@ -456,6 +465,7 @@ void _PARSE (void) {
 // and _KEY is not used internally (at all!)
 
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
+// (08 SEP 2019: that has been corrected - with possible bugs not yet found.
 
 #define FLEN_MAX 1
 void _FLPARSE (void) {
@@ -463,11 +473,11 @@ void _FLPARSE (void) {
   tib = "";
   keyboard_not_file = false;
   if (thisFile) {
-    while (thisFile.available() > FLEN_MAX) {
+    while (thisFile.available() > 0 ) { // FLEN_MAX) {
       do {
         t = thisFile.read();
         char peeked_char = t;
-        tib = peeked_char; // not sure where this goes
+        tib = peeked_char;
         if (t == ' ') {
           tib = ""; // unpeek tib
           t = thisFile.read();
@@ -478,26 +488,29 @@ void _FLPARSE (void) {
           tib = tib + t;
       } while (t > ' ');
       // SERIAL_LOCAL_C.print(tib);
-      if (thisFile.available() < FLEN_MAX) {
+      if (thisFile.available() < 2) { // FLEN_MAX) {
         // SERIAL_LOCAL_C.println("SAFETY NET");
-        if (thisFile.available() < 1) {
+        if (thisFile.available() < 2) {
           keyboard_not_file = true;
           thisFile.close();
           SERIAL_LOCAL_C.print("\r");
           SERIAL_LOCAL_C.print(FILE_NAME);
-          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 369");
+          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 496");
         }
       }
       // SERIAL_LOCAL_C.println("TRAP");
-      return;
+      return; /* return for each parsed word, with occasional Ok happening related to that return, but not every single time: */
     }
-    SERIAL_LOCAL_C.println(" alt TRAP LINE 334");
+    SERIAL_LOCAL_C.println(" alt TRAP LINE 502");
     delay(1400);
   } // if thisfile
   else {
-    // SERIAL_LOCAL_C.println(" alt TRAP LINE 493");
+    // SERIAL_LOCAL_C.println(" alt TRAP LINE 506");
     keyboard_not_file = true;
     I = 90; // I = 90 points to 'parse' - top of original quit loop
+
+    // shows just one time during system init:
+    // Serial.println("\r\nDEBUG 08 SEP: LINE 511 seen.\r\n");
   }
 }
 
