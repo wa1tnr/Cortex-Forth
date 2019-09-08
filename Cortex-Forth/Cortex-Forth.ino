@@ -1,8 +1,6 @@
-// Tue Sep  3 09:22:29 UTC 2019 0.2.0-alpha.1 non-usart-c-03_sep-aa-  shred: abn-717
+// Sun Sep  8 14:47:04 UTC 2019 0.2.0-alpha.1 non-usart-d-08_sep-aa-split-sam-a-  shred: abn-719"
 
-// Wed Sep  4 08:31:05 UTC 2019
-
-// On branch non-usart-c-03_sep-aa-
+// On branch non-usart-d-08_sep-aa-split-sam-a-
 
 /*
 Sun Sep  1 07:37:26 UTC 2019
