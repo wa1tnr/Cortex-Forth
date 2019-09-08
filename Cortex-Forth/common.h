@@ -10,3 +10,4 @@
 #include "SdFat.h"
 extern File thisFile;
 #define WRITE_FORTH(a) {thisFile.print((a));}
+#define WRITELN_FORTH(a) {thisFile.println((a));}
