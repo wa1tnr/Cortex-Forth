@@ -1,0 +1,11 @@
+This (one) error persists and may (perhaps) be fixed (best) upstream:
+
+adafruit/hardware/samd/1.5.3/cores/arduino/avr/dtostrf.c -o /tmp/arduino_build_541416/core/avr/dtostrf.c.o
+
+/somewhere/.arduino15/packages/adafruit/hardware/samd/1.5.3/cores/arduino/
+    pulse.c: In function 'pulseIn':
+/somewhere/.arduino15/packages/adafruit/hardware/samd/1.5.3/cores/arduino/
+    pulse.c:44:29: warning: initialization discards 'const' qualifier from pointer target type [enabled by default]
+   volatile uint32_t *port = &(PORT->Group[p.ulPort].IN.reg);
+                             ^
+
