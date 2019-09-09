@@ -100,7 +100,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     "kst @ h. space space space"
 
 // write kbi
-// ##bookmark
+
     ) WRITELN_FORTH(     "107 emit 98 emit 105 emit 58 emit space"
     ) WRITELN_FORTH(     "kbi @ h. space space space"
 // s" Stack_Depth:_  fs@ .s 95 58 104 116 112 101 68 95 107 99 97 116 83 13 
@@ -137,9 +137,17 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
 
     ) WRITE_FORTH(       ": k-- swap 1 - sxk swap - "
-    ) WRITE_FORTH(       "0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then "
+
+    ) WRITE_FORTH(       "0< if "
+    ) WRITE_FORTH(           "swap 1 - bmk and 1 - bmk and 1 - bmk and swap "
+    ) WRITE_FORTH(       "then "
+
     ) WRITE_FORTH(       "drop dup "
-    ) WRITE_FORTH(       "0= if 1 - sxo then "
+
+    ) WRITE_FORTH(       "0= if "
+    ) WRITE_FORTH(           "1 - sxo "
+    ) WRITE_FORTH(       "then "
+
     ) WRITELN_FORTH(     "swap ;"
 
 // buffer increment
