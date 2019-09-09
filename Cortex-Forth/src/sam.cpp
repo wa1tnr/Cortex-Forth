@@ -133,7 +133,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // BUGFIX TODO_: needs drop swap but conditionally.
 // seems okay otherwise.
 
-// ( count addr -- count-1 addr) // maybe maybe
+// k-- ( count addr -- count-1 addr)
 // -- 
     ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
 
@@ -144,7 +144,12 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
 // it also skips forbidden locations 0, 126 and 127.
-    ) WRITELN_FORTH(     ": k++ kst @ 199 - 0= if k-- k-- then swap 1 + bmk and bmk 2 - over over swap - 0< if swap 1 + bmk and 1 + bmk and 1 + bmk and swap then drop swap ;"
+
+
+// k-- ( count addr -- count-1 addr)
+    ) WRITELN_FORTH(     ": sxd 0= if k-- k-- then swap 1 + bmk and bmk 2 - over over swap - 0< if swap 1 + bmk and 1 + bmk and 1 + bmk and swap then ;"
+
+    ) WRITELN_FORTH(     ": k++ kst @ 199 - sxd drop swap ;"
 
 // wrappers p-- and p++
 // : p-- space space k-- space space .s space cr ;
