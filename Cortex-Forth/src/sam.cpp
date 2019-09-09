@@ -136,7 +136,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // sxF ( n1 n2 -- n2 a b c )
     ) WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
 
-    ) WRITE_FORTH(       ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
+
+
+    ) WRITE_FORTH(       ": k-- swap 1 - sxk swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
 
     ) WRITELN_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;"
 
