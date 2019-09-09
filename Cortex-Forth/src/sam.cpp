@@ -12,7 +12,7 @@
 // #include "SdFat.h"
 #include "../common.h"
 // extern File thisFile;
-// #define WRITE_FORTH(a) {thisFile.print((a));}
+// #define WRITELN_FORTH(a) {thisFile.print((a));}
 
 void sam_editor(void) {
 
@@ -20,24 +20,24 @@ void sam_editor(void) {
 // bottom topbottom blist rlist emits
 
 // immediate:
-      WRITE_FORTH(     "2048 allot\r" // 18k address space 03 SEP 2019
-    ) WRITE_FORTH(     "variable bend variable buff here buff !\r"
+      WRITE_FORTH(     "2048 allot " // 18k address space 03 SEP 2019
+    ) WRITE_FORTH(     "variable bend variable buff here buff ! "
 
 
-    ) WRITE_FORTH(     "variable bend variable buff here buff !\r"
-    ) WRITE_FORTH(     "2048 allot here bend ! 1 drop\r"
+    ) WRITE_FORTH(     "variable bend variable buff here buff ! "
+    ) WRITE_FORTH(     "2048 allot here bend ! 1 drop "
 
-    ) WRITE_FORTH(     ": svd buff @ 2701 + blist ;\r"  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
+    ) WRITELN_FORTH(     ": svd buff @ 2701 + blist ;"  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
 
-    ) WRITE_FORTH(     ": sve buff @ 4 + cr ;\r"
+    ) WRITELN_FORTH(     ": sve buff @ 4 + cr ;"
 
 
-    ) WRITE_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;\r"
+    ) WRITELN_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;"
 
 
 // review:  value address !
 
-//  ) WRITE_FORTH(     ": ldelay 1024 0 do 1 delay loop ;\r"
+//  ) WRITELN_FORTH(     ": ldelay 1024 0 do 1 delay loop ;"
 
 // variable sfi .s empty sfi .s 1144 drop 44 sfi ! .s empty sfi @ .s 44
 
@@ -47,19 +47,20 @@ void sam_editor(void) {
 
 // immediate:
 
-    ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop\r"
+    ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop "
 
 // NAME CHANGE: sbc to kbi keyboard index
 // kbi is NOT maintained by k++ and k-- whatsoever.
 
-    ) WRITE_FORTH(     "variable kbi -1 kbi !\r" // sam buffer counter
+    ) WRITE_FORTH(     "variable kbi -1 kbi ! " // sam buffer counter
 
 // key-stored:
-    ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop\r"
+    ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop "
 
-    ) WRITE_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;\r" // increased from 16 to 128 bytes. ;)
+    ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" // increased from 16 to 128 bytes. ;)
 
 
+#ifdef OMIT_SOME_SOURCE
 
 /*
 
@@ -75,42 +76,42 @@ drop .s empty s" create_these_long_tesxt_  .s 5667 fs@ .s 95 116 120 115 101 116
 s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 14
 
 */
-  // ) WRITE_FORTH(  " The_easiest_way_to_
-  ) WRITE_FORTH(  ": wep 32 111 116 32 121 97 119 32 116 115 101 105 115 97 101 32 101 104 84 19 emits ;\r"
+  // ) WRITELN_FORTH(  " The_easiest_way_to_
+  ) WRITELN_FORTH(  ": wep 32 111 116 32 121 97 119 32 116 115 101 105 115 97 101 32 101 104 84 19 emits ;"
 
  // print .s to the terminal
 
  // sbl word ( addr -- same_addr )  'say blist'
-    ) WRITE_FORTH(     ": sbl dup blist drop ;\r"
+    ) WRITELN_FORTH(     ": sbl dup blist drop ;"
 
- // ) WRITE_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space\r"
+ // ) WRITELN_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space"
 
 #define TELLME_LONG
 #undef TELLME_LONG
 
 #ifdef TELLME_LONG
  // improve tellme to ( n -- ) tell me using a specific char repeated:
-    ) WRITE_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space \
-  46 emit 115 emit space .s space space\r"
+    ) WRITELN_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space \
+  46 emit 115 emit space .s space space"
 
 // write kst
-    ) WRITE_FORTH(     "107 emit 115 emit 116 emit 58 emit space\r"
-    ) WRITE_FORTH(     "kst @ h. space space space\r"
+    ) WRITELN_FORTH(     "107 emit 115 emit 116 emit 58 emit space"
+    ) WRITELN_FORTH(     "kst @ h. space space space"
 
 // write kbi
 // ##bookmark
-    ) WRITE_FORTH(     "107 emit 98 emit 105 emit 58 emit space\r"
-    ) WRITE_FORTH(     "kbi @ h. space space space\r"
+    ) WRITELN_FORTH(     "107 emit 98 emit 105 emit 58 emit space"
+    ) WRITELN_FORTH(     "kbi @ h. space space space"
 // s" Stack_Depth:_  fs@ .s 95 58 104 116 112 101 68 95 107 99 97 116 83 13 
 
-    ) WRITE_FORTH(     "58 104 116 112 101 68 20 107 99 97 116 83 12\r"
-    ) WRITE_FORTH(     "emits space depth . cr ;\r"
+    ) WRITELN_FORTH(     "58 104 116 112 101 68 20 107 99 97 116 83 12"
+    ) WRITELN_FORTH(     "emits space depth . cr ;"
 #else
-    ) WRITE_FORTH(     ": tellme drop ;\r"
+    ) WRITELN_FORTH(     ": tellme drop ;"
 #endif
 
 
-    ) WRITE_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;\r"
+    ) WRITELN_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;"
 
 
 
@@ -133,19 +134,19 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // ( count addr -- count-1 addr) // maybe maybe
 // -- 
-    ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over \
+    ) WRITELN_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over \
                         over swap - 0< if \
                         swap 1 - bmk and \
                         1 - bmk and \
                         1 - bmk and \
-                        swap then drop\r"
-    ) WRITE_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;\r"
+                        swap then drop"
+    ) WRITELN_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;"
 // buffer increment
 // ( count addr -- count+1 addr )
 
 // k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
 // it also skips forbidden locations 0, 126 and 127.
-    ) WRITE_FORTH(     ": k++ \
+    ) WRITELN_FORTH(     ": k++ \
                         kst @ \
                         199 - 0= if \
                         k-- k-- then \
@@ -154,70 +155,70 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
                         swap 1 + bmk and \
                         1 + bmk and \
                         1 + bmk and \
-                        swap then drop swap ;\r"
+                        swap then drop swap ;"
 
 // wrappers p-- and p++
 // : p-- space space k-- space space .s space cr ;
-    ) WRITE_FORTH(     ": p-- space space k-- space space .s space cr ;\r"
+    ) WRITELN_FORTH(     ": p-- space space k-- space space .s space cr ;"
 
 // : p++ space space k++ space space .s space cr ;
-    ) WRITE_FORTH(     ": p++ space space k++ space space .s space cr ;\r"
+    ) WRITELN_FORTH(     ": p++ space space k++ space space .s space cr ;"
 
 // message: here
-    ) WRITE_FORTH(     ": mhe 72 emit 101 emit 114 emit 101 emit 58 emit space ;\r"
-    ) WRITE_FORTH(     ": bfc 0 ;\r" // any positive int < (bsz - 2) .. or zero
+    ) WRITELN_FORTH(     ": mhe 72 emit 101 emit 114 emit 101 emit 58 emit space ;"
+    ) WRITELN_FORTH(     ": bfc 0 ;" // any positive int < (bsz - 2) .. or zero
 
 
 // conditionally initialize the buffer:
 
 /*
-    ) WRITE_FORTH(     ": sxa sfi @ invert if mhe\r" // messsage: here
-    ) WRITE_FORTH(     "here dup . bsz allot here swap 1 + -1 sfi ! then ;\r"
+    ) WRITELN_FORTH(     ": sxa sfi @ invert if mhe" // messsage: here
+    ) WRITELN_FORTH(     "here dup . bsz allot here swap 1 + -1 sfi ! then ;"
 */
 
 
 // unconditionally init:
-    ) WRITE_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;\r"
+    ) WRITELN_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;"
 
-    ) WRITE_FORTH(     ": lxa -99 sxa ;\r"
+    ) WRITELN_FORTH(     ": lxa -99 sxa ;"
 
 
 // sam library:
 
 // ctrl! ( n -- n ) // store any control char as ascii 31, into kst
 // wanted: ascii 15 (Control O)
-    ) WRITE_FORTH(     ": ctrl! dup 31 - 0< if 31 kst ! then 67 tellme ;\r"
+    ) WRITELN_FORTH(     ": ctrl! dup 31 - 0< if 31 kst ! then 67 tellme ;"
 
 // 29 -- 29 29 -- 29 29 31 -- 29 -2 -- 29 BOOL 
 
 // bksp! ( n -- n ) // store CTRL H (ASCII 0x08) as ascii 199, into kst
-    ) WRITE_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then 80 tellme ;\r"
+    ) WRITELN_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then 80 tellme ;"
 
-    ) WRITE_FORTH(     ": escp! dup 27 - 0= if 227 kst ! then 84 tellme ;\r"
+    ) WRITELN_FORTH(     ": escp! dup 27 - 0= if 227 kst ! then 84 tellme ;"
 
 
-    ) WRITE_FORTH(     ": sesc 95 67 83 69 95 83 84 73 95 89 69 72 12 emits ;\r"
+    ) WRITELN_FORTH(     ": sesc 95 67 83 69 95 83 84 73 95 89 69 72 12 emits ;"
 
 // hes handle ESC ascii 27
-    ) WRITE_FORTH(     ": hes kst @ 227 - 0= if sesc drop quit then ;\r"
+    ) WRITELN_FORTH(     ": hes kst @ 227 - 0= if sesc drop quit then ;"
 
 // hco handle control o (<32 is any control key so using 31 here)
-    ) WRITE_FORTH(     ": hco kst @ 31 - 0= if kbi @ 1 - kbi !\r"
-    ) WRITE_FORTH(     "99 tellme 99 tellme drop drop swap 1 - swap\r"
-    ) WRITE_FORTH(     "1 1\r"
-    ) WRITE_FORTH(     "10 tellme 100 tellme drop drop sbl then 109 tellme ;\r"
+    ) WRITELN_FORTH(     ": hco kst @ 31 - 0= if kbi @ 1 - kbi !"
+    ) WRITELN_FORTH(     "99 tellme 99 tellme drop drop swap 1 - swap"
+    ) WRITELN_FORTH(     "1 1"
+    ) WRITELN_FORTH(     "10 tellme 100 tellme drop drop sbl then 109 tellme ;"
 
 // hbk handle backspace
-    ) WRITE_FORTH(     ": hbk kst @\r"
-    ) WRITE_FORTH(     "199 - 0= if 1 drop then ;\r"
+    ) WRITELN_FORTH(     ": hbk kst @"
+    ) WRITELN_FORTH(     "199 - 0= if 1 drop then ;"
 
 // re-initialization protection:
-//  ) WRITE_FORTH(     ": sam sfi @ if 1 drop exit then lxa\r"
+//  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
-    ) WRITE_FORTH(     ": sam lxa \
+    ) WRITELN_FORTH(     ": sam lxa \
                         bfc swap k++ \
                         over over + begin \
-                        kbi @ 1 + kbi !\r" // increment counter
+                        kbi @ 1 + kbi !" // increment counter
 
 // with each iteration through the begin ..
 //  value address !
@@ -227,33 +228,33 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     // 254 stored in kst to indicate reset
     // 199 stored to indicate backspace key was pressed
 
-    ) WRITE_FORTH(     "254 kst ! 1 drop\r" // reset kst
-    ) WRITE_FORTH(     "key\r" // ONLY keystroke gained
+    ) WRITELN_FORTH(     "254 kst ! 1 drop" // reset kst
+    ) WRITELN_FORTH(     "key" // ONLY keystroke gained
 
 // "right: 114 105 103 104 116 5"
-//  ) WRITE_FORTH(     "114 emit 105 emit 103 emit 104 emit 116 emit space\r"
+//  ) WRITELN_FORTH(     "114 emit 105 emit 103 emit 104 emit 116 emit space"
 
 // "after: 97 emit 102 emit 116 emit 101 emit 114 emit"
-//  ) WRITE_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr\r"
+//  ) WRITELN_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr"
 
 
-    ) WRITE_FORTH(     "ctrl! bksp!\r" // reversing these masks a backspace into just a generic control keyset press ;)
+    ) WRITELN_FORTH(     "ctrl! bksp!" // reversing these masks a backspace into just a generic control keyset press ;)
 
-    ) WRITE_FORTH(     "escp!\r"
-    ) WRITE_FORTH(     "hes\r"
+    ) WRITELN_FORTH(     "escp!"
+    ) WRITELN_FORTH(     "hes"
 
-    ) WRITE_FORTH(     "hbk\r"
+    ) WRITELN_FORTH(     "hbk"
 // send +++ if backspace is pressed:
-//  ) WRITE_FORTH(     "9 - 0< if 199 kst ! then\r" // ONLY time '9' is useful in compare
+//  ) WRITELN_FORTH(     "9 - 0< if 199 kst ! then" // ONLY time '9' is useful in compare
 
-//  ) WRITE_FORTH(     "bksp!\r"
+//  ) WRITELN_FORTH(     "bksp!"
 
 // new line 16:12z 03 SEP:
 // test for ascii 31 or lower (global):
 // if it's 32:
 //  ( n -- n BOOL )
-//  ) WRITE_FORTH(     "dup 31 - 0< if  31 kst ! then\r"
-//  ) WRITE_FORTH(     "ctrl!\r"  //  dup 31 - 0< if  31 kst ! then ;\r"
+//  ) WRITELN_FORTH(     "dup 31 - 0< if  31 kst ! then"
+//  ) WRITELN_FORTH(     "ctrl!"  //  dup 31 - 0< if  31 kst ! then ;"
 
 // - - - - standard comparison: 254 vs 199
 // everyone store:
@@ -261,8 +262,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     // one path chosen from a single pick of one of these two lines
     // which exchanges 'swap c!' for 'swap drop drop' (the swap was factored out)
 
-    ) WRITE_FORTH(     "kst @ 254 - 0= if swap c! then \
-                        kst @ 199 - 0= if drop drop then\r"
+    ) WRITELN_FORTH(     "kst @ 254 - 0= if swap c! then \
+                        kst @ 199 - 0= if drop drop then"
 
 /*
 
@@ -270,8 +271,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     OLD OUTPUT LOOP method was to blist everything.
 
-    ) WRITE_FORTH(     "dup blist\r"  // blist ( addr -- addr+incr )
-    ) WRITE_FORTH(     "drop\r"
+    ) WRITELN_FORTH(     "dup blist"  // blist ( addr -- addr+incr )
+    ) WRITELN_FORTH(     "drop"
 
 */
 
@@ -282,16 +283,16 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 */
 
-//  ) WRITE_FORTH(     "dup alist drop\r" // alist will update your address to the new offset if you let it, so dup for a spare copy of tos, alist, then drop the result
+//  ) WRITELN_FORTH(     "dup alist drop" // alist will update your address to the new offset if you let it, so dup for a spare copy of tos, alist, then drop the result
 // since alist works, it can be picked apart, too:
 
-//  ) WRITE_FORTH(     "if dup c@ >prn 100 delay then loop\r"
+//  ) WRITELN_FORTH(     "if dup c@ >prn 100 delay then loop"
 
-//  ) WRITE_FORTH(     "dup c@ 21 min 126 max emit\r"
+//  ) WRITELN_FORTH(     "dup c@ 21 min 126 max emit"
 // since that didn't work, need a stack print to figure out the offset math:
-//  ) WRITE_FORTH(     "cr 65 emit 65 emit 65 emit 65 emit 65 emit space space .s space space\r"
+//  ) WRITELN_FORTH(     "cr 65 emit 65 emit 65 emit 65 emit 65 emit space space .s space space"
 // so it's just 'over over +' to get the address wanted:
-//  ) WRITE_FORTH(     "over over + c@ cr .s cr 32 max 126 min emit space\r" // may not want that last space
+//  ) WRITELN_FORTH(     "over over + c@ cr .s cr 32 max 126 min emit space" // may not want that last space
 
 // bsz size of the buffer
 // kbi counter for each keystroke given
@@ -299,47 +300,48 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 
 
-//  ) WRITE_FORTH(     "kbi @ 1 + kbi !\r" // sam buffer counter, increment it
+//  ) WRITELN_FORTH(     "kbi @ 1 + kbi !" // sam buffer counter, increment it
 
 // nothing -- addr -- byte -- byte 1 -- SUM -- SUM SUM -- SUM SUM addr -- SUM
 
 /*
-    ) WRITE_FORTH(     "cr 8 0 do 44 emit loop tellme\r"
+    ) WRITELN_FORTH(     "cr 8 0 do 44 emit loop tellme"
 
-    ) WRITE_FORTH(     "kbi @ 2 - 0< if\r"
-    ) WRITE_FORTH(     "kst @ 28 1 + - 0< if\r"
-    ) WRITE_FORTH(     "kst @ 28 - 0< if 1 drop then\r"
-    ) WRITE_FORTH(     "swap dup blist drop swap then then\r"
+    ) WRITELN_FORTH(     "kbi @ 2 - 0< if"
+    ) WRITELN_FORTH(     "kst @ 28 1 + - 0< if"
+    ) WRITELN_FORTH(     "kst @ 28 - 0< if 1 drop then"
+    ) WRITELN_FORTH(     "swap dup blist drop swap then then"
 */
 
-//  ) WRITE_FORTH(     "over blist drop\r"
+//  ) WRITELN_FORTH(     "over blist drop"
 
-    ) WRITE_FORTH(     "77 tellme\r"
+    ) WRITELN_FORTH(     "77 tellme"
 
 /*
-    ) WRITE_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
-                        bsz - 0< invert if\r" // compare kbi to bsz
+    ) WRITELN_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
+                        bsz - 0< invert if" // compare kbi to bsz
 
-    ) WRITE_FORTH(         "cr cr cr \
+    ) WRITELN_FORTH(         "cr cr cr \
                             67 emit 67 emit 67 emit \
-                            cr cr cr\r" // just get their attention
+                            cr cr cr" // just get their attention
 
-    ) WRITE_FORTH(     "then 1 drop \
-                        over over +\r"
+    ) WRITELN_FORTH(     "then 1 drop \
+                        over over +"
 
 */
 // sbl is a blist that is wrapped in dup and drop
-//  ) WRITE_FORTH(     "78 tellme sbl\r"
+//  ) WRITELN_FORTH(     "78 tellme sbl"
 
 
 
 /*
-    ) WRITE_FORTH(     "c@ 32 max 126 min emit\r" // keyboard echo
+    ) WRITELN_FORTH(     "c@ 32 max 126 min emit" // keyboard echo
 */
 
-    ) WRITE_FORTH(     "hco\r"
-    ) WRITE_FORTH(     "k++ over over + 1 drop \
-                        again ;\r"
+    ) WRITELN_FORTH(     "hco"
+    ) WRITELN_FORTH(     "k++ over over + 1 drop \
+                        again ;"
+#endif
     )
 }
 
