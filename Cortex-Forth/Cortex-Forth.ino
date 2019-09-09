@@ -478,6 +478,19 @@ void _FLPARSE (void) {
       do {
         t = thisFile.read();
         char peeked_char = t;
+        if (peeked_char == 0x0a) {
+            Serial.print(" INTRUSIVE 0x0a SEEN    ");
+            if (thisFile.available() > 0 ) {
+              t = thisFile.read();
+              peeked_char = t; // update
+              Serial.print(" RESOLVED locally.      ");
+            }
+        }
+        // if ((peeked_char != '\r') || (peeked_char != '\n')) {
+        Serial.print("PEEK: ");
+        Serial.print(peeked_char, HEX);
+        delay(30); // LONG DELAY can be here for debug 09 SEP tnr
+        // }
         if ((peeked_char != '\r') && (peeked_char != '\n'))
         tib = peeked_char;
         if (t == ' ') {
@@ -492,8 +505,10 @@ void _FLPARSE (void) {
 
         if (tib[0] == '\r') { tib = ""; Serial.println("ALERT tib was '\'r"); }
         if (tib[0] == '\n') tib = "";
-        if (t == 0x0d) Serial.println("0x0d seen SEEN SEEN");
+        if (t == 0x0d) Serial.println("\r\n    0x0d seen SEEN SEEN");
+        if (t == 0x0a) Serial.println("\r\n    0x0a seen SEEN SEEN");
 
+        if ((t == '\r') || (t == '\n') ) Serial.println("\r\n\r\n     ATTENTION: EOL stuff here.\r\n");
         if ((t != '\r') && (t != '\n') )
           tib = tib + t;
           Serial.print(" t was > ' ' ");
@@ -501,6 +516,47 @@ void _FLPARSE (void) {
 
       Serial.print(" okay so tib is now: "); Serial.print(tib);
       Serial.print("   tib.length is: "); Serial.println((tib.length () -1));
+/*
+      if (
+          (tib.length () == 1) &&
+          (tib[0] == ';')
+      ) {
+*/
+      if (
+          (tib.length () == 1) &&
+          (tib[0] == ';')
+      ) {
+          Serial.println("\r\n  TIB has the semicolon \r\n");
+
+          Serial.println("");
+          Serial.print("TIB: ");
+          if (tib.length() > 0) { Serial.print(tib[0], HEX); Serial.print(' '); }
+          if (tib.length() > 1) { Serial.print(tib[1], HEX); Serial.print(' '); }
+          if (tib.length() > 2) { Serial.print(tib[2], HEX); Serial.print(' '); }
+          if (tib.length() > 3) { Serial.print(tib[3], HEX); Serial.print(' '); }
+          if (tib.length() > 4) { Serial.print(tib[4], HEX); Serial.print(' '); }
+          Serial.println("");
+          tib = tib + ' ';
+          Serial.print(" REVISED: so tib is now: "); Serial.print(tib);
+          Serial.print("   REVISED: tib.length is: "); Serial.println((tib.length () -1));
+
+
+          Serial.println("");
+          Serial.print("REV_TIB: ");
+          if (tib.length() > 0) { Serial.print(tib[0], HEX); Serial.print(' '); }
+          if (tib.length() > 1) { Serial.print(tib[1], HEX); Serial.print(' '); }
+          if (tib.length() > 2) { Serial.print(tib[2], HEX); Serial.print(' '); }
+          if (tib.length() > 3) { Serial.print(tib[3], HEX); Serial.print(' '); }
+          if (tib.length() > 4) { Serial.print(tib[4], HEX); Serial.print(' '); }
+          Serial.println("");
+
+      }
+/*
+      if (
+          (tib.length () == 0) &&
+          (tib == ';')
+      ) Serial.println("\r\n  TIB has the semicolon \r\n");
+*/
 
 /*
       if (thisFile.available() < 3) {
