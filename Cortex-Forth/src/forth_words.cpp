@@ -132,7 +132,6 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // alist ( addr -- )
     ) WRITELN_FORTH(     ": alist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup c@ >prn 100 delay then loop drop ;"
 
-#ifdef OMITTED_CODE
 // bottom ( -- addr )
     ) WRITELN_FORTH(     ": bottom 536870912 ;"
 
@@ -160,19 +159,31 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
     ) WRITELN_FORTH(     ": said fs@ emits space cr space ;"
 
-    ) WRITELN_FORTH(     ": stuffit 69 68 67 66 65 5 ;"
+// KLUDGE - immediate lines conflict with the parser as it is now (09 SEP 2019)
 
+// Solution (temporary) is to write one long line 
+// of code, that has the immediate code somewhere
+// within it (perhaps followed by non-immediate code
+// on that same line, as in the example, below).
+// for immediate lines of code, on the previous line,
+// do not WRITELN_FORTH.  Also, add an extra space:
+
+    ) WRITE_FORTH(     ": stuffit 69 68 67 66 65 5 ; "
 
 // immediate:
+// the immediate line is not a WRITELN_FORTH line:
 
-    ) WRITELN_FORTH(     "69 68 67 66 65 5 emits cr"
+    ) WRITE_FORTH(     "69 68 67 66 65 5 emits cr "
 
+// the immediate line is followed by a standard WRITELN_FORTH line:
+
+//  ) WRITELN_FORTH(     ": ldelay 1024 0 do 1 delay loop ;"
 
 // review:  value address !
 
-    ) WRITELN_FORTH(     ": ldelay 1024 0 do 1 delay loop ;"
 // end, pickup with sam.cpp from here, forward.
 
+#ifdef OMITTED_CODE
 #endif // OMITTED_CODE
 )
 }
