@@ -146,8 +146,10 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // it also skips forbidden locations 0, 126 and 127.
 
 
+    ) WRITELN_FORTH(     ": sxf swap 1 + bmk and bmk 2 - over over swap - ;"
+    ) WRITELN_FORTH(     ": sxe 0= if k-- k-- then ;"
 // k-- ( count addr -- count-1 addr)
-    ) WRITELN_FORTH(     ": sxd 0= if k-- k-- then swap 1 + bmk and bmk 2 - over over swap - 0< if swap 1 + bmk and 1 + bmk and 1 + bmk and swap then ;"
+    ) WRITELN_FORTH(     ": sxd sxe sxf 0< if swap 1 + bmk and 1 + bmk and 1 + bmk and swap then ;"
 
     ) WRITELN_FORTH(     ": k++ kst @ 199 - sxd drop swap ;"
 
