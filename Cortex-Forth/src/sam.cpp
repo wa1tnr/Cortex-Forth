@@ -166,9 +166,14 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     ": sxe 0< if swap sxd swap then ;"
 
 // sxg ( n -- )
-    ) WRITELN_FORTH(     ": sxg 0= if k-- k-- then ;"
+//  ) WRITELN_FORTH(     ": sxg 0= if k-- k-- then ;"
 // k-- ( count addr -- count-1 addr)
-    ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
+//  ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
+
+    ) WRITE_FORTH(       ": sxh       0= if "
+    ) WRITE_FORTH(       "                k-- k-- "
+    ) WRITE_FORTH(       "            then "
+  ) WRITELN_FORTH(       "            sxf sxe ;"
 
     ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;"
 
@@ -206,25 +211,46 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // ctrl! ( n -- n ) // store any control char as ascii 31, into kst
 // wanted: ascii 15 (Control O)
-    ) WRITELN_FORTH(     ": ctrl! dup 31 - 0< if 31 kst ! then 67 tellme ;"
+    ) WRITE_FORTH(     ": ctrl! dup 31 - "
+    ) WRITE_FORTH(     "  0< if "
+    ) WRITE_FORTH(     "      31 kst ! "
+    ) WRITE_FORTH(     "  then "
+    ) WRITELN_FORTH(   "  67 tellme ;"
 
 // 29 -- 29 29 -- 29 29 31 -- 29 -2 -- 29 BOOL 
 
 // bksp! ( n -- n ) // store CTRL H (ASCII 0x08) as ascii 199, into kst
-    ) WRITELN_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then 80 tellme ;"
+    ) WRITE_FORTH(     ": bksp! "
+    ) WRITE_FORTH(     "  dup 8 - 0= if "
+    ) WRITE_FORTH(     "      199 kst ! "
+    ) WRITE_FORTH(     "  then "
+    ) WRITELN_FORTH(   "  80 tellme ;"
 
-    ) WRITELN_FORTH(     ": escp! dup 27 - 0= if 227 kst ! then 84 tellme ;"
+    ) WRITE_FORTH(     ": escp! dup 27 - 0= if "
+    ) WRITE_FORTH(     "      227 kst ! "
+    ) WRITE_FORTH(     "  then "
+    ) WRITELN_FORTH(   "  84 tellme ;"
 
-    ) WRITELN_FORTH(     ": sesc 95 67 83 69 95 83 84 73 95 89 69 72 12 emits ;"
+    ) WRITE_FORTH(       ": sesc "
+    ) WRITE_FORTH(       "      95 67 83 69 95 "
+    ) WRITE_FORTH(       "      83 84 73 95 89 "
+    ) WRITE_FORTH(       "      69 72 12 "
+    ) WRITELN_FORTH(     "  emits ;"
 
 // hes handle ESC ascii 27
-    ) WRITELN_FORTH(     ": hes kst @ 227 - 0= if sesc drop quit then ;"
+    ) WRITE_FORTH(       ": hes kst @ 227 - "
+    ) WRITE_FORTH(       "  0= if "
+    ) WRITE_FORTH(       "      sesc drop quit "
+    ) WRITELN_FORTH(     "  then ;"
 
     ) WRITELN_FORTH(     ": hcp drop drop swap 1 - swap ;"
 
 // hco handle control o (<32 is any control key so using 31 here)
-    ) WRITE_FORTH(       ": hco kst @ 31 - 0= if kbi @ 1 - kbi ! "
-    ) WRITELN_FORTH(     "hcp sbl then ;"
+    ) WRITE_FORTH(       ": hco kst @ 31 - "
+    ) WRITE_FORTH(       "  0= if "
+    ) WRITE_FORTH(       "      kbi @ 1 - kbi ! "
+    ) WRITE_FORTH(       "      hcp sbl "
+    ) WRITELN_FORTH(     "  then ;"
 
 // hbk handle backspace
     ) WRITE_FORTH(     ": hbk kst @ "
