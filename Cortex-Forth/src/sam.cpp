@@ -135,7 +135,11 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // k-- ( count addr -- count-1 addr)
 // -- 
-    ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
+
+// sxf ( n1 n2 -- n2 a b c ) //
+    ) WRITELN_FORTH(     ": sxf swap 1 + bmk and bmk 2 - over over swap - ;"
+
+    ) WRITE_FORTH(       ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
 
     ) WRITELN_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;"
 
@@ -144,12 +148,17 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
 // it also skips forbidden locations 0, 126 and 127.
+
+// sxc ( a -- b )
     ) WRITELN_FORTH(     ": sxc 1 + bmk and ;"
+
+// sxd ( a -- b )
     ) WRITELN_FORTH(     ": sxd 3 0 do sxc loop ;"
 
+// sxe ( n -- )
     ) WRITELN_FORTH(     ": sxe 0< if swap sxd swap then ;"
 
-    ) WRITELN_FORTH(     ": sxf swap 1 + bmk and bmk 2 - over over swap - ;"
+// sxg ( n -- )
     ) WRITELN_FORTH(     ": sxg 0= if k-- k-- then ;"
 // k-- ( count addr -- count-1 addr)
     ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
