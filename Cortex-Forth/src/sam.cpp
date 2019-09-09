@@ -59,6 +59,9 @@ void sam_editor(void) {
 
     ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" // increased from 16 to 128 bytes. ;)
 
+// bsz ( -- size )
+// bmk ( -- mask )
+
 
 
 /*
@@ -152,6 +155,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // message: here
     ) WRITELN_FORTH(     ": mhe 72 emit 101 emit 114 emit 101 emit 58 emit space ;"
+// mhe ( -- )
     ) WRITELN_FORTH(     ": bfc 0 ;" // any positive int < (bsz - 2) .. or zero
 
 
@@ -164,8 +168,11 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 
 // unconditionally init:
+// sxa ( -- end_addr beg_addr )
     ) WRITELN_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;"
+// -- here -- here here -- here -- here size -- here -- here new_here -- new_here here -- new_here here+1
 
+// lxa ( -- -99 end_addr beg_addr ) // returns three bytes
     ) WRITELN_FORTH(     ": lxa -99 sxa ;"
 
 
@@ -200,7 +207,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // re-initialization protection:
 //  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
-    ) WRITE_FORTH(     ": sxb begin kbi @ 1 + kbi ! " // increment counter
+    ) WRITE_FORTH(     ": sxc "
+
+    ) WRITE_FORTH(     "kbi @ 1 + kbi ! " // increment counter
 
 // with each iteration through the begin ..
 //  value address !
@@ -320,7 +329,14 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 */
 
     ) WRITE_FORTH(     "hco "
-    ) WRITELN_FORTH(     "k++ over over + 1 drop again ;"
+    ) WRITELN_FORTH(     "k++ over over + 1 drop ;"
+// end, sxc definition
+
+
+
+//  ) WRITELN_FORTH(     "k++ over over + 1 drop again ;"
+
+    ) WRITELN_FORTH(     ": sxb begin sxc again ;"
     ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;"
 #ifdef OMIT_SOME_SOURCE
 #endif
