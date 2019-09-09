@@ -1,5 +1,7 @@
 // Sun Sep  8 14:47:04 UTC 2019 0.2.0-alpha.1 non-usart-d-08_sep-aa-split-sam-a-  shred: abn-719"
 
+// TODO: replace any hard-coded Serial.print statement with generalized to SERIAL_LOCAL_C
+
 // On branch non-usart-d-08_sep-aa-split-sam-a-
 
 /*
@@ -470,8 +472,8 @@ void _PARSE (void) {
 #define DEBUG_FLP_TIB
 #undef DEBUG_FLP_TIB
 
-#undef DEBUG_FLP_TIB_SEMICOLON
 #define DEBUG_FLP_TIB_SEMICOLON
+#undef DEBUG_FLP_TIB_SEMICOLON
 
 #define FLEN_MAX 1
 void _FLPARSE (void) {
@@ -614,11 +616,16 @@ void _FLPARSE (void) {
           thisFile.close();
           SERIAL_LOCAL_C.print("\r");
           SERIAL_LOCAL_C.print(FILE_NAME);
-          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 496");
+          SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 617 - route A");
         }
         if (thisFile.available() == 1) {
           t = thisFile.read();
-          if (thisFile.available() == 0) { thisFile.close(); Serial.println("THE FILE was closed."); }
+          if (thisFile.available() == 0) {
+            thisFile.close();
+            SERIAL_LOCAL_C.print("\r");
+            SERIAL_LOCAL_C.print(FILE_NAME);
+            SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 625 - route B");
+          }
         }
       }
       // SERIAL_LOCAL_C.println("TRAP");
