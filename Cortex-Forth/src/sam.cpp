@@ -166,7 +166,6 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // unconditionally init:
     ) WRITELN_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;"
 
-#ifdef OMIT_SOME_SOURCE
     ) WRITELN_FORTH(     ": lxa -99 sxa ;"
 
 
@@ -189,15 +188,16 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     ": hes kst @ 227 - 0= if sesc drop quit then ;"
 
 // hco handle control o (<32 is any control key so using 31 here)
-    ) WRITELN_FORTH(     ": hco kst @ 31 - 0= if kbi @ 1 - kbi !"
-    ) WRITELN_FORTH(     "99 tellme 99 tellme drop drop swap 1 - swap"
-    ) WRITELN_FORTH(     "1 1"
+    ) WRITE_FORTH(     ": hco kst @ 31 - 0= if kbi @ 1 - kbi ! "
+    ) WRITE_FORTH(     "99 tellme 99 tellme drop drop swap 1 - swap "
+    ) WRITE_FORTH(     "1 1 "
     ) WRITELN_FORTH(     "10 tellme 100 tellme drop drop sbl then 109 tellme ;"
 
 // hbk handle backspace
-    ) WRITELN_FORTH(     ": hbk kst @"
+    ) WRITE_FORTH(     ": hbk kst @ "
     ) WRITELN_FORTH(     "199 - 0= if 1 drop then ;"
 
+#ifdef OMIT_SOME_SOURCE
 // re-initialization protection:
 //  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
