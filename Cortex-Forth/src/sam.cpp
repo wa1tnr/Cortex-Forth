@@ -200,7 +200,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // re-initialization protection:
 //  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
-    ) WRITE_FORTH(     ": sam lxa bfc swap k++ over over + begin kbi @ 1 + kbi ! " // increment counter
+    ) WRITE_FORTH(     ": sxb begin kbi @ 1 + kbi ! " // increment counter
 
 // with each iteration through the begin ..
 //  value address !
@@ -321,6 +321,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     ) WRITE_FORTH(     "hco "
     ) WRITELN_FORTH(     "k++ over over + 1 drop again ;"
+    ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;"
 #ifdef OMIT_SOME_SOURCE
 #endif
     )
