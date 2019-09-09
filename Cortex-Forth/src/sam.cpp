@@ -138,7 +138,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     ) WRITE_FORTH(       ": k-- swap 1 - sxk swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
 
-    ) WRITELN_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;"
+    ) WRITELN_FORTH(     "dup 0= if 1 - sxo then swap ;"
 
 // buffer increment
 // ( count addr -- count+1 addr )
