@@ -505,7 +505,7 @@ void _FLPARSE (void) {
         Serial.print("PEEK: ");
         Serial.print(peeked_char, HEX);
 #endif
-        delay(30); // LONG DELAY can be here for debug 09 SEP tnr
+        // delay(30); // LONG DELAY can be here for debug 09 SEP tnr
         // }
         if ((peeked_char != '\r') && (peeked_char != '\n'))
         tib = peeked_char;
