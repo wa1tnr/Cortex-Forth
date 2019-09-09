@@ -145,13 +145,13 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
 // it also skips forbidden locations 0, 126 and 127.
 
-    ) WRITELN_FORTH(     ": sxgd 0< if swap 1 + bmk and 1 + bmk and 1 + bmk and swap then ;"
-    ) WRITELN_FORTH(     ": sxfe swap 1 + bmk and bmk 2 - over over swap - ;"
-    ) WRITELN_FORTH(     ": sxef 0= if k-- k-- then ;"
+    ) WRITELN_FORTH(     ": sxh 0< if swap 1 + bmk and 1 + bmk and 1 + bmk and swap then ;"
+    ) WRITELN_FORTH(     ": sxj swap 1 + bmk and bmk 2 - over over swap - ;"
+    ) WRITELN_FORTH(     ": sxk 0= if k-- k-- then ;"
 // k-- ( count addr -- count-1 addr)
-    ) WRITELN_FORTH(     ": sxdg sxef sxfe sxgd ;"
+    ) WRITELN_FORTH(     ": sxndg sxk sxj sxh ;"
 
-    ) WRITELN_FORTH(     ": k++ kst @ 199 - sxdg drop swap ;"
+    ) WRITELN_FORTH(     ": k++ kst @ 199 - sxndg drop swap ;"
 
 // wrappers p-- and p++
 // : p-- space space k-- space space .s space cr ;
