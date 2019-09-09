@@ -144,17 +144,17 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
 // it also skips forbidden locations 0, 126 and 127.
-    ) WRITELN_FORTH(     ": sxg 1 + bmk and ;"
-    ) WRITELN_FORTH(     ": sxh 3 0 do sxg loop ;"
+    ) WRITELN_FORTH(     ": sxc 1 + bmk and ;"
+    ) WRITELN_FORTH(     ": sxd 3 0 do sxc loop ;"
 
-    ) WRITELN_FORTH(     ": sxd 0< if swap sxh swap then ;"
+    ) WRITELN_FORTH(     ": sxe 0< if swap sxd swap then ;"
 
-    ) WRITELN_FORTH(     ": sxe swap 1 + bmk and bmk 2 - over over swap - ;"
-    ) WRITELN_FORTH(     ": sxf 0= if k-- k-- then ;"
+    ) WRITELN_FORTH(     ": sxf swap 1 + bmk and bmk 2 - over over swap - ;"
+    ) WRITELN_FORTH(     ": sxg 0= if k-- k-- then ;"
 // k-- ( count addr -- count-1 addr)
-    ) WRITELN_FORTH(     ": sxn sxf sxe sxd ;"
+    ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
 
-    ) WRITELN_FORTH(     ": k++ kst @ 199 - sxn drop swap ;"
+    ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;"
 
 // wrappers p-- and p++
 // : p-- space space k-- space space .s space cr ;
@@ -217,7 +217,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // re-initialization protection:
 //  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
-    ) WRITE_FORTH(     ": sxc "
+    ) WRITE_FORTH(     ": sxp "
 
     ) WRITE_FORTH(     "kbi @ 1 + kbi ! " // increment counter
 
@@ -340,13 +340,13 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     ) WRITE_FORTH(     "hco "
     ) WRITELN_FORTH(     "k++ over over + 1 drop ;"
-// end, sxc definition
+// end, sxp definition
 
 
 
 //  ) WRITELN_FORTH(     "k++ over over + 1 drop again ;"
 
-    ) WRITELN_FORTH(     ": sxb begin sxc again ;"
+    ) WRITELN_FORTH(     ": sxb begin sxp again ;"
     ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;"
 #ifdef OMIT_SOME_SOURCE
 #endif

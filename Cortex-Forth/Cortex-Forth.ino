@@ -1,5 +1,8 @@
 // Mon Sep  9 14:28:23 UTC 2019 0.2.0-alpha.1 non-usart  shred: abn-731"
 
+// Mon Sep  9 17:47:05 UTC 2019
+// On branch non-usart-e-09_sep-aa-
+
 // Sun Sep  8 14:47:04 UTC 2019 0.2.0-alpha.1 non-usart-d-08_sep-aa-split-sam-a-  shred: abn-719"
 
 // TODO: replace any hard-coded Serial.print statement with generalized to SERIAL_LOCAL_C
