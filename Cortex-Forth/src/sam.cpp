@@ -146,9 +146,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     ) WRITE_FORTH(       "drop dup "
 
-    ) WRITE_FORTH(       "0= if "
-    ) WRITE_FORTH(           "1 - sxo "
-    ) WRITE_FORTH(       "then "
+    ) WRITE_FORTH(       "0= if 1 - sxo then "
 
     ) WRITELN_FORTH(     "swap ;"
 
