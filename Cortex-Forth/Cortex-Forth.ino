@@ -467,6 +467,12 @@ void _PARSE (void) {
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
 // (08 SEP 2019: that has been corrected - with possible bugs not yet found.
 
+#define DEBUG_FLP_TIB
+#undef DEBUG_FLP_TIB
+
+#undef DEBUG_FLP_TIB_SEMICOLON
+#define DEBUG_FLP_TIB_SEMICOLON
+
 #define FLEN_MAX 1
 void _FLPARSE (void) {
   char t;
@@ -479,16 +485,22 @@ void _FLPARSE (void) {
         t = thisFile.read();
         char peeked_char = t;
         if (peeked_char == 0x0a) {
+#ifdef DEBUG_FLP_TIB
             Serial.print(" INTRUSIVE 0x0a SEEN    ");
+#endif
             if (thisFile.available() > 0 ) {
               t = thisFile.read();
               peeked_char = t; // update
+#ifdef DEBUG_FLP_TIB
               Serial.print(" RESOLVED locally.      ");
+#endif
             }
         }
         // if ((peeked_char != '\r') || (peeked_char != '\n')) {
+#ifdef DEBUG_FLP_TIB
         Serial.print("PEEK: ");
         Serial.print(peeked_char, HEX);
+#endif
         delay(30); // LONG DELAY can be here for debug 09 SEP tnr
         // }
         if ((peeked_char != '\r') && (peeked_char != '\n'))
@@ -503,29 +515,48 @@ void _FLPARSE (void) {
       do {
         t = thisFile.read();
 
-        if (tib[0] == '\r') { tib = ""; Serial.println("ALERT tib was '\'r"); }
+        if (tib[0] == '\r') {
+            tib = "";
+#ifdef DEBUG_FLP_TIB
+            Serial.println("ALERT tib was '\'r");
+#endif
+        }
         if (tib[0] == '\n') tib = "";
-        if (t == 0x0d) Serial.println("\r\n    0x0d seen SEEN SEEN");
-        if (t == 0x0a) Serial.println("\r\n    0x0a seen SEEN SEEN");
 
-        if ((t == '\r') || (t == '\n') ) Serial.println("\r\n\r\n     ATTENTION: EOL stuff here.\r\n");
+
+#ifdef DEBUG_FLP_TIB
+        if (t == 0x0d) Serial.println("\r\n    0x0d  SEEN");
+        if (t == 0x0a) Serial.println("\r\n    0x0a  SEEN");
+#endif
+
+
+
+
+        if ((t == '\r') || (t == '\n') ) {
+#ifdef DEBUG_FLP_TIB
+            Serial.println("\r\n\r\n     ATTENTION: EOL stuff here.\r\n");
+#endif
+        }
+
+// ###bookmark
         if ((t != '\r') && (t != '\n') )
           tib = tib + t;
-          Serial.print(" t was > ' ' ");
+
+#ifdef DEBUG_FLP_TIB
+      Serial.print(" t was > ' ' ");
+#endif
+
       } while (t > ' ');
 
+#ifdef DEBUG_FLP_TIB
       Serial.print(" okay so tib is now: "); Serial.print(tib);
       Serial.print("   tib.length is: "); Serial.println((tib.length () -1));
-/*
+#endif
       if (
           (tib.length () == 1) &&
           (tib[0] == ';')
       ) {
-*/
-      if (
-          (tib.length () == 1) &&
-          (tib[0] == ';')
-      ) {
+#ifdef DEBUG_FLP_TIB
           Serial.println("\r\n  TIB has the semicolon \r\n");
 
           Serial.println("");
@@ -536,7 +567,10 @@ void _FLPARSE (void) {
           if (tib.length() > 3) { Serial.print(tib[3], HEX); Serial.print(' '); }
           if (tib.length() > 4) { Serial.print(tib[4], HEX); Serial.print(' '); }
           Serial.println("");
+#endif
           tib = tib + ' ';
+
+#ifdef DEBUG_FLP_TIB_SEMICOLON
           Serial.print(" REVISED: so tib is now: "); Serial.print(tib);
           Serial.print("   REVISED: tib.length is: "); Serial.println((tib.length () -1));
 
@@ -549,6 +583,7 @@ void _FLPARSE (void) {
           if (tib.length() > 3) { Serial.print(tib[3], HEX); Serial.print(' '); }
           if (tib.length() > 4) { Serial.print(tib[4], HEX); Serial.print(' '); }
           Serial.println("");
+#endif
 
       }
 /*
@@ -565,13 +600,14 @@ void _FLPARSE (void) {
         } while (t < '!'); // strip off 0x20 0x0d 0x0a chars
       }
 */
+#ifdef DEBUG_FLP_TIB
       Serial.print("available: "); Serial.println( thisFile.available());
-      // SERIAL_LOCAL_C.print(tib);
-
       Serial.print(" t = "); Serial.print(t, HEX); Serial.print(' ');
+#endif
 
-      if (thisFile.available() < 2) { // FLEN_MAX) { // RECENT: 2
-// forth/ascii_xfer_a001.txt
+      // forth/ascii_xfer_a001.txt
+
+      if (thisFile.available() < 2) {
         // SERIAL_LOCAL_C.println("SAFETY NET");
         if (thisFile.available() < 1) { // RECENT: 2
           keyboard_not_file = true;
@@ -586,7 +622,9 @@ void _FLPARSE (void) {
         }
       }
       // SERIAL_LOCAL_C.println("TRAP");
+#ifdef DEBUG_FLP_TIB
       Serial.println("RETURN seen");
+#endif
       return; /* return for each parsed word, with occasional Ok happening related to that return, but not every single time: */
     }
     SERIAL_LOCAL_C.println(" alt TRAP LINE 502");
