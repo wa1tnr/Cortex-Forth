@@ -108,7 +108,6 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     ": tellme drop ;"
 #endif
 
-#ifdef OMIT_SOME_SOURCE
 
     ) WRITELN_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;"
 
@@ -133,9 +132,10 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // ( count addr -- count-1 addr) // maybe maybe
 // -- 
-    ) WRITELN_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop"
+    ) WRITE_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
 
     ) WRITELN_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;"
+
 // buffer increment
 // ( count addr -- count+1 addr )
 
@@ -166,6 +166,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // unconditionally init:
     ) WRITELN_FORTH(     ": sxa mhe here dup . bsz allot here swap 1 + ;"
 
+#ifdef OMIT_SOME_SOURCE
     ) WRITELN_FORTH(     ": lxa -99 sxa ;"
 
 
