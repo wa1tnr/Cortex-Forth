@@ -197,14 +197,10 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_FORTH(     ": hbk kst @ "
     ) WRITELN_FORTH(     "199 - 0= if 1 drop then ;"
 
-#ifdef OMIT_SOME_SOURCE
 // re-initialization protection:
 //  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
-    ) WRITELN_FORTH(     ": sam lxa \
-                        bfc swap k++ \
-                        over over + begin \
-                        kbi @ 1 + kbi !" // increment counter
+    ) WRITE_FORTH(     ": sam lxa bfc swap k++ over over + begin kbi @ 1 + kbi ! " // increment counter
 
 // with each iteration through the begin ..
 //  value address !
@@ -214,8 +210,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     // 254 stored in kst to indicate reset
     // 199 stored to indicate backspace key was pressed
 
-    ) WRITELN_FORTH(     "254 kst ! 1 drop" // reset kst
-    ) WRITELN_FORTH(     "key" // ONLY keystroke gained
+    ) WRITE_FORTH(     "254 kst ! 1 drop " // reset kst
+    ) WRITE_FORTH(     "key " // ONLY keystroke gained
 
 // "right: 114 105 103 104 116 5"
 //  ) WRITELN_FORTH(     "114 emit 105 emit 103 emit 104 emit 116 emit space"
@@ -224,12 +220,12 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 //  ) WRITELN_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr"
 
 
-    ) WRITELN_FORTH(     "ctrl! bksp!" // reversing these masks a backspace into just a generic control keyset press ;)
+    ) WRITE_FORTH(     "ctrl! bksp! " // reversing these masks a backspace into just a generic control keyset press ;)
 
-    ) WRITELN_FORTH(     "escp!"
-    ) WRITELN_FORTH(     "hes"
+    ) WRITE_FORTH(     "escp! "
+    ) WRITE_FORTH(     "hes "
 
-    ) WRITELN_FORTH(     "hbk"
+    ) WRITE_FORTH(     "hbk "
 // send +++ if backspace is pressed:
 //  ) WRITELN_FORTH(     "9 - 0< if 199 kst ! then" // ONLY time '9' is useful in compare
 
@@ -248,8 +244,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     // one path chosen from a single pick of one of these two lines
     // which exchanges 'swap c!' for 'swap drop drop' (the swap was factored out)
 
-    ) WRITELN_FORTH(     "kst @ 254 - 0= if swap c! then \
-                        kst @ 199 - 0= if drop drop then"
+    ) WRITE_FORTH(     "kst @ 254 - 0= if swap c! then kst @ 199 - 0= if drop drop then "
 
 /*
 
@@ -301,7 +296,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 //  ) WRITELN_FORTH(     "over blist drop"
 
-    ) WRITELN_FORTH(     "77 tellme"
+    ) WRITE_FORTH(     "77 tellme "
 
 /*
     ) WRITELN_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
@@ -324,9 +319,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     "c@ 32 max 126 min emit" // keyboard echo
 */
 
-    ) WRITELN_FORTH(     "hco"
-    ) WRITELN_FORTH(     "k++ over over + 1 drop \
-                        again ;"
+    ) WRITE_FORTH(     "hco "
+    ) WRITELN_FORTH(     "k++ over over + 1 drop again ;"
+#ifdef OMIT_SOME_SOURCE
 #endif
     )
 }
