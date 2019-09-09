@@ -220,11 +220,11 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // hes handle ESC ascii 27
     ) WRITELN_FORTH(     ": hes kst @ 227 - 0= if sesc drop quit then ;"
 
+    ) WRITELN_FORTH(     ": hcp drop drop swap 1 - swap ;"
+
 // hco handle control o (<32 is any control key so using 31 here)
-    ) WRITE_FORTH(     ": hco kst @ 31 - 0= if kbi @ 1 - kbi ! "
-    ) WRITE_FORTH(     "99 tellme 99 tellme drop drop swap 1 - swap "
-    ) WRITE_FORTH(     "1 1 "
-    ) WRITELN_FORTH(     "10 tellme 100 tellme drop drop sbl then 109 tellme ;"
+    ) WRITE_FORTH(       ": hco kst @ 31 - 0= if kbi @ 1 - kbi ! "
+    ) WRITELN_FORTH(     "hcp sbl then ;"
 
 // hbk handle backspace
     ) WRITE_FORTH(     ": hbk kst @ "
