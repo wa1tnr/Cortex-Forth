@@ -130,6 +130,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // ###bookmark
 
+    ) WRITELN_FORTH(     ": sxt 1 - bmk and ;"
+
     ) WRITELN_FORTH(     ": sxo bmk and bmk 2 - ;"
     ) WRITELN_FORTH(     ": sxk sxo over over ;"
 
