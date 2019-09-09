@@ -471,11 +471,11 @@ void _PARSE (void) {
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
 // (08 SEP 2019: that has been corrected - with possible bugs not yet found.
 
-#define DEBUG_FLP_TIB
 #undef DEBUG_FLP_TIB
+#define DEBUG_FLP_TIB
 
-#define DEBUG_FLP_TIB_SEMICOLON
 #undef DEBUG_FLP_TIB_SEMICOLON
+#define DEBUG_FLP_TIB_SEMICOLON
 
 #define FLEN_MAX 1
 void _FLPARSE (void) {
@@ -488,6 +488,18 @@ void _FLPARSE (void) {
       do {
         t = thisFile.read();
         char peeked_char = t;
+
+
+      do {
+        if (peeked_char == 0x20) {
+            if (thisFile.available() > 0 ) {
+                t = thisFile.read();
+                peeked_char = t; // update
+            }
+        }
+      } while (peeked_char == ' ');
+
+
         if (peeked_char == 0x0a) {
 #ifdef DEBUG_FLP_TIB
             Serial.print(" INTRUSIVE 0x0a SEEN    ");
@@ -500,12 +512,12 @@ void _FLPARSE (void) {
 #endif
             }
         }
-        // if ((peeked_char != '\r') || (peeked_char != '\n')) {
 #ifdef DEBUG_FLP_TIB
         Serial.print("PEEK: ");
         Serial.print(peeked_char, HEX);
+        Serial.print("  ");
 #endif
-        // delay(30); // LONG DELAY can be here for debug 09 SEP tnr
+        delay(300); // LONG DELAY can be here for debug 09 SEP tnr
         // }
         if ((peeked_char != '\r') && (peeked_char != '\n'))
         tib = peeked_char;
@@ -519,12 +531,15 @@ void _FLPARSE (void) {
       do {
         t = thisFile.read();
 
+
         if (tib[0] == '\r') {
             tib = "";
 #ifdef DEBUG_FLP_TIB
             Serial.println("ALERT tib was '\'r");
 #endif
         }
+
+
         if (tib[0] == '\n') tib = "";
 
 
