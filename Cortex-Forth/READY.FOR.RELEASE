@@ -1,26 +1,29 @@
-Tue Sep  3 08:37:05 UTC 2019
+Mon Sep  9 21:44:10 UTC 2019
 
-On branch non-usart-b-31_aug-aa-
+On branch non-usart-e-09_sep-aa-
 
-Tue Sep  3 08:25:26 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-  shred: abn-711
+Mon Sep  9 20:53:46 UTC 2019 0.2.0-alpha.1 non-usart-e-09_sep-aa-  shred: abn-733
 
-commit f01251176ec6717d3fe2e7953d26faeb7a63d419
+commit 07e9da913f637f130bab174113ea8995b8f3d70a
 Author: wa1tnr
-Date:   Tue Sep 3 08:34:05 2019 +0000
+Date:   Mon Sep 9 21:37:11 2019 +0000
 
-    sam basics for 9term -  myForth Arm Cortex
-    
-       de wa1tnr  ItsyBitsyM4 03 SEP 2019 08:25z
-    
-          Tue Sep  3 08:25:26 UTC 2019 0.2.0-alpha.0 non-usart-b-31_aug-aa-
-    
-          +0.2.0-a.0  +sam +autoload +squote +fdir_planned ++rlist +cc
-          +0.2.0-a.0  +blist +mkdir +write_File +fload        shred: abn-711
-    
-          words: sam fload wlist warm - do NOT use fload without disabling autoload");
-          TEF MEK Hn-j
+    For Release
 
-    Nice, solid stable point in development.
-    
-    Stability is a cheat - here was pushed way up, with
-    an arbitrarily large allot ;)
+ myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 09 SEP 2019 20:53z                                                
+      Mon Sep  9 20:53:46 UTC 2019 0.2.0-alpha.1 nnon-usart-e-09_sep-aa-                                       
+      +0.2.0-a.1  +sam +autoload +squote +fdir_planned ++rlist +cc                                             
+      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-733                                       
+      words: sam fload wlist warm
+      TEF MEK Hn-s                                                                                             
+
+This release is interim.  Has some factoring of the Forth sources.
+
+Its main unique quality is a modified _FLPARSE() to allow for
+better formed forth source files (stored on flashROM).  In
+particular, the new _FLPARSE() is more tolerant of the presence
+of line endings.
+
+Viewing the ascii transfer file (stored in flashROM) in a good
+text editor is expected to be a better experience, after this
+modification.
