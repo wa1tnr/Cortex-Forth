@@ -112,15 +112,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 #endif
 
 
-    ) WRITELN_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;"
-
-
-
-
-
-
-
-
+//  ) WRITELN_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;"
 
 
 // buffer and keyboard conflated in naming due to small namespace for word names ;)
@@ -136,8 +128,13 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // k-- ( count addr -- count-1 addr)
 // -- 
 
-    ) WRITELN_FORTH(     ": sxf swap 1 + bmk and bmk 2 - over over swap - ;"
-// sxf ( n1 n2 -- n2 a b c ) //
+// ###bookmark
+
+
+    ) WRITELN_FORTH(     ": sxk bmk and bmk 2 - over over ;"
+
+// sxF ( n1 n2 -- n2 a b c )
+    ) WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
 
     ) WRITE_FORTH(       ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop "
 
