@@ -38,11 +38,11 @@ void forth_words(void) {
 
 // 0= ( n1 -- BOOL ) // not thoroughly tested, but looked good.
 //    WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ;" 
-      WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ; : max over over - 0< if swap drop -1 then if exit then swap drop ; : min over over - 0< if drop exit then swap drop ;" )
-      WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;" )
+      WRITELN_FORTH(     ": 0= dup abs negate 0< invert swap drop ;"
+    ) WRITELN_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;"
+    ) WRITELN_FORTH(     ": min over over - 0< if drop exit then swap drop ;"
+    ) WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;" )
 
-
-#ifdef OMITTED_CODE
 // min ( n1 n2 -- min )
 
 //    WRITELN_FORTH(     ": max over over - 0< if swap drop -1 then if exit then swap drop ;"   )
@@ -132,6 +132,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // alist ( addr -- )
     ) WRITELN_FORTH(     ": alist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup c@ >prn 100 delay then loop drop ;"
 
+#ifdef OMITTED_CODE
 // bottom ( -- addr )
     ) WRITELN_FORTH(     ": bottom 536870912 ;"
 
@@ -170,10 +171,10 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // review:  value address !
 
     ) WRITELN_FORTH(     ": ldelay 1024 0 do 1 delay loop ;"
-)
 // end, pickup with sam.cpp from here, forward.
 
 #endif // OMITTED_CODE
+)
 }
 
 // - - - exercise blist
