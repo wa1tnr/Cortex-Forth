@@ -60,7 +60,6 @@ void sam_editor(void) {
     ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" // increased from 16 to 128 bytes. ;)
 
 
-#ifdef OMIT_SOME_SOURCE
 
 /*
 
@@ -91,8 +90,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 #ifdef TELLME_LONG
  // improve tellme to ( n -- ) tell me using a specific char repeated:
-    ) WRITELN_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space \
-  46 emit 115 emit space .s space space"
+    ) WRITELN_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space 46 emit 115 emit space .s space space"
 
 // write kst
     ) WRITELN_FORTH(     "107 emit 115 emit 116 emit 58 emit space"
@@ -110,6 +108,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     ": tellme drop ;"
 #endif
 
+#ifdef OMIT_SOME_SOURCE
 
     ) WRITELN_FORTH(     ": tstbb 144 kst ! 155 kbi ! 74 tellme ;"
 
@@ -134,28 +133,15 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // ( count addr -- count-1 addr) // maybe maybe
 // -- 
-    ) WRITELN_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over \
-                        over swap - 0< if \
-                        swap 1 - bmk and \
-                        1 - bmk and \
-                        1 - bmk and \
-                        swap then drop"
+    ) WRITELN_FORTH(     ": k-- swap 1 - bmk and bmk 2 - over over swap - 0< if swap 1 - bmk and 1 - bmk and 1 - bmk and swap then drop"
+
     ) WRITELN_FORTH(     "dup 0= if 1 - bmk and bmk 2 - then swap ;"
 // buffer increment
 // ( count addr -- count+1 addr )
 
 // k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
 // it also skips forbidden locations 0, 126 and 127.
-    ) WRITELN_FORTH(     ": k++ \
-                        kst @ \
-                        199 - 0= if \
-                        k-- k-- then \
-                        swap 1 + bmk and bmk 2 - over \
-                        over swap - 0< if \
-                        swap 1 + bmk and \
-                        1 + bmk and \
-                        1 + bmk and \
-                        swap then drop swap ;"
+    ) WRITELN_FORTH(     ": k++ kst @ 199 - 0= if k-- k-- then swap 1 + bmk and bmk 2 - over over swap - 0< if swap 1 + bmk and 1 + bmk and 1 + bmk and swap then drop swap ;"
 
 // wrappers p-- and p++
 // : p-- space space k-- space space .s space cr ;
@@ -195,7 +181,6 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     ": bksp! dup 8 - 0= if 199 kst ! then 80 tellme ;"
 
     ) WRITELN_FORTH(     ": escp! dup 27 - 0= if 227 kst ! then 84 tellme ;"
-
 
     ) WRITELN_FORTH(     ": sesc 95 67 83 69 95 83 84 73 95 89 69 72 12 emits ;"
 
