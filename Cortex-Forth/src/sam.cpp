@@ -141,7 +141,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_FORTH(       ": k-- swap 1 - sxk swap - "
 
     ) WRITE_FORTH(       "0< if "
-    ) WRITE_FORTH(           "swap 1 - bmk and 1 - bmk and 1 - bmk and swap "
+    ) WRITE_FORTH(           "swap sxt sxt sxt swap "
     ) WRITE_FORTH(       "then "
 
     ) WRITE_FORTH(       "drop dup "
