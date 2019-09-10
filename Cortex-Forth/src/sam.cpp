@@ -1,4 +1,9 @@
 // sam.cpp  wa1tnr
+// Tue Sep 10 13:52:18 UTC 2019
+// On branch non-usart--testing-a
+
+// Tue Sep 10 00:25:56 UTC 2019 0.2.0-alpha.2 non-usart--testing-a  shred: abn-737
+
 // Sun Sep  8 14:47:04 UTC 2019 0.2.0-alpha.1 non-usart-d-08_sep-aa-split-sam-a-  shred: abn-719"
 // Tue Sep  8 12:49:22 UTC 2019 0.2.0-alpha.1 non-usart-c-03_sep-aa-  shred: abn-715"
 // On branch non-usart-d-08_sep-aa-split-sam-a-
@@ -32,7 +37,7 @@ void sam_editor(void) {
     ) WRITELN_FORTH(     ": sve buff @ 4 + cr ;"
 
 
-    ) WRITELN_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;"
+    ) WRITELN_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;" )
 
 
 // review:  value address !
@@ -47,17 +52,17 @@ void sam_editor(void) {
 
 // immediate:
 
-    ) WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop "
+      WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop "
 
 // NAME CHANGE: sbc to kbi keyboard index
 // kbi is NOT maintained by k++ and k-- whatsoever.
 
-    ) WRITE_FORTH(     "variable kbi -1 kbi ! " // sam buffer counter
+    ) WRITE_FORTH(     "variable kbi -1 kbi ! " ) // sam buffer counter
 
 // key-stored:
-    ) WRITE_FORTH(     "variable kst 254 kst ! 1 drop "
+      WRITE_FORTH(     "variable kst 254 kst ! 1 drop "
 
-    ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" // increased from 16 to 128 bytes. ;)
+    ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" ) // increased from 16 to 128 bytes. ;)
 
 // bsz ( -- size )
 // bmk ( -- mask )
@@ -79,12 +84,15 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 */
   // ) WRITELN_FORTH(  " The_easiest_way_to_
-  ) WRITELN_FORTH(  ": wep 32 111 116 32 121 97 119 32 116 115 101 105 115 97 101 32 101 104 84 19 emits ;"
+    WRITELN_FORTH(  ": wep 32 111 116 32 121"
+  ) WRITELN_FORTH(  "      97 119 32 116 115"
+  ) WRITELN_FORTH(  "      101 105 115 97 101"
+  ) WRITELN_FORTH(  "      32 101 104 84 19     emits ;" )
 
  // print .s to the terminal
 
  // sbl word ( addr -- same_addr )  'say blist'
-    ) WRITELN_FORTH(     ": sbl dup blist drop ;"
+      WRITELN_FORTH(     ": sbl dup blist drop ;" )
 
  // ) WRITELN_FORTH(     ": tellme space space cr 8 0 do 43 emit loop space space 46 emit 115 emit space .s space space"
 
@@ -93,22 +101,29 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 #ifdef TELLME_LONG
  // improve tellme to ( n -- ) tell me using a specific char repeated:
-    ) WRITELN_FORTH(     ": tellme dup space space cr 8 0 do emit dup loop drop drop space space 46 emit 115 emit space .s space space"
+      WRITELN_FORTH(     ": tellme dup space space cr"
+    ) WRITELN_FORTH(     "  8 0 do emit dup loop"
+    ) WRITELN_FORTH(     "  drop drop space space"
+    ) WRITELN_FORTH(     "  46 emit 115 emit"
+    ) WRITELN_FORTH(     "  space .s space space"
 
 // write kst
-    ) WRITELN_FORTH(     "107 emit 115 emit 116 emit 58 emit space"
-    ) WRITELN_FORTH(     "kst @ h. space space space"
+    ) WRITELN_FORTH(     "  107 emit 115 emit 116 emit 58 emit space"
+    ) WRITELN_FORTH(     "  kst @ h. space space space"
 
 // write kbi
 
-    ) WRITELN_FORTH(     "107 emit 98 emit 105 emit 58 emit space"
-    ) WRITELN_FORTH(     "kbi @ h. space space space"
+    ) WRITELN_FORTH(     "  107 emit 98 emit 105 emit 58 emit space"
+    ) WRITELN_FORTH(     "  kbi @ h. space space space"
 // s" Stack_Depth:_  fs@ .s 95 58 104 116 112 101 68 95 107 99 97 116 83 13 
 
-    ) WRITELN_FORTH(     "58 104 116 112 101 68 20 107 99 97 116 83 12"
-    ) WRITELN_FORTH(     "emits space depth . cr ;"
+    ) WRITELN_FORTH(     "  58 104 116 112 101"
+    ) WRITELN_FORTH(     "  68 20 107 99 97"
+    ) WRITELN_FORTH(     "  116 83 12"
+    ) WRITELN_FORTH(     "  emits space"
+    ) WRITELN_FORTH(     "  depth . cr ;" )
 #else
-    ) WRITELN_FORTH(     ": tellme drop ;"
+      WRITELN_FORTH(     ": tellme drop ;" )
 #endif
 
 
@@ -129,8 +144,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // -- 
 
 // ###bookmark
+//  ) WRITELN_FORTH(     "
 
-    ) WRITELN_FORTH(     ": sxt 1 - bmk and ;"
+      WRITELN_FORTH(     ": sxt 1 - bmk and ;"
 
     ) WRITELN_FORTH(     ": sxo bmk and bmk 2 - ;"
     ) WRITELN_FORTH(     ": sxk sxo over over ;"
@@ -148,7 +164,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     ) WRITE_FORTH(       " 0= if 1 - sxo then"
 
-    ) WRITELN_FORTH(     " swap ;"
+    ) WRITELN_FORTH(     " swap ;" )
 
 // buffer increment
 // ( count addr -- count+1 addr )
@@ -157,31 +173,31 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // it also skips forbidden locations 0, 126 and 127.
 
 // sxc ( a -- b )
-    ) WRITELN_FORTH(     ": sxc 1 + bmk and ;"
+      WRITELN_FORTH(     ": sxc 1 + bmk and ;"
 
 // sxd ( a -- b )
     ) WRITELN_FORTH(     ": sxd 3 0 do sxc loop ;"
 
 // sxe ( n -- )
-    ) WRITELN_FORTH(     ": sxe 0< if swap sxd swap then ;"
+    ) WRITELN_FORTH(     ": sxe 0< if swap sxd swap then ;" )
 
 // sxg ( n -- )
 //  ) WRITELN_FORTH(     ": sxg 0= if k-- k-- then ;"
 // k-- ( count addr -- count-1 addr)
 //  ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
 
-    ) WRITELN_FORTH(       ": sxh       0= if"
+      WRITELN_FORTH(       ": sxh       0= if"
     ) WRITELN_FORTH(       "                k-- k--"
     ) WRITELN_FORTH(       "            then"
-  ) WRITELN_FORTH(       "            sxf sxe ;"
+    ) WRITELN_FORTH(       "            sxf sxe ;"
 
-    ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;"
+    ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;" )
 
 // ###bookmark 10 SEP
 
 // wrappers p-- and p++
 // : p-- space space k-- space space .s space cr ;
-    ) WRITELN_FORTH(     ": p-- space space k-- space space .s space cr ;"
+      WRITELN_FORTH(     ": p-- space space k-- space space .s space cr ;"
 
 // : p++ space space k++ space space .s space cr ;
     ) WRITELN_FORTH(     ": p++ space space k++ space space .s space cr ;"
