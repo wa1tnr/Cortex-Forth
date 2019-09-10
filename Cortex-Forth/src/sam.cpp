@@ -278,21 +278,26 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
     ) WRITELN_FORTH(     ": hcp drop drop swap 1 - swap ;"
 
+    ) WRITE_VERT_WSPACE(  "  "
+
 // hco handle control o (<32 is any control key so using 31 here)
 //  ) WRITELN_FORTH(     "    " )
     ) WRITELN_FORTH(       ": hco kst @ 31 -"
-    ) WRITE_FORTH(       "  0= if "
-    ) WRITE_FORTH(       "      kbi @ 1 - kbi ! "
-    ) WRITE_FORTH(       "      hcp sbl "
+    ) WRITELN_FORTH(       "  0= if "
+    ) WRITELN_FORTH(       "      kbi @ 1 - kbi ! "
+    ) WRITELN_FORTH(       "      hcp sbl "
     ) WRITELN_FORTH(     "  then ;"
 
+    ) WRITE_VERT_WSPACE(  "  "
+
 // hbk handle backspace
-    ) WRITE_FORTH(     ": hbk kst @ "
+    ) WRITELN_FORTH(     ": hbk kst @ "
     ) WRITELN_FORTH(     "199 - 0= if 1 drop then ;"
 
 // re-initialization protection:
 //  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": sxp"
     ) WRITELN_FORTH(     "  kbi @ 1 + kbi !" // increment counter
 
@@ -429,9 +434,12 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 //  ) WRITELN_FORTH(     "k++ over over + 1 drop again ;"
 
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     "  \\ comments need two leading spaces"
     ) WRITELN_FORTH(     ": hix drop ; \\ I have commented my code also works"
     ) WRITELN_FORTH(     ": sxb begin sxp again ;"
+    ) WRITE_VERT_WSPACE(  "  "
+    ) WRITELN_FORTH(     "  \\ The sam text editor"
     ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;" )
 #ifdef OMIT_SOME_SOURCE
 #endif
