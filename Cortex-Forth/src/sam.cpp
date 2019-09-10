@@ -138,17 +138,17 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // sxF ( n1 n2 -- n2 a b c )
     ) WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
 
-    ) WRITE_FORTH(       ": k-- swap 1 - sxk swap - "
+    ) WRITE_FORTH(       ": k-- swap 1 - sxk swap -"
 
-    ) WRITE_FORTH(       "0< if "
-    ) WRITE_FORTH(           "swap sxt sxt sxt swap "
-    ) WRITE_FORTH(       "then "
+    ) WRITE_FORTH(       " 0< if"
+    ) WRITE_FORTH(           " swap sxt sxt sxt swap"
+    ) WRITE_FORTH(       " then"
 
-    ) WRITE_FORTH(       "drop dup "
+    ) WRITE_FORTH(       " drop dup"
 
-    ) WRITE_FORTH(       "0= if 1 - sxo then "
+    ) WRITE_FORTH(       " 0= if 1 - sxo then"
 
-    ) WRITELN_FORTH(     "swap ;"
+    ) WRITELN_FORTH(     " swap ;"
 
 // buffer increment
 // ( count addr -- count+1 addr )
@@ -170,12 +170,14 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // k-- ( count addr -- count-1 addr)
 //  ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
 
-    ) WRITELN_FORTH(       ": sxh       0= if "
-    ) WRITELN_FORTH(       "                k-- k-- "
-    ) WRITELN_FORTH(       "            then "
+    ) WRITELN_FORTH(       ": sxh       0= if"
+    ) WRITELN_FORTH(       "                k-- k--"
+    ) WRITELN_FORTH(       "            then"
   ) WRITELN_FORTH(       "            sxf sxe ;"
 
     ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;"
+
+// ###bookmark 10 SEP
 
 // wrappers p-- and p++
 // : p-- space space k-- space space .s space cr ;
