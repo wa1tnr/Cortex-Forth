@@ -170,9 +170,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // k-- ( count addr -- count-1 addr)
 //  ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
 
-    ) WRITE_FORTH(       ": sxh       0= if "
-    ) WRITE_FORTH(       "                k-- k-- "
-    ) WRITE_FORTH(       "            then "
+    ) WRITELN_FORTH(       ": sxh       0= if "
+    ) WRITELN_FORTH(       "                k-- k-- "
+    ) WRITELN_FORTH(       "            then "
   ) WRITELN_FORTH(       "            sxf sxe ;"
 
     ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;"
