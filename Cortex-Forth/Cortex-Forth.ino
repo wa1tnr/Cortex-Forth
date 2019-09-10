@@ -469,6 +469,26 @@ void _PARSE (void) {
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
 // (08 SEP 2019: that has been corrected - with possible bugs not yet found.
 
+char ti;
+
+void screen_for_comments(void) {
+  if (thisFile.available() > 0) {
+    ti = thisFile.read();
+
+    if (ti == 92) {
+      Serial.println("\r\n GOT YER COMMENT hyah \r\n");
+      do {
+
+        if (thisFile.available() > 0) {
+          ti = thisFile.read();
+        }
+
+      } while (ti != 0x0d);
+    }
+
+  }
+}
+
 #define FLEN_MAX 1
 void _FLPARSE (void) {
   char t;
@@ -478,14 +498,16 @@ void _FLPARSE (void) {
     while (thisFile.available() > 1 ) { // FLEN_MAX) {
 
       do {
-        t = thisFile.read();
+        screen_for_comments(); t = ti;
+        // t = thisFile.read();
         char peeked_char = t;
 
 
       do {
         if (peeked_char == 0x20) {
             if (thisFile.available() > 0 ) {
-                t = thisFile.read();
+                screen_for_comments(); t = ti;
+                // t = thisFile.read();
                 peeked_char = t; // update
             }
         }
@@ -500,7 +522,8 @@ void _FLPARSE (void) {
       do {
         if (peeked_char == 0x5c) {
             if (thisFile.available() > 0 ) {
-              t = thisFile.read();
+              screen_for_comments(); t = ti;
+              // t = thisFile.read();
               peeked_char = t; // update
             }
         }
@@ -520,7 +543,8 @@ void _FLPARSE (void) {
             Serial.print(" INTRUSIVE 0x0d SEEN    ");
 #endif
             if (thisFile.available() > 0 ) {
-              t = thisFile.read();
+              screen_for_comments(); t = ti;
+              // t = thisFile.read();
               peeked_char = t; // update
 #ifdef DEBUG_FLP_TIB
               Serial.print(" RESOLVED locally.      ");
@@ -540,7 +564,8 @@ void _FLPARSE (void) {
             Serial.print(" INTRUSIVE 0x0a SEEN    ");
 #endif
             if (thisFile.available() > 0 ) {
-              t = thisFile.read();
+              screen_for_comments(); t = ti;
+              // t = thisFile.read();
               peeked_char = t; // update
 #ifdef DEBUG_FLP_TIB
               Serial.print(" RESOLVED locally.      ");
@@ -562,13 +587,15 @@ void _FLPARSE (void) {
         tib = peeked_char;
         if (t == ' ') {
           tib = ""; // unpeek tib
-          t = thisFile.read();
+          screen_for_comments(); t = ti;
+          // t = thisFile.read();
         }
       } while (t == ' ');
 
 
       do {
-        t = thisFile.read();
+        screen_for_comments(); t = ti;
+        // t = thisFile.read();
 
 
         if (tib[0] == '\r') {
@@ -694,7 +721,8 @@ void _FLPARSE (void) {
           SERIAL_LOCAL_C.println(" was closed - Cortex-Forth.ino LINE 617 - route A");
         }
         if (thisFile.available() == 1) {
-          t = thisFile.read();
+          screen_for_comments(); t = ti;
+          // t = thisFile.read();
           if (thisFile.available() == 0) {
             thisFile.close();
             SERIAL_LOCAL_C.print("\r");
