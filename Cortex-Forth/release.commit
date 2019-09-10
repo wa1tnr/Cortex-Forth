@@ -1,0 +1,35 @@
+commit 5feb37a854b7f3bc4eb8e3887923beb0be0ac9ce
+Author: wa1tnr <wa1tnr@users.noreply.github.com>
+Date:   Tue Sep 10 21:43:43 2019 +0000
+
+    Release: 0.2.0-alpha.3 non-usart--testing-a  shred: abn-739
+    
+    Tue Sep 10 20:59:28 UTC 2019
+    
+    On branch non-usart--testing-a
+    
+    Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a  shred: abn-739
+    
+    commit 203a71b4a8b8cfa914d9b68255ce364b9fb193e2
+    Author: wa1tnr
+    Date:   Tue Sep 10 21:10:57 2019 +0000
+    
+        version bump - printing
+    
+     myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 10 SEP 2019 20:59z
+          Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a
+          +0.2.0-a.2  +comments +sam +autoload +squote +fdir_planned
+          +0.2.0-a.2  ++rlist +cc +blist +mkdir +write_File
+          +0.2.0-a.2  +fload                               shred: abn-739
+          words: sam fload wlist warm - do NOT use fload without disabling autoload
+          TEF MEK Hn-t
+    
+    This release is interim.  Has further factoring of the Forth sources.
+    
+    Support for \ comments is now available.  Better support
+    for ubiquitous line endings (use 0x0d 0x0a to end all
+    source code lines).
+    
+            modified:   READY.FOR.RELEASE
+    
+    On branch develop
