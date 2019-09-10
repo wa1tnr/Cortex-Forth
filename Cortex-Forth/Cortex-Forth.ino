@@ -476,7 +476,9 @@ void screen_for_comments(void) {
     ti = thisFile.read();
 
     if (ti == 92) {
+#ifdef DEBUG_COMMENTS_NTWO
       Serial.println("\r\n GOT YER COMMENT hyah \r\n");
+#endif
       do {
 
         if (thisFile.available() > 0) {
