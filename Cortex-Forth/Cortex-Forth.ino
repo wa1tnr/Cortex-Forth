@@ -493,6 +493,27 @@ void _FLPARSE (void) {
 
 
 
+
+// ###bookmark
+
+
+      do {
+        if (peeked_char == 0x5c) {
+            if (thisFile.available() > 0 ) {
+              t = thisFile.read();
+              peeked_char = t; // update
+            }
+        }
+      } while (peeked_char == 0x5c);
+
+
+
+
+
+
+
+
+
       do {
         if (peeked_char == 0x0d) {
 #ifdef DEBUG_FLP_TIB
@@ -507,6 +528,9 @@ void _FLPARSE (void) {
             }
         }
       } while (peeked_char == 0x0d);
+
+
+
 
 
 
