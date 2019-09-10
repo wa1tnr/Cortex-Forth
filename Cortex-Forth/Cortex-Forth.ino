@@ -7,6 +7,13 @@
 
 // Edits: the parser seems to tolerate leading spaces in more situations, than in recent work.
 
+// parser debugging flags:
+#define DEBUG_FLP_TIB
+#undef DEBUG_FLP_TIB
+
+#define DEBUG_FLP_TIB_SEMICOLON
+#undef DEBUG_FLP_TIB_SEMICOLON
+
 // swap these two lines, as required:
 #undef AUTOLOAD
 #define AUTOLOAD
@@ -462,12 +469,6 @@ void _PARSE (void) {
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
 // (08 SEP 2019: that has been corrected - with possible bugs not yet found.
 
-#define DEBUG_FLP_TIB
-#undef DEBUG_FLP_TIB
-
-#define DEBUG_FLP_TIB_SEMICOLON
-#undef DEBUG_FLP_TIB_SEMICOLON
-
 #define FLEN_MAX 1
 void _FLPARSE (void) {
   char t;
@@ -584,7 +585,26 @@ void _FLPARSE (void) {
 #ifdef DEBUG_FLP_TIB
       Serial.print(" okay so tib is now: "); Serial.print(tib);
       Serial.print("   tib.length is: "); Serial.println((tib.length () -1));
+      if (tib[(tib.length () - 1)] == ' ') Serial.println("HEY HEY HEY HEY HEY HEY HEY HEY");
 #endif
+
+//    if (tib[(tib.length () - 1)] != ' ') Serial.println("OUCH OUCH OUCH OUCH OUCH OUCH\r\n\r\nOUCH OUCH OUCH OUCH");
+
+
+/* kludge */
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      if (tib[(tib.length () - 1)] != ' ') {
+          tib = tib + ' ';
+#ifdef DEBUG_FLP_TIB
+          Serial.print("  kfc "); // nonsense tag
+#endif
+      }
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/* kludge */
+
+
       if (
           (tib.length () == 1) &&
           (tib[0] == ';')
