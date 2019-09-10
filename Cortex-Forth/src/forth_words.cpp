@@ -179,7 +179,14 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     "  loop drop ;"
 
 // alist ( addr -- )
-    ) WRITELN_FORTH(     ": alist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup c@ >prn 100 delay then loop drop ;"
+    ) WRITELN_FORTH(     ": alist"
+    ) WRITELN_FORTH(     "  space space 16 + dup 16 - over over"
+    ) WRITELN_FORTH(     "  do"
+    ) WRITELN_FORTH(     "      1 + over over swap - 1 -"
+    ) WRITELN_FORTH(     "      0< if"
+    ) WRITELN_FORTH(     "          dup c@ >prn 100 delay"
+    ) WRITELN_FORTH(     "      then"
+    ) WRITELN_FORTH(     "  loop drop ;"
 
 // bottom ( -- addr )
     ) WRITELN_FORTH(     ": bottom 536870912 ;"
@@ -187,8 +194,19 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     ": topbottom bottom 16384 + 1024 - 1024 + 16 - ;"
 
 // blist ( addr -- )
-    ) WRITELN_FORTH(     ": blist cr -999 swap 196604 1148 - min 0 max dup 1 - 8 0 do dup hlist 16 - alist cr swap drop loop 1 + swap drop cr ;"
+    ) WRITELN_FORTH(     ": blist"
+    ) WRITELN_FORTH(     "  cr -999 swap"
+    ) WRITELN_FORTH(     "  196604 1148 - min 0 max"
+    ) WRITELN_FORTH(     "  dup 1 - 8 0"
+    ) WRITELN_FORTH(     "  do"
+    ) WRITELN_FORTH(     "      dup hlist 16 - alist cr"
+    ) WRITELN_FORTH(     "      swap drop"
+    ) WRITELN_FORTH(     "  loop"
+    ) WRITELN_FORTH(     "  1 +"
+    ) WRITELN_FORTH(     "  swap drop cr ;"
 
+//  ) WRITELN_FORTH(     "
+//
 // rlist ( addr -- addr + report_size )
     ) WRITELN_FORTH(     ": rlist cr -999 swap bottom 195552 + min 0 max dup 1 - 8 0 do dup rhlist 16 - ralist cr swap drop loop 1 + swap drop cr ;"
 
