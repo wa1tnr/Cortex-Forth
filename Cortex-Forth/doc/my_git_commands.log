@@ -1,0 +1,17 @@
+
+Tue Sep 10 21:16:25 UTC 2019
+
+alpha.2 is already out.  Want alpha.3 for this round.
+
+  git checkout -b release/0.2.0-alpha.3 origin/develop
+
+  git push origin release/0.2.0-alpha.3
+
+  git merge release/0.2.0-alpha.3
+
+  git tag -a 0.2.0-alpha.3 -m 'Create release tag 0.2.0-alpha.3'
+
+  git branch -D release/0.2.0-alpha.3
+
+  git push origin :release/0.2.0-alpha.3
+
