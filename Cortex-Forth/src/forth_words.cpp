@@ -83,8 +83,10 @@ void forth_words(void) {
 
 //    WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;"
 
+      WRITE_VERT_WPACE( "  "
+
 // >prn ( n -- )
-      WRITELN_FORTH(     ": >prn 32 over over - "
+    ) WRITELN_FORTH(     ": >prn 32 over over - "
     ) WRITELN_FORTH(     "  0< if "
     ) WRITELN_FORTH(     "      46 emit drop drop exit "
     ) WRITELN_FORTH(     "  then "
@@ -124,7 +126,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 // rhlist ( addr -- )
-      WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over "
+      WRITE_VERT_WPACE( "  "
+
+    ) WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over "
     ) WRITELN_FORTH(     "  do "
     ) WRITELN_FORTH(     "      1 + over over swap - 1 - "
     ) WRITELN_FORTH(     "      0< if "
