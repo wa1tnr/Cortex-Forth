@@ -471,11 +471,11 @@ void _PARSE (void) {
 // This Forth does NOT like println() to the file; it wants 'print("foo \r");
 // (08 SEP 2019: that has been corrected - with possible bugs not yet found.
 
-#undef DEBUG_FLP_TIB
 #define DEBUG_FLP_TIB
+#undef DEBUG_FLP_TIB
 
-#undef DEBUG_FLP_TIB_SEMICOLON
 #define DEBUG_FLP_TIB_SEMICOLON
+#undef DEBUG_FLP_TIB_SEMICOLON
 
 #define FLEN_MAX 1
 void _FLPARSE (void) {
