@@ -25,13 +25,18 @@ void sam_editor(void) {
 // bottom topbottom blist rlist emits
 
 // immediate:
-        WRITE_FORTH(     "2048 allot " // 18k address space 03 SEP 2019
-    )   WRITE_FORTH(     "variable bend variable buff here buff ! "
-    )   WRITE_FORTH(     "variable bend variable buff here buff ! "
-    )   WRITE_FORTH(     "2048 allot here bend ! 1 drop "
+      WRITE_VERT_WSPACE(  "  "
+    ) WRITE_VERT_WSPACE(  "  "
+    )   WRITELN_FORTH(     "2048 allot " // 18k address space 03 SEP 2019
+    )   WRITELN_FORTH(     "variable bend variable buff here buff ! "
+    )   WRITELN_FORTH(     "variable bend variable buff here buff ! "
+    )   WRITELN_FORTH(     "2048 allot here bend ! 1 drop "
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": svd buff @ 2701 + blist ;"  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
     ) WRITELN_FORTH(     ": sve buff @ 4 + cr ;"
-    ) WRITELN_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;" )
+    ) WRITE_VERT_WSPACE(  "  "
+    ) WRITELN_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;"
+    ) WRITE_VERT_WSPACE(  "  " )
 
 // review:  value address !
 
@@ -45,16 +50,17 @@ void sam_editor(void) {
 
 // immediate:
 
-        WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop "
+        WRITELN_FORTH(     "variable sfi 0 sfi ! 1 drop "
 
 // NAME CHANGE: sbc to kbi keyboard index
 // kbi is NOT maintained by k++ and k-- whatsoever.
 
-      ) WRITE_FORTH(     "variable kbi -1 kbi ! " ) // sam buffer counter
+      ) WRITELN_FORTH(     "variable kbi -1 kbi ! " ) // sam buffer counter
 
 // key-stored:
-        WRITE_FORTH(     "variable kst 254 kst ! 1 drop "
+        WRITELN_FORTH(     "variable kst 254 kst ! 1 drop "
 
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" ) // increased from 16 to 128 bytes. ;)
 
 // bsz ( -- size )
@@ -81,6 +87,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(  "      97 119 32 116 115"
     ) WRITELN_FORTH(  "      101 105 115 97 101"
     ) WRITELN_FORTH(  "      32 101 104 84 19     emits ;" )
+
+      WRITE_VERT_WSPACE(  "  " )
 
  // print .s to the terminal
 
@@ -146,6 +154,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // sxF ( n1 n2 -- n2 a b c )
     ) WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
 
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": k-- swap 1 - sxk swap -"
     ) WRITELN_FORTH(     "  0< if"
     ) WRITELN_FORTH(     "      swap sxt sxt sxt swap"
@@ -162,8 +171,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // k++ basically increments 1 under TOS by one, in a modulo 128 counting arrangement.
 // it also skips forbidden locations 0, 126 and 127.
 
+      WRITE_VERT_WSPACE(  "  "
 // sxc ( a -- b )
-      WRITELN_FORTH(     ": sxc 1 + bmk and ;"
+    ) WRITELN_FORTH(     ": sxc 1 + bmk and ;"
 
 // sxd ( a -- b )
     ) WRITELN_FORTH(     ": sxd 3 0 do sxc loop ;"
@@ -176,12 +186,15 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // k-- ( count addr -- count-1 addr)
 //  ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
 
+      WRITE_VERT_WSPACE(  "  " )
 
       WRITELN_FORTH(     ": sxh"
     ) WRITELN_FORTH(     "  0= if"
     ) WRITELN_FORTH(     "      k-- k--"
     ) WRITELN_FORTH(     "  then"
     ) WRITELN_FORTH(     "  sxf sxe ;"
+
+    ) WRITE_VERT_WSPACE(  "  "
 
     ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;" )
 
