@@ -11,3 +11,5 @@
 extern File thisFile;
 #define WRITE_FORTH(a) {thisFile.print((a));}
 #define WRITELN_FORTH(a) {thisFile.println((a));}
+
+#define WRITE_VERT_WPACE(a) {thisFile.println((a));}
