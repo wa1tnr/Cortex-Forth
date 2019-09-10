@@ -25,20 +25,13 @@ void sam_editor(void) {
 // bottom topbottom blist rlist emits
 
 // immediate:
-      WRITE_FORTH(     "2048 allot " // 18k address space 03 SEP 2019
-    ) WRITE_FORTH(     "variable bend variable buff here buff ! "
-
-
-    ) WRITE_FORTH(     "variable bend variable buff here buff ! "
-    ) WRITE_FORTH(     "2048 allot here bend ! 1 drop "
-
+        WRITE_FORTH(     "2048 allot " // 18k address space 03 SEP 2019
+    )   WRITE_FORTH(     "variable bend variable buff here buff ! "
+    )   WRITE_FORTH(     "variable bend variable buff here buff ! "
+    )   WRITE_FORTH(     "2048 allot here bend ! 1 drop "
     ) WRITELN_FORTH(     ": svd buff @ 2701 + blist ;"  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
-
     ) WRITELN_FORTH(     ": sve buff @ 4 + cr ;"
-
-
     ) WRITELN_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;" )
-
 
 // review:  value address !
 
@@ -52,15 +45,15 @@ void sam_editor(void) {
 
 // immediate:
 
-      WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop "
+        WRITE_FORTH(     "variable sfi 0 sfi ! 1 drop "
 
 // NAME CHANGE: sbc to kbi keyboard index
 // kbi is NOT maintained by k++ and k-- whatsoever.
 
-    ) WRITE_FORTH(     "variable kbi -1 kbi ! " ) // sam buffer counter
+      ) WRITE_FORTH(     "variable kbi -1 kbi ! " ) // sam buffer counter
 
 // key-stored:
-      WRITE_FORTH(     "variable kst 254 kst ! 1 drop "
+        WRITE_FORTH(     "variable kst 254 kst ! 1 drop "
 
     ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" ) // increased from 16 to 128 bytes. ;)
 
@@ -83,11 +76,11 @@ drop .s empty s" create_these_long_tesxt_  .s 5667 fs@ .s 95 116 120 115 101 116
 s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 14
 
 */
-  // ) WRITELN_FORTH(  " The_easiest_way_to_
-    WRITELN_FORTH(  ": wep 32 111 116 32 121"
-  ) WRITELN_FORTH(  "      97 119 32 116 115"
-  ) WRITELN_FORTH(  "      101 105 115 97 101"
-  ) WRITELN_FORTH(  "      32 101 104 84 19     emits ;" )
+//  ) WRITELN_FORTH(  " The_easiest_way_to_
+      WRITELN_FORTH(  ": wep 32 111 116 32 121"
+    ) WRITELN_FORTH(  "      97 119 32 116 115"
+    ) WRITELN_FORTH(  "      101 105 115 97 101"
+    ) WRITELN_FORTH(  "      32 101 104 84 19     emits ;" )
 
  // print .s to the terminal
 
@@ -147,24 +140,21 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 //  ) WRITELN_FORTH(     "
 
       WRITELN_FORTH(     ": sxt 1 - bmk and ; \\ ( n -- masked )"
-
     ) WRITELN_FORTH(     ": sxo bmk and bmk 2 - ;"
     ) WRITELN_FORTH(     ": sxk sxo over over ;"
 
 // sxF ( n1 n2 -- n2 a b c )
     ) WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
 
-    ) WRITE_FORTH(       ": k-- swap 1 - sxk swap -"
-
-    ) WRITE_FORTH(       " 0< if"
-    ) WRITE_FORTH(           " swap sxt sxt sxt swap"
-    ) WRITE_FORTH(       " then"
-
-    ) WRITE_FORTH(       " drop dup"
-
-    ) WRITE_FORTH(       " 0= if 1 - sxo then"
-
-    ) WRITELN_FORTH(     " swap ;" )
+    ) WRITELN_FORTH(     ": k-- swap 1 - sxk swap -"
+    ) WRITELN_FORTH(     "  0< if"
+    ) WRITELN_FORTH(     "      swap sxt sxt sxt swap"
+    ) WRITELN_FORTH(     "  then"
+    ) WRITELN_FORTH(     "  drop dup"
+    ) WRITELN_FORTH(     "  0= if"
+    ) WRITELN_FORTH(     "      1 - sxo"
+    ) WRITELN_FORTH(     "  then"
+    ) WRITELN_FORTH(     "  swap ;" )
 
 // buffer increment
 // ( count addr -- count+1 addr )
@@ -186,10 +176,12 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // k-- ( count addr -- count-1 addr)
 //  ) WRITELN_FORTH(     ": sxh sxg sxf sxe ;"
 
-      WRITELN_FORTH(       ": sxh       0= if"
-    ) WRITELN_FORTH(       "                k-- k--"
-    ) WRITELN_FORTH(       "            then"
-    ) WRITELN_FORTH(       "            sxf sxe ;"
+
+      WRITELN_FORTH(     ": sxh"
+    ) WRITELN_FORTH(     "  0= if"
+    ) WRITELN_FORTH(     "      k-- k--"
+    ) WRITELN_FORTH(     "  then"
+    ) WRITELN_FORTH(     "  sxf sxe ;"
 
     ) WRITELN_FORTH(     ": k++ kst @ 199 - sxh drop swap ;" )
 
@@ -203,7 +195,12 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     ": p++ space space k++ space space .s space cr ;"
 
 // message: here
-    ) WRITELN_FORTH(     ": mhe 72 emit 101 emit 114 emit 101 emit 58 emit space ;"
+    ) WRITELN_FORTH(     ": mhe"
+    ) WRITELN_FORTH(     "   72 emit"
+    ) WRITELN_FORTH(     "  101 emit"
+    ) WRITELN_FORTH(     "  114 emit"
+    ) WRITELN_FORTH(     "  101 emit"
+    ) WRITELN_FORTH(     "   58 emit space ;"
 // mhe ( -- )
     ) WRITELN_FORTH(     ": bfc 0 ;" // any positive int < (bsz - 2) .. or zero
 
@@ -229,42 +226,48 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 // ctrl! ( n -- n ) // store any control char as ascii 31, into kst
 // wanted: ascii 15 (Control O)
-    ) WRITE_FORTH(     ": ctrl! dup 31 - "
-    ) WRITE_FORTH(     "  0< if "
-    ) WRITE_FORTH(     "      31 kst ! "
-    ) WRITE_FORTH(     "  then "
-    ) WRITELN_FORTH(   "  67 tellme ;"
+    ) WRITELN_FORTH(     ": ctrl!"
+    ) WRITELN_FORTH(     "  dup 31 -"
+    ) WRITELN_FORTH(     "  0< if"
+    ) WRITELN_FORTH(     "      31 kst !"
+    ) WRITELN_FORTH(     "  then"
+    ) WRITELN_FORTH(     "  67 tellme ;"
 
 // 29 -- 29 29 -- 29 29 31 -- 29 -2 -- 29 BOOL 
 
 // bksp! ( n -- n ) // store CTRL H (ASCII 0x08) as ascii 199, into kst
-    ) WRITE_FORTH(     ": bksp! "
-    ) WRITE_FORTH(     "  dup 8 - 0= if "
-    ) WRITE_FORTH(     "      199 kst ! "
-    ) WRITE_FORTH(     "  then "
-    ) WRITELN_FORTH(   "  80 tellme ;"
+    ) WRITELN_FORTH(     ": bksp!"
+    ) WRITELN_FORTH(     "  dup 8 -"
+    ) WRITELN_FORTH(     "  0= if"
+    ) WRITELN_FORTH(     "      199 kst !"
+    ) WRITELN_FORTH(     "  then"
+    ) WRITELN_FORTH(     "  80 tellme ;"
 
-    ) WRITE_FORTH(     ": escp! dup 27 - 0= if "
-    ) WRITE_FORTH(     "      227 kst ! "
-    ) WRITE_FORTH(     "  then "
-    ) WRITELN_FORTH(   "  84 tellme ;"
 
-    ) WRITE_FORTH(       ": sesc "
-    ) WRITE_FORTH(       "      95 67 83 69 95 "
-    ) WRITE_FORTH(       "      83 84 73 95 89 "
-    ) WRITE_FORTH(       "      69 72 12 "
+    ) WRITELN_FORTH(     ": escp!"
+    ) WRITELN_FORTH(     "  dup 27 -"
+    ) WRITELN_FORTH(     "  0= if"
+    ) WRITELN_FORTH(     "      227 kst !"
+    ) WRITELN_FORTH(     "  then"
+    ) WRITELN_FORTH(     "  84 tellme ;"
+
+    ) WRITELN_FORTH(     ": sesc"
+    ) WRITELN_FORTH(     "  95 67 83 69 95"
+    ) WRITELN_FORTH(     "  83 84 73 95 89"
+    ) WRITELN_FORTH(     "  69 72 12"
     ) WRITELN_FORTH(     "  emits ;"
 
 // hes handle ESC ascii 27
-    ) WRITE_FORTH(       ": hes kst @ 227 - "
-    ) WRITE_FORTH(       "  0= if "
-    ) WRITE_FORTH(       "      sesc drop quit "
+    ) WRITELN_FORTH(     ": hes kst @ 227 -"
+    ) WRITELN_FORTH(     "  0= if"
+    ) WRITELN_FORTH(     "      sesc drop quit"
     ) WRITELN_FORTH(     "  then ;"
 
     ) WRITELN_FORTH(     ": hcp drop drop swap 1 - swap ;"
 
 // hco handle control o (<32 is any control key so using 31 here)
-    ) WRITE_FORTH(       ": hco kst @ 31 - "
+//  ) WRITELN_FORTH(     "    " )
+    ) WRITELN_FORTH(       ": hco kst @ 31 -"
     ) WRITE_FORTH(       "  0= if "
     ) WRITE_FORTH(       "      kbi @ 1 - kbi ! "
     ) WRITE_FORTH(       "      hcp sbl "
@@ -416,9 +419,31 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     "  \\ comments need two leading spaces"
     ) WRITELN_FORTH(     ": hix drop ; \\ I have commented my code also works"
     ) WRITELN_FORTH(     ": sxb begin sxp again ;"
-    ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;"
+    ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;" )
 #ifdef OMIT_SOME_SOURCE
 #endif
+
+#define OMITTED_CODE_BB
+#undef OMITTED_CODE_BB
+      WRITE_VERT_WPACE(  "  "
+    ) WRITELN_FORTH(     "  \\ Consider this short program:"
+    ) WRITE_VERT_WPACE(  "  "
+    ) WRITELN_FORTH(     ": abca 10 ;"
+    ) WRITELN_FORTH(     ": abcb 20 ;"
+    ) WRITELN_FORTH(     ": abcc 30 ;"
+    ) WRITELN_FORTH(     ": bcd abca . abcb . abcc . abcx . ;"
+    ) WRITE_VERT_WPACE(  "  "
+    ) WRITELN_FORTH(     "  \\ when run, bcd gives:"
+    ) WRITE_VERT_WPACE(  "  "
+    ) WRITELN_FORTH(     "  \\     bcd 30 30 30 30 Ok"
+    ) WRITE_VERT_WPACE(  "  "
+    ) WRITELN_FORTH(     "  \\ If a file has comments at the bottom,"
+    ) WRITELN_FORTH(     "  \\ include a valid colon definition"
+    ) WRITELN_FORTH(     "  \\ below the last of the comments:"
+    ) WRITE_VERT_WPACE(  "  "
+    ) WRITELN_FORTH(     ": guard 1 drop ;"
+#ifdef OMITTED_CODE_BB
+#endif // OMITTED_CODE
     )
 }
 
