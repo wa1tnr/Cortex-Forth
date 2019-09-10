@@ -425,22 +425,22 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 #define OMITTED_CODE_BB
 #undef OMITTED_CODE_BB
-      WRITE_VERT_WPACE(  "  "
+      WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     "  \\ Consider this short program:"
-    ) WRITE_VERT_WPACE(  "  "
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": abca 10 ;"
     ) WRITELN_FORTH(     ": abcb 20 ;"
     ) WRITELN_FORTH(     ": abcc 30 ;"
     ) WRITELN_FORTH(     ": bcd abca . abcb . abcc . abcx . ;"
-    ) WRITE_VERT_WPACE(  "  "
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     "  \\ when run, bcd gives:"
-    ) WRITE_VERT_WPACE(  "  "
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     "  \\     bcd 30 30 30 30 Ok"
-    ) WRITE_VERT_WPACE(  "  "
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     "  \\ If a file has comments at the bottom,"
     ) WRITELN_FORTH(     "  \\ include a valid colon definition"
     ) WRITELN_FORTH(     "  \\ below the last of the comments:"
-    ) WRITE_VERT_WPACE(  "  "
+    ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": guard 1 drop ;"
 #ifdef OMITTED_CODE_BB
 #endif // OMITTED_CODE

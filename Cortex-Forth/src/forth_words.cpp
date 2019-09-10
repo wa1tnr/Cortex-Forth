@@ -83,7 +83,7 @@ void forth_words(void) {
 
 //    WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;"
 
-      WRITE_VERT_WPACE( "  "
+      WRITE_VERT_WSPACE( "  "
 
 // >prn ( n -- )
     ) WRITELN_FORTH(     ": >prn 32 over over - "
@@ -126,7 +126,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 // rhlist ( addr -- )
-      WRITE_VERT_WPACE( "  "
+      WRITE_VERT_WSPACE( "  "
 
     ) WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over "
     ) WRITELN_FORTH(     "  do "
@@ -147,9 +147,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // new kludge - two spaces in a WRITELN_FORTH() to get some vertical whitespace
 
-    ) WRITE_VERT_WPACE( "  "
-    ) WRITE_VERT_WPACE( "  "
-    ) WRITE_VERT_WPACE( "  "
+    ) WRITE_VERT_WSPACE( "  "
+    ) WRITE_VERT_WSPACE( "  "
+    ) WRITE_VERT_WSPACE( "  "
 
 //  ) WRITELN_FORTH(     "  "
 
@@ -164,7 +164,7 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // hlist ( addr -- )
 //  ) WRITELN_FORTH(     "  "
-      WRITE_VERT_WPACE(  "  "
+      WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": hlist"
     ) WRITELN_FORTH(     "  hadr 16 + dup 16 - over over"
     ) WRITELN_FORTH(     "  do"
