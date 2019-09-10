@@ -259,9 +259,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // re-initialization protection:
 //  ) WRITELN_FORTH(     ": sam sfi @ if 1 drop exit then lxa"
 
-    ) WRITE_FORTH(     ": sxp "
-
-    ) WRITE_FORTH(     "kbi @ 1 + kbi ! " // increment counter
+    ) WRITELN_FORTH(     ": sxp "
+    ) WRITELN_FORTH(     "  kbi @ 1 + kbi ! " // increment counter
 
 // with each iteration through the begin ..
 //  value address !
@@ -271,8 +270,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     // 254 stored in kst to indicate reset
     // 199 stored to indicate backspace key was pressed
 
-    ) WRITE_FORTH(     "254 kst ! 1 drop " // reset kst
-    ) WRITE_FORTH(     "key " // ONLY keystroke gained
+    ) WRITELN_FORTH(     "  254 kst ! 1 drop " // reset kst
+    ) WRITELN_FORTH(     "  key " // ONLY keystroke gained
 
 // "right: 114 105 103 104 116 5"
 //  ) WRITELN_FORTH(     "114 emit 105 emit 103 emit 104 emit 116 emit space"
@@ -281,12 +280,12 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 //  ) WRITELN_FORTH(     "97 emit 102 emit 116 emit 101 emit 114 emit space cr"
 
 
-    ) WRITE_FORTH(     "ctrl! bksp! " // reversing these masks a backspace into just a generic control keyset press ;)
+    ) WRITELN_FORTH(     "      ctrl! bksp! " // reversing these masks a backspace into just a generic control keyset press ;)
 
-    ) WRITE_FORTH(     "escp! "
-    ) WRITE_FORTH(     "hes "
+    ) WRITELN_FORTH(     "      escp! "
+    ) WRITELN_FORTH(     "      hes "
 
-    ) WRITE_FORTH(     "hbk "
+    ) WRITELN_FORTH(     "      hbk "
 // send +++ if backspace is pressed:
 //  ) WRITELN_FORTH(     "9 - 0< if 199 kst ! then" // ONLY time '9' is useful in compare
 
@@ -305,7 +304,14 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     // one path chosen from a single pick of one of these two lines
     // which exchanges 'swap c!' for 'swap drop drop' (the swap was factored out)
 
-    ) WRITE_FORTH(     "kst @ 254 - 0= if swap c! then kst @ 199 - 0= if drop drop then "
+    ) WRITELN_FORTH(     "    kst @ 254 - "
+    ) WRITELN_FORTH(     "    0= if "
+    ) WRITELN_FORTH(     "        swap c! "
+    ) WRITELN_FORTH(     "    then "
+    ) WRITELN_FORTH(     "    kst @ 199 - "
+    ) WRITELN_FORTH(     "    0= if "
+    ) WRITELN_FORTH(     "        drop drop "
+    ) WRITELN_FORTH(     "    then "
 
 /*
 
@@ -357,7 +363,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 //  ) WRITELN_FORTH(     "over blist drop"
 
-    ) WRITE_FORTH(     "77 tellme "
+    ) WRITELN_FORTH(     "  77 tellme "
 
 /*
     ) WRITELN_FORTH(     "kbi @ 125 - 0< if -1 kbi ! then \
@@ -380,8 +386,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     "c@ 32 max 126 min emit" // keyboard echo
 */
 
-    ) WRITE_FORTH(     "hco "
-    ) WRITELN_FORTH(     "k++ over over + 1 drop ;"
+    ) WRITELN_FORTH(     "  hco "
+    ) WRITELN_FORTH(     "  k++ over over + "
+    ) WRITELN_FORTH(     "  1 drop ;"
 // end, sxp definition
 
 
