@@ -146,7 +146,7 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 // ###bookmark
 //  ) WRITELN_FORTH(     "
 
-      WRITELN_FORTH(     ": sxt 1 - bmk and ;"
+      WRITELN_FORTH(     ": sxt 1 - bmk and ; \\ ( n -- masked )"
 
     ) WRITELN_FORTH(     ": sxo bmk and bmk 2 - ;"
     ) WRITELN_FORTH(     ": sxk sxo over over ;"
@@ -413,6 +413,8 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
 //  ) WRITELN_FORTH(     "k++ over over + 1 drop again ;"
 
+    ) WRITELN_FORTH(     "  \\ comments need two leading spaces"
+    ) WRITELN_FORTH(     ": hix drop ; \\ I have commented my code also works"
     ) WRITELN_FORTH(     ": sxb begin sxp again ;"
     ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;"
 #ifdef OMIT_SOME_SOURCE
