@@ -84,7 +84,15 @@ void forth_words(void) {
 //    WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;"
 
 // >prn ( n -- )
-      WRITELN_FORTH(     ": >prn 32 over over - 0< if 46 emit drop drop exit then drop 127 1 - over over swap - 0< if 46 emit drop drop exit then drop emit ;"
+      WRITELN_FORTH(     ": >prn 32 over over - "
+    ) WRITELN_FORTH(     "  0< if "
+    ) WRITELN_FORTH(     "      46 emit drop drop exit "
+    ) WRITELN_FORTH(     "  then "
+    ) WRITELN_FORTH(     "  drop 127 1 - over over swap - "
+    ) WRITELN_FORTH(     "  0< if "
+    ) WRITELN_FORTH(     "      46 emit drop drop exit "
+    ) WRITELN_FORTH(     "  then "
+    ) WRITELN_FORTH(     "  drop emit ;"
 
 // delay ( n -- )
     ) WRITELN_FORTH(     ": delay drop 1234 0 do 1 drop loop ;"
@@ -116,7 +124,18 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 
 // rhlist ( addr -- )
-      WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup rbyte dup 16 - 0< if 48 emit then h. 100 delay then loop drop ;"
+      WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over "
+    ) WRITELN_FORTH(     "  do "
+    ) WRITELN_FORTH(     "      1 + over over swap - 1 - "
+    ) WRITELN_FORTH(     "      0< if "
+    ) WRITELN_FORTH(     "          dup rbyte dup 16 - "
+    ) WRITELN_FORTH(     "          0< if "
+    ) WRITELN_FORTH(     "              48 emit "
+    ) WRITELN_FORTH(     "          then "
+    ) WRITELN_FORTH(     "          h. 100 delay "
+    ) WRITELN_FORTH(     "      then "
+    ) WRITELN_FORTH(     "  loop "
+    ) WRITELN_FORTH(     "  drop ;"
 
 // --- all above good 03 SEP 2019
 
