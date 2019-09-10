@@ -1,29 +1,40 @@
-Mon Sep  9 21:44:10 UTC 2019
+Release: 0.2.0-alpha.3 non-usart--testing-a  shred: abn-739
 
-On branch non-usart-e-09_sep-aa-
+Tue Sep 10 20:59:28 UTC 2019
 
-Mon Sep  9 20:53:46 UTC 2019 0.2.0-alpha.1 non-usart-e-09_sep-aa-  shred: abn-733
+On branch non-usart--testing-a                                          
 
-commit 07e9da913f637f130bab174113ea8995b8f3d70a
+Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a  shred: abn-739
+
+commit 203a71b4a8b8cfa914d9b68255ce364b9fb193e2
 Author: wa1tnr
-Date:   Mon Sep 9 21:37:11 2019 +0000
+Date:   Tue Sep 10 21:10:57 2019 +0000
 
-    For Release
+    version bump - printing
 
- myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 09 SEP 2019 20:53z                                                
-      Mon Sep  9 20:53:46 UTC 2019 0.2.0-alpha.1 nnon-usart-e-09_sep-aa-                                       
-      +0.2.0-a.1  +sam +autoload +squote +fdir_planned ++rlist +cc                                             
-      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-733                                       
-      words: sam fload wlist warm
-      TEF MEK Hn-s                                                                                             
+ myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 10 SEP 2019 20:59z                                                
+      Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a                                          
+      +0.2.0-a.2  +comments +sam +autoload +squote +fdir_planned                                               
+      +0.2.0-a.2  ++rlist +cc +blist +mkdir +write_File                                                        
+      +0.2.0-a.2  +fload                               shred: abn-739                                          
+      words: sam fload wlist warm - do NOT use fload without disabling autoload                                
+      TEF MEK Hn-t                                                                                             
 
-This release is interim.  Has some factoring of the Forth sources.
+This release is interim.  Has further factoring of the Forth sources.
 
-Its main unique quality is a modified _FLPARSE() to allow for
-better formed forth source files (stored on flashROM).  In
-particular, the new _FLPARSE() is more tolerant of the presence
-of line endings.
+Modification continues for _FLPARSE() which now supports both
+ubiquitous line endings (use WRITELN_FORTH() macro everywhere)
+as well as the new capability of escaping comments with 0x5c
+(the '\' backslash character, ASCII 92).
+
+         $ gforth
+        92 emit \ ok
+        hex 5c emit \ ok
 
 Viewing the ascii transfer file (stored in flashROM) in a good
-text editor is expected to be a better experience, after this
+text editor is expected to be an improved experience, with this
 modification.
+
+Code can finally be commented in-context, albeit through the
+artifice of a cpp directive to write Forth to 'disk' from
+within the parent c++ program. ;)
