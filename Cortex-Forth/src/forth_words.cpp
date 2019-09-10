@@ -141,9 +141,22 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 // ralist ( addr -- )
 
+// new kludge - two spaces in a WRITELN_FORTH() to get some vertical whitespace
 
-    ) WRITELN_FORTH(     ": ralist space space 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup rbyte >prn 100 delay then loop drop ;"
+    ) WRITE_VERT_WPACE( "  "
+    ) WRITE_VERT_WPACE( "  "
+    ) WRITE_VERT_WPACE( "  "
 
+//  ) WRITELN_FORTH(     "  "
+
+    ) WRITELN_FORTH(     ": ralist "
+    ) WRITELN_FORTH(     "  space space 16 + dup 16 - over over "
+    ) WRITELN_FORTH(     "  do "
+    ) WRITELN_FORTH(     "      1 + over over swap - 1 - "
+    ) WRITELN_FORTH(     "      0< if "
+    ) WRITELN_FORTH(     "          dup rbyte >prn 100 delay "
+    ) WRITELN_FORTH(     "      then "
+    ) WRITELN_FORTH(     "  loop drop ;"
 
 // hlist ( addr -- )
     ) WRITELN_FORTH(     ": hlist hadr 16 + dup 16 - over over do 1 + over over swap - 1 - 0< if dup c@ dup 16 - 0< if 48 emit then h. 100 delay then loop drop ;"
