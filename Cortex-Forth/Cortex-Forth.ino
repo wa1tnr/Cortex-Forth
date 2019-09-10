@@ -1,4 +1,4 @@
-// Tue Sep 10 00:25:56 UTC 2019 0.2.0-alpha.2 non-usart--testing-a  shred: abn-737
+// Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a  shred: abn-739
 
 // Edits: the parser seems to tolerate good line endings and code formatting,
 // for the limited case of short lines using WRITELN_FORTH() macro as the
@@ -1880,13 +1880,13 @@ abort:
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
    SERIAL_LOCAL_C.println  ("");
-   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 09 SEP 2019 20:53z");
-   SERIAL_LOCAL_C.println  ("      Mon Sep  9 20:53:46 UTC 2019 0.2.0-alpha.1 nnon-usart-e-09_sep-aa-");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +sam +autoload +squote +fdir_planned ++rlist +cc");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.1  +blist +mkdir +write_File +fload        shred: abn-733");
-
+   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 10 SEP 2019 20:59z");
+   SERIAL_LOCAL_C.println  ("      Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.2  +comments +sam +autoload +squote +fdir_planned");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.2  ++rlist +cc +blist +mkdir +write_File");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.2  +fload                               shred: abn-739");
    SERIAL_LOCAL_C.println  ("      words: sam fload wlist warm - do NOT use fload without disabling autoload");
-   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-s");
+   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-t");
 }
 
 /*
