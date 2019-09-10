@@ -503,6 +503,25 @@ void _FLPARSE (void) {
       } while (peeked_char == ' ');
 
 
+
+      do {
+        if (peeked_char == 0x0d) {
+#ifdef DEBUG_FLP_TIB
+            Serial.print(" INTRUSIVE 0x0d SEEN    ");
+#endif
+            if (thisFile.available() > 0 ) {
+              t = thisFile.read();
+              peeked_char = t; // update
+#ifdef DEBUG_FLP_TIB
+              Serial.print(" RESOLVED locally.      ");
+#endif
+            }
+        }
+      } while (peeked_char == 0x0d);
+
+
+
+      do {
         if (peeked_char == 0x0a) {
 #ifdef DEBUG_FLP_TIB
             Serial.print(" INTRUSIVE 0x0a SEEN    ");
@@ -515,6 +534,10 @@ void _FLPARSE (void) {
 #endif
             }
         }
+      } while (peeked_char == 0x0a);
+
+
+
 #ifdef DEBUG_FLP_TIB
         Serial.print("PEEK: ");
         Serial.print(peeked_char, HEX);
