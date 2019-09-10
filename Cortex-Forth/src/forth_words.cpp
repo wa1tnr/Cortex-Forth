@@ -96,6 +96,8 @@ void forth_words(void) {
     ) WRITELN_FORTH(     "  then "
     ) WRITELN_FORTH(     "  drop emit ;"
 
+    ) WRITE_VERT_WSPACE( "  "
+
 // delay ( n -- )
     ) WRITELN_FORTH(     ": delay drop 1234 0 do 1 drop loop ;"
 
@@ -178,6 +180,8 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     "      then"
     ) WRITELN_FORTH(     "  loop drop ;"
 
+    ) WRITE_VERT_WSPACE( "  "
+
 // alist ( addr -- )
     ) WRITELN_FORTH(     ": alist"
     ) WRITELN_FORTH(     "  space space 16 + dup 16 - over over"
@@ -188,10 +192,14 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     "      then"
     ) WRITELN_FORTH(     "  loop drop ;"
 
+    ) WRITE_VERT_WSPACE( "  "
+
 // bottom ( -- addr )
     ) WRITELN_FORTH(     ": bottom 536870912 ;"
 
     ) WRITELN_FORTH(     ": topbottom bottom 16384 + 1024 - 1024 + 16 - ;"
+
+    ) WRITE_VERT_WSPACE( "  "
 
 // blist ( addr -- )
     ) WRITELN_FORTH(     ": blist"
@@ -205,10 +213,23 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     "  1 +"
     ) WRITELN_FORTH(     "  swap drop cr ;"
 
+    ) WRITE_VERT_WSPACE( "  "
+
 //  ) WRITELN_FORTH(     "
 //
 // rlist ( addr -- addr + report_size )
-    ) WRITELN_FORTH(     ": rlist cr -999 swap bottom 195552 + min 0 max dup 1 - 8 0 do dup rhlist 16 - ralist cr swap drop loop 1 + swap drop cr ;"
+    ) WRITELN_FORTH(     ": rlist \\ ( addr -- addr++ )"
+    ) WRITELN_FORTH(     "  cr -999 swap"
+    ) WRITELN_FORTH(     "  bottom 195552 + min 0 max"
+    ) WRITELN_FORTH(     "  dup 1 - 8 0"
+    ) WRITELN_FORTH(     "  do"
+    ) WRITELN_FORTH(     "      dup rhlist 16 - ralist cr"
+    ) WRITELN_FORTH(     "      swap drop"
+    ) WRITELN_FORTH(     "  loop"
+    ) WRITELN_FORTH(     "  1 +"
+    ) WRITELN_FORTH(     "  swap drop cr ;"
+
+    ) WRITE_VERT_WSPACE( "  "
 
 // : rlist -999 swap cr bottom 195552 + min 0 max
 // dup 1 - 8 0 do
