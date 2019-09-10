@@ -1,5 +1,8 @@
 // Mon Sep  9 20:53:46 UTC 2019 0.2.0-alpha.1 non-usart-e-09_sep-aa-  shred: abn-733"
 
+// Tue Sep 10 00:09:54 UTC 2019
+// Edits: the parser seems to tolerate leading spaces in more situations, than in recent work.
+
 // Sun Sep  8 14:47:04 UTC 2019 0.2.0-alpha.1 non-usart-d-08_sep-aa-split-sam-a-  shred: abn-719"
 
 // TODO: replace any hard-coded Serial.print statement with generalized to SERIAL_LOCAL_C
