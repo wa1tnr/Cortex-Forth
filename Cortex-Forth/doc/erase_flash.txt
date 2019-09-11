@@ -1,0 +1,11 @@
+Auto-reload is on. Simply save files over USB to run them or enter REPL to disable.
+
+Press any key to enter the REPL. Use CTRL-D to reload.
+Adafruit CircuitPython 4.1.0 on 2019-08-02; Adafruit ItsyBitsy M4 Express with samd51g19
+>>> import storage
+>>> storage.erase_filesystem()
+Auto-reload is on. Simply save files over USB to run them or enter REPL to disable.
+
+Press any key to enter the REPL. Use CTRL-D to reload.
+Adafruit CircuitPython 4.1.0 on 2019-08-02; Adafruit ItsyBitsy M4 Express with samd51g19
+>>> 
