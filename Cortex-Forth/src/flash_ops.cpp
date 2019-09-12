@@ -26,6 +26,7 @@
 #include "SdFat.h"
 #include "Adafruit_SPIFlash.h"
 
+extern void _SPACE(void);
 extern void forth_words(void);
 extern void sam_editor(void);
 
@@ -54,6 +55,10 @@ Adafruit_SPIFlash flash(&flashTransport);
 FatFileSystem fatfs;
 
 File myFile;
+
+void _OK_OOB(void) { // OK, out of band
+  SERIAL_LOCAL_C.println (" Ok");
+}
 
 void mkdir_forth(void) {
   if (!fatfs.exists(WORKING_DIR)) {
@@ -130,6 +135,9 @@ void serial_setup(void) {
   Serial.println("Connection to serial port established!");
 }
 
+void _REMOVE_FILE(void) {
+  push(-927);
+}
 // void flash_setup(void) {
 void _FL_SETUP(void) { // now an official Forth word
   // Open serial communications and wait for port to open:
@@ -142,7 +150,7 @@ void _FL_SETUP(void) { // now an official Forth word
 */
 
 #ifdef VERBIAGE_AA
-  Serial.print("\nInitializing Filesystem on external flash...");
+  Serial.print("\r\nInitializing Filesystem on external flash...");
 #else
   Serial.print(" ckpt AA ");
 #endif // #ifdef VERBIAGE_AA
@@ -155,16 +163,31 @@ void _FL_SETUP(void) { // now an official Forth word
 
 #ifdef VERBIAGE_AA
   Serial.println("initialization done.");
+  _OK_OOB();
 #else
   Serial.print(" ckpt BB ");
 #endif // #ifdef VERBIAGE_AA
+}
 
 
-  if (!fatfs.remove(FILE_NAME)) {
-    Serial.print("Failed to remove "); Serial.println(FILE_NAME);
+void _FILE_OPS(void) {
+  int fflag = pop(); // must have a directive flag pushed onto the stack
+
+  if (fflag == -927) { // -927 means remove the file
+    if (!fatfs.remove(FILE_NAME)) {
+      Serial.print("Failed to remove "); Serial.println(FILE_NAME);
+      Serial.println("Trap error Line 169");
+    } else {
+      // _OK();
+      _OK_OOB();
+    }
+  } else {
+    Serial.println("Trap error Line 172");
+    while(-1); // trap
   }
+}
 
-
+void _FILE_OTHER(void) {
 
 #ifdef WANT_MKDIR_FORTH
   mkdir_forth(); // tnr kludge
