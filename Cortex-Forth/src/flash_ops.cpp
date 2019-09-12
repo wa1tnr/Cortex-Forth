@@ -185,7 +185,8 @@ void flash_setup(void) {
   if (myFile) {
 #ifdef VERBIAGE_AA
     Serial.print(FILE_NAME); Serial.println(" .. will now be read and printed");
-    Serial.println("to the console.  Attention: design has strange line endings!\r\n");
+//  Serial.println("to the console.  Attention: design has strange line endings!\r\n");
+    Serial.println("to the console.\r\n"); // no longer uses strange line endings scheme ;)
 #else
     Serial.print(" ckpt EE ");
 #endif // #ifdef VERBIAGE_AA
