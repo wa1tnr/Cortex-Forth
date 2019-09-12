@@ -169,7 +169,9 @@ boolean keyboard_not_file = true; // keyboard or file input, for parsing
 // extra defs - not yet planned well 12 SEP
 extern void _FILE_OPS(void);
 extern void _REMOVE_FILE(void);
-void _WRITE_FILE(void) { }
+extern void _WRITE_FILE(void);
+
+// void _WRITE_FILE(void) { push(-961); } 
 
 // primitive definitions
 
