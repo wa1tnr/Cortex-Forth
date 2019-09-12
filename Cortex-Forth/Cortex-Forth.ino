@@ -165,6 +165,9 @@ boolean keyboard_not_file = true; // keyboard or file input, for parsing
 
 */
 
+// extra defs - not yet planned well 12 SEP
+void _FILE_OPS(void) { }
+
 // primitive definitions
 
 void _LBRAC (void) {
@@ -1864,6 +1867,12 @@ abort:
   CODE(507, _FL_SETUP)
 // new 12 sep
 
+// begin new stuff - - - - - -
+
+  NAME(508, 0, 4, 'f', 'i', 'l') // 'file' accepts: read write load print (none of these exist yet)
+  LINK(509, 505) // standard increment +3
+  CODE(510, _FILE_OPS)
+
   // test
   DATA(600, lit)
   DATA(601, 10) // i
@@ -1893,8 +1902,13 @@ abort:
   // D = 502;
   // H = 505;
 
+/*
      D = 505; // latest word
      H = 508; // top of dictionary (here)
+*/
+
+     D = 508; // latest word 'file'
+     H = 511; // top of dictionary (here) following 'file'
 
 // cpmem 486 thru 488, 489 is 488 + 1
 
