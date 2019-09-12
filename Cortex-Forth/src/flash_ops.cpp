@@ -304,7 +304,8 @@ void _FILE_LOAD(void) { // temporary name for this 12 SEP 20:10z
     thisFile = (File) dataFile;
     thisFile.rewind();
 #ifdef VERBIAGE_AA
-    Serial.println("FILE STAYS OPEN (and rewound) (for a possible fload).");
+    // Serial.println("FILE STAYS OPEN (and rewound) (for a possible fload).");
+    Serial.println(" .. todo .. update this comment ;)");
 #else
     Serial.print(" ckpt HH ");
 #endif // #ifdef VERBIAGE_AA

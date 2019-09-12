@@ -66,9 +66,8 @@ void sam_editor(void) {
     ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" ) // increased from 16 to 128 bytes. ;)
 
-}
 
-void foobiabaria(void) {
+
 
 // bsz ( -- size )
 // bmk ( -- mask )
@@ -156,10 +155,10 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
 
       WRITELN_FORTH(     ": sxt 1 - bmk and ; \\ ( n -- masked )"
     ) WRITELN_FORTH(     ": sxo bmk and bmk 2 - ;"
-    ) WRITELN_FORTH(     ": sxk sxo over over ;"
+    ) WRITELN_FORTH(     ": sxk sxo over over ;" )
 
 // sxF ( n1 n2 -- n2 a b c )
-    ) WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
+      WRITELN_FORTH(     ": sxf swap 1 + sxk swap - ;"
 
     ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": k-- swap 1 - sxk swap -"
@@ -220,9 +219,10 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     "  101 emit"
     ) WRITELN_FORTH(     "  114 emit"
     ) WRITELN_FORTH(     "  101 emit"
-    ) WRITELN_FORTH(     "   58 emit space ;"
+    ) WRITELN_FORTH(     "   58 emit space ;" )
+
 // mhe ( -- )
-    ) WRITELN_FORTH(     ": bfc 0 ;" // any positive int < (bsz - 2) .. or zero
+      WRITELN_FORTH(     ": bfc 0 ;" // any positive int < (bsz - 2) .. or zero
 
 
 // conditionally initialize the buffer:
@@ -283,9 +283,9 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITELN_FORTH(     "      sesc drop quit"
     ) WRITELN_FORTH(     "  then ;"
 
-    ) WRITELN_FORTH(     ": hcp drop drop swap 1 - swap ;"
+    ) WRITELN_FORTH(     ": hcp drop drop swap 1 - swap ;" )
 
-    ) WRITE_VERT_WSPACE(  "  "
+      WRITE_VERT_WSPACE(  "  "
 
 // hco handle control o (<32 is any control key so using 31 here)
 //  ) WRITELN_FORTH(     "    " )
@@ -444,10 +444,13 @@ s" _text_strings_  fs@ .s 95 115 103 110 105 114 116 115 95 116 120 101 116 95 1
     ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     "  \\ comments need two leading spaces"
     ) WRITELN_FORTH(     ": hix drop ; \\ I have commented my code also works"
-    ) WRITELN_FORTH(     ": sxb begin sxp again ;"
-    ) WRITE_VERT_WSPACE(  "  "
+    ) WRITELN_FORTH(     ": sxb begin sxp again ;" )
+      WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     "  \\ The sam text editor"
     ) WRITELN_FORTH(     ": sam lxa bfc swap k++ over over + sxb ;" )
+
+} void foobiabaria(void) {
+
 #ifdef OMIT_SOME_SOURCE
 #endif
 

@@ -1943,7 +1943,8 @@ abort:
   Serial.println("Novel code: flinit to manually init q/spi flashROM 12 SEP 2019");
   Serial.println("pnm and pnw remapped to pinmode and pinwrite .. must spell out");
   Serial.println("\r\nflinit fload - call both in that sequence to load the sam editor");
-  Serial.println("\r\n\r\nflinit remove file write file print file load file");
+  Serial.println("\r\n\r\nflinit    remove file    write file    print file");
+  Serial.println("load file");
 #endif
 /*
   flash_setup(); // flash_ops.cpp
