@@ -68,6 +68,7 @@ void forth_words(void) {
 
     ) WRITE_VERT_WSPACE( "  "
 
+// testcc ( SED here )
     ) WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;" )
 
 // min ( n1 n2 -- min )
@@ -107,7 +108,6 @@ void forth_words(void) {
 
 
 // testc ( -- )
-
 //    WRITELN_FORTH(     ": testcc -1 512 0 do 1 + dup , loop ;"
 
       WRITE_VERT_WSPACE( "  "
@@ -127,14 +127,26 @@ void forth_words(void) {
     ) WRITE_VERT_WSPACE( "  "
 
 // delay ( n -- )
-    ) WRITELN_FORTH(     ": delay drop 1234 0 do 1 drop loop ; \\ ( n -- )"
+    ) WRITELN_FORTH(     ": delay  \\ ( n -- )"
+    ) WRITELN_FORTH(     "  drop 1234 0"
+    ) WRITELN_FORTH(     "  do"
+    ) WRITELN_FORTH(     "      1 drop"
+    ) WRITELN_FORTH(     "  loop ;"
 
+    ) WRITE_VERT_WSPACE( "  "
 
 // ecol ( -- ) \ emit a colon
-    ) WRITELN_FORTH(     ": ecol 58 emit ; \\ ( -- )"
+    ) WRITELN_FORTH(     ": ecol  \\ ( -- )"
+    ) WRITELN_FORTH(     "  58 emit ;"
+
+    ) WRITE_VERT_WSPACE( "  "
+
 
 // hadr ( addr -- addr ) print to display
-    ) WRITELN_FORTH(     ": hadr dup 1 + h. ecol space ; \\ ( addr -- addr) pretty print for TOS in hex, non-destructive" )
+    ) WRITELN_FORTH(     ": hadr  \\ ( addr -- addr) pretty print for TOS in hex, non-destructive"
+    ) WRITELN_FORTH(     "  dup 1 + h. ecol space ;"
+
+    ) WRITE_VERT_WSPACE( "  "
 
 /*
 // Can pack memory efficiently using the comma word:
@@ -154,11 +166,23 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 
 */
 
+/*
 
+
+    ) WRITELN_FORTH(     "
+
+*/
+
+
+// ###book
 // rhlist ( addr -- )
-      WRITE_VERT_WSPACE( "  "
+    ) WRITELN_FORTH(     ": rhlist  \\ ( addr1 -- addr2 ) print 16 bytes in hex"
+    ) WRITELN_FORTH(     "          \\ and increment addr1 accordingly to print"
+    ) WRITELN_FORTH(     "          \\ the next one on the next iteration"
 
-    ) WRITELN_FORTH(     ": rhlist hadr 16 + dup 16 - over over \\ ( addr1 -- addr2 ) print 16 bytes in hex and increment addr1 accordingly to print the next one on the next itertion"
+    ) WRITE_VERT_WSPACE( "  "
+
+    ) WRITELN_FORTH(     "  hadr 16 + dup 16 - over over"
     ) WRITELN_FORTH(     "  do"
     ) WRITELN_FORTH(     "      1 + over over swap - 1 -"
     ) WRITELN_FORTH(     "      0< if"
@@ -192,10 +216,11 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     "      then"
     ) WRITELN_FORTH(     "  loop drop ;" )
 
-// hlist ( addr -- )
 //  ) WRITELN_FORTH(     "  "
       WRITE_VERT_WSPACE(  "  "
-    ) WRITELN_FORTH(     ": hlist \\ ( SED here )"
+
+// hlist ( addr -- )
+    ) WRITELN_FORTH(     ": hlist  \\ ( SED here )"
     ) WRITELN_FORTH(     "  hadr 16 + dup 16 - over over"
     ) WRITELN_FORTH(     "  do"
     ) WRITELN_FORTH(     "      1 + over over swap - 1 -"
