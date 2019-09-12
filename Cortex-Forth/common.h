@@ -1,6 +1,8 @@
 #define FILE_NAME      "/forth/ascii_xfer_a001.txt"
 #define WORKING_DIR    "/forth"
 
+#define SERIAL_LOCAL_C Serial  // Or Serial1  for the usart
+
 /* new code alert */
 #undef NOVEL_CODE_AA
 #define NOVEL_CODE_AA
