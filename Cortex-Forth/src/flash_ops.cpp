@@ -103,15 +103,43 @@ void mkdir_forth(void) {
 #define WRITE_FORTH(a) {myFile.print((a));}
 */
 
-void blink_awaiting_serial(void) { }
+extern void _PINMODE(void);
+extern void _PINWRITE(void);
+extern void push(int n);
+extern int pop(void);
 
-void flash_setup(void) {
+void setup_blink_gpio(void) {
+  push(1); push(13); _PINMODE();
+}
+
+void blink_awaiting_serial(void) {
+  push(1); push(13); _PINWRITE(); // turn on LED D13
+  delay(2); // rest
+  push(0); push(13); _PINWRITE(); // turn off LED D13
+  delay(3000);
+}
+
+void serial_setup(void) {
   // Open serial communications and wait for port to open:
+  setup_blink_gpio(); // TODO: split out
   Serial.begin(38400);
   while (!Serial) {
     delay(1); // wait for serial port to connect. Needed for native USB port only
     blink_awaiting_serial();
   }
+  Serial.println("Connection to serial port established!");
+}
+
+// void flash_setup(void) {
+void _FL_SETUP(void) { // now an official Forth word
+  // Open serial communications and wait for port to open:
+/*
+  Serial.begin(38400);
+  while (!Serial) {
+    delay(1); // wait for serial port to connect. Needed for native USB port only
+    blink_awaiting_serial();
+  }
+*/
 
 #ifdef VERBIAGE_AA
   Serial.print("\nInitializing Filesystem on external flash...");
