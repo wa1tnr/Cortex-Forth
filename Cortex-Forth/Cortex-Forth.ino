@@ -1,4 +1,14 @@
-// Thu Sep 12 00:39:47 UTC 2019 0.2.0-alpha.3 non-usart--testing-b  shred: abn-743
+// Thu Sep 12 13:38:36 UTC 2019 0.2.0-alpha.3 non-usart--flash_bug-aa-  shred: abn-745
+
+/*
+Thu Sep 12 13:38:36 UTC 2019
+On branch non-usart--flash_bug-aa-
+parent branch was: non-usart--testing-b
+
+last version:
+Thu Sep 12 00:39:47 UTC 2019 0.2.0-alpha.3 non-usart--testing-b  shred: abn-743
+
+*/
 
 /*
 commit 410de2749f5f0d9f01d77f49329fd0b259440cf2
@@ -32,8 +42,8 @@ Date:   Tue Sep 10 21:43:43 2019 +0000
 #undef DEBUG_FLP_TIB_SEMICOLON
 
 // swap these two lines, as required:
-#undef AUTOLOAD
 #define AUTOLOAD
+#undef AUTOLOAD
 
 // when defined, the default forth source code file is loaded
 // into the running program's forth interpreter at program startup.
@@ -70,6 +80,7 @@ extern void parseStr(void);
 extern void fetchStr(void);
 extern void _PINWRITE(void);
 extern void _PINMODE(void);
+extern void _FL_SETUP(void);
 
 // identify: nancarole  kibarthe   tr0mso   cablefour  entwistle
 
@@ -120,7 +131,8 @@ extern void wiggleDotStarOnce(void); // toggle once
 
 
 // extern void fl_setup(void); // fload.cpp
-extern void flash_setup(void); // flash_ops.cpp
+extern void serial_setup(void); // flash_ops.cpp
+// see near LINE 83, above // extern void flash_setup(void); // flash_ops.cpp
 
 extern File thisFile; // You must include SdFat.h to use 'File' here
 
@@ -535,7 +547,7 @@ void _FLPARSE (void) {
 
 
 
-// ###bookmark
+
 
 
       do {
@@ -642,7 +654,7 @@ void _FLPARSE (void) {
 #endif
         }
 
-// ###bookmark
+
         if ((t != '\r') && (t != '\n') )
           tib = tib + t;
 
@@ -1836,15 +1848,21 @@ abort:
   DATA(498, thrown)
   #define autoload 495
 
-// new 05 sep
-// pmd pnw
-  NAME(499, 0, 6, 'p', 'n', 'm') // 'pnmode' pinMode word
+// pmd pnw rescinded 12 SEP
+// pinmode 7 pinwrite 8 good 12 SEP
+  NAME(499, 0, 7, 'p', 'i', 'n') // pinmode ..  was: 'pnmode' pinMode word
   LINK(500, 492)
   CODE(501, _PINMODE)
 
-  NAME(502, 0, 7, 'p', 'n', 'w') // 'pnwrite' pinMode word
+  NAME(502, 0, 8, 'p', 'i', 'n') // pinwrite .. was: 'pnwrite' pinMode word
   LINK(503, 499)
   CODE(504, _PINWRITE)
+
+// was: 504 with 505 unoccupied
+  NAME(505, 0, 6, 'f', 'l', 'i') // 'flinit' flash initialization word
+  LINK(506, 502) // standard increment +3
+  CODE(507, _FL_SETUP)
+// new 12 sep
 
   // test
   DATA(600, lit)
@@ -1870,8 +1888,13 @@ abort:
   // D = 492;
   // H = 499; // longer offset than usual
 
-     D = 502; // latest word
-     H = 505; // top of dictionary (here)
+// latest rescinded 12 SEP 2019 14:06z:
+
+  // D = 502;
+  // H = 505;
+
+     D = 505; // latest word
+     H = 508; // top of dictionary (here)
 
 // cpmem 486 thru 488, 489 is 488 + 1
 
@@ -1880,7 +1903,17 @@ abort:
 
   //  I = 600; // test
 
+  serial_setup(); // flash_ops.cpp // TODO: split out from flash ops 12 SEP 2019
+
+#ifdef NOVEL_CODE_AA // expire this in 7 days when used to the new workflow
+  Serial.println("Novel code: flinit to manually init q/spi flashROM 12 SEP 2019");
+  Serial.println("pnm and pnw remapped to pinmode and pinwrite .. must spell out");
+  Serial.println("\r\nflinit fload - call both in that sequence to load the sam editor");
+#endif
+/*
   flash_setup(); // flash_ops.cpp
+  _FL_SETUP(); // 12 SEP 2019 14:06z:
+*/
 
 #ifdef AUTOLOAD
 #ifdef VERBIAGE_AA
@@ -1897,13 +1930,14 @@ abort:
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
    SERIAL_LOCAL_C.println  ("");
-   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 12 SEP 2019 00:39z");
-   SERIAL_LOCAL_C.println  ("      Thu Sep 12 00:39:47 UTC 2019 0.2.0-alpha.3 non-usart--testing-b");
+   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 12 SEP 2019 13:38z");
+// SERIAL_LOCAL_C.println  ("      Thu Sep 12 00:39:47 UTC 2019 0.2.0-alpha.3 non-usart--testing-b");
+   SERIAL_LOCAL_C.println  ("      Thu Sep 12 13:38:36 UTC 2019 0.2.0-alpha.3 non-usart--flash_bug-aa-");
    SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  +comments +sam +autoload +squote +fdir_planned");
    SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  ++rlist +cc +blist +mkdir +write_File");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  +fload                               shred: abn-743");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  +fload                               shred: abn-745");
    SERIAL_LOCAL_C.println  ("      words: sam fload wlist warm - do NOT use fload without disabling autoload");
-   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-x");
+   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-y");
 }
 
 /*
