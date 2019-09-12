@@ -135,9 +135,18 @@ void serial_setup(void) {
   Serial.println("Connection to serial port established!");
 }
 
+void _WRITE_FILE(void) {
+  push(-961);
+}
+
 void _REMOVE_FILE(void) {
   push(-927);
 }
+
+
+
+
+
 // void flash_setup(void) {
 void _FL_SETUP(void) { // now an official Forth word
   // Open serial communications and wait for port to open:
@@ -170,28 +179,25 @@ void _FL_SETUP(void) { // now an official Forth word
 }
 
 
-void _FILE_OPS(void) {
-  int fflag = pop(); // must have a directive flag pushed onto the stack
 
-  if (fflag == -927) { // -927 means remove the file
-    if (!fatfs.remove(FILE_NAME)) {
-      Serial.print("Failed to remove "); Serial.println(FILE_NAME);
-      Serial.println("Trap error Line 169");
-    } else {
-      // _OK();
-      _OK_OOB();
-    }
-  } else {
-    Serial.println("Trap error Line 172");
-    while(-1); // trap
-  }
-}
+
+
+
+
+
+
+
+
+
+
 
 void _FILE_OTHER(void) {
 
+/*
 #ifdef WANT_MKDIR_FORTH
   mkdir_forth(); // tnr kludge
 #endif // #ifdef WANT_MKDIR_FORTH
+*/
 
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
@@ -284,3 +290,49 @@ void _FILE_OTHER(void) {
     Serial.print("error opening "); Serial.println(FILE_NAME);
   }
 }
+
+
+
+
+
+void _FILE_OPS(void) {
+  int fflag = pop(); // must have a directive flag pushed onto the stack
+
+  if (fflag == -927) { // -927 means remove the file
+    if (!fatfs.remove(FILE_NAME)) {
+      Serial.print("Failed to remove "); Serial.println(FILE_NAME);
+      // Serial.println("Trap error Line 169");
+      return;
+    } else {
+      // _OK();
+      _OK_OOB();
+      return;
+    }
+  } // -927 requested
+  if (fflag == -961) { // -961 means write out the forth source code to 'disk'
+    _FILE_OTHER(); // big kludge
+  }
+  if (fflag == -982) { // -982 means mkdir_forth()
+    mkdir_forth();
+    return;
+  }
+  if (fflag == -555) { // -555 means generic and is just a test value
+    _OK_OOB();
+    return;
+  }
+  if
+    (
+      (fflag != -927) &&
+      (fflag != -961) &&
+      (fflag != -555)
+    ) {
+    Serial.println("Trap error Line 172: UNRECOGNIZED file ops request");
+    while(-1); // trap
+  }
+}
+
+
+
+
+
+
