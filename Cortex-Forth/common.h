@@ -1,6 +1,9 @@
 #define FILE_NAME      "/forth/ascii_xfer_a001.txt"
 #define WORKING_DIR    "/forth"
 
+/* new code alert */
+#undef NOVEL_CODE_AA
+#define NOVEL_CODE_AA
 /* swap these two lines (below) to see (or to suppress) source code listing: */
 #undef VERBIAGE_AA
 #define VERBIAGE_AA
