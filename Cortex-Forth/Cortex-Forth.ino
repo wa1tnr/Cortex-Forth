@@ -56,7 +56,7 @@ Date:   Tue Sep 10 21:43:43 2019 +0000
 #define DEBUG_PARSE_ECHO
 #undef DEBUG_PARSE_ECHO
 
-# define SERIAL_LOCAL_C Serial  // Or Serial1  for the usart
+// common.h // # define SERIAL_LOCAL_C Serial  // Or Serial1  for the usart
 
 // - - - -   snippet   - - - -
 
@@ -143,7 +143,8 @@ union Memory {
 } memory;
 
 int PKF = 0; // Peek Flag set to false initially
-String tib = "";
+// String tib = "";
+String tib = "\n";
 int S = S0; // data stack pointer
 int R = R0; // return stack pointer
 int I = 0; // instruction pointer
@@ -166,7 +167,9 @@ boolean keyboard_not_file = true; // keyboard or file input, for parsing
 */
 
 // extra defs - not yet planned well 12 SEP
-void _FILE_OPS(void) { }
+extern void _FILE_OPS(void);
+extern void _REMOVE_FILE(void);
+void _WRITE_FILE(void) { }
 
 // primitive definitions
 
@@ -1861,17 +1864,24 @@ abort:
   LINK(503, 499)
   CODE(504, _PINWRITE)
 
-// was: 504 with 505 unoccupied
   NAME(505, 0, 6, 'f', 'l', 'i') // 'flinit' flash initialization word
-  LINK(506, 502) // standard increment +3
+  LINK(506, 502)
   CODE(507, _FL_SETUP)
 // new 12 sep
 
 // begin new stuff - - - - - -
 
   NAME(508, 0, 4, 'f', 'i', 'l') // 'file' accepts: read write load print (none of these exist yet)
-  LINK(509, 505) // standard increment +3
+  LINK(509, 505)
   CODE(510, _FILE_OPS)
+
+  NAME(511, 0, 5, 'w', 'r', 'i') // 'write' talks to 'file'
+  LINK(512, 508) // standard increment +3
+  CODE(513, _WRITE_FILE)
+
+  NAME(514, 0, 6, 'r', 'e', 'm') // 'remove' talks to 'file'
+  LINK(515, 511) // standard increment +3
+  CODE(516, _REMOVE_FILE)
 
   // test
   DATA(600, lit)
@@ -1899,16 +1909,8 @@ abort:
 
 // latest rescinded 12 SEP 2019 14:06z:
 
-  // D = 502;
-  // H = 505;
-
-/*
-     D = 505; // latest word
-     H = 508; // top of dictionary (here)
-*/
-
-     D = 508; // latest word 'file'
-     H = 511; // top of dictionary (here) following 'file'
+     D = 514; // latest word 'remove'
+     H = 517;
 
 // cpmem 486 thru 488, 489 is 488 + 1
 
@@ -1952,6 +1954,7 @@ abort:
    SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  +fload                               shred: abn-745");
    SERIAL_LOCAL_C.println  ("      words: sam fload wlist warm - do NOT use fload without disabling autoload");
    SERIAL_LOCAL_C.println  ("      TEF MEK Hn-y");
+   _OK();
 }
 
 /*
