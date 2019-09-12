@@ -214,10 +214,9 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
     ) WRITELN_FORTH(     "      0< if"
     ) WRITELN_FORTH(     "          dup rbyte >prn 100 delay"
     ) WRITELN_FORTH(     "      then"
-    ) WRITELN_FORTH(     "  loop drop ;" )
+    ) WRITELN_FORTH(     "  loop drop ;"
 
-//  ) WRITELN_FORTH(     "  "
-      WRITE_VERT_WSPACE(  "  "
+    ) WRITE_VERT_WSPACE(  "  "
 
 // hlist ( addr -- )
     ) WRITELN_FORTH(     ": hlist  \\ ( SED here )"
@@ -309,12 +308,17 @@ C20 18 00 00 00 19 00 00 00 1A 00 00 00 1B 00 00 00 ................
 // for immediate lines of code, on the previous line,
 // do not WRITELN_FORTH.  Also, add an extra space:
 
-    ) WRITELN_FORTH(     ": stuffit 69 68 67 66 65 5 ; \\ feed example for the emits word"
+    ) WRITELN_FORTH(     "  \\ feed example for the emits word:"
+    ) WRITELN_FORTH(     ": stuffit 69 68 67 66 65 5 ;"
 
 // immediate:
 // the immediate line is not a WRITELN_FORTH line:
 
-    ) WRITELN_FORTH(     "69 68 67 66 65 5 emits cr \\ to wit ;)"
+/*
+    ) WRITELN_FORTH(     "  \\ to wit:"
+    ) WRITELN_FORTH(     "69 68 67 66 65 5 emits cr"
+*/
+
 
 // the immediate line is followed by a standard WRITELN_FORTH line:
 

@@ -25,6 +25,8 @@ void sam_editor(void) {
 // bottom topbottom blist rlist emits
 
 // immediate:
+
+
       WRITE_VERT_WSPACE(  "  "
     ) WRITE_VERT_WSPACE(  "  "
     )   WRITELN_FORTH(     "2048 allot " // 18k address space 03 SEP 2019
@@ -34,6 +36,7 @@ void sam_editor(void) {
     ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": svd buff @ 2701 + blist ;"  // so adding a 'cr' to the end of the line faked out the parser into not seeing a single character entity as the last entity on the line. ;)
     ) WRITELN_FORTH(     ": sve buff @ 4 + cr ;"
+
     ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": goa svd sve 26 0 do 1 + 32 i + over ! loop cr cr svd cr ;"
     ) WRITE_VERT_WSPACE(  "  " )
@@ -50,18 +53,22 @@ void sam_editor(void) {
 
 // immediate:
 
-        WRITELN_FORTH(     "variable sfi 0 sfi ! 1 drop "
+        WRITELN_FORTH(     "variable sfi 0 sfi ! 1 drop"
 
 // NAME CHANGE: sbc to kbi keyboard index
 // kbi is NOT maintained by k++ and k-- whatsoever.
 
-      ) WRITELN_FORTH(     "variable kbi -1 kbi ! " ) // sam buffer counter
+      ) WRITELN_FORTH(     "variable kbi -1 kbi !" // sam buffer counter
 
 // key-stored:
-        WRITELN_FORTH(     "variable kst 254 kst ! 1 drop "
+      ) WRITELN_FORTH(     "variable kst 254 kst ! 1 drop"
 
     ) WRITE_VERT_WSPACE(  "  "
     ) WRITELN_FORTH(     ": bsz 128 ; : bmk bsz 1 - ;" ) // increased from 16 to 128 bytes. ;)
+
+}
+
+void foobiabaria(void) {
 
 // bsz ( -- size )
 // bmk ( -- mask )

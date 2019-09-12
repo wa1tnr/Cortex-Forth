@@ -26,6 +26,7 @@
 #include "SdFat.h"
 #include "Adafruit_SPIFlash.h"
 
+extern void _FLOAD(void);
 extern void _SPACE(void);
 extern void forth_words(void);
 extern void sam_editor(void);
@@ -135,6 +136,10 @@ void serial_setup(void) {
   Serial.println("Connection to serial port established!");
 }
 
+void _LOAD_FILE(void) {
+  push(-953);
+}
+
 void _WRITE_FILE(void) {
   push(-961);
 }
@@ -143,20 +148,12 @@ void _REMOVE_FILE(void) {
   push(-927);
 }
 
-
-
-
+void _PRINT_FILE(void) {
+  push(-949);
+}
 
 // void flash_setup(void) {
 void _FL_SETUP(void) { // now an official Forth word
-  // Open serial communications and wait for port to open:
-/*
-  Serial.begin(38400);
-  while (!Serial) {
-    delay(1); // wait for serial port to connect. Needed for native USB port only
-    blink_awaiting_serial();
-  }
-*/
 
 #ifdef VERBIAGE_AA
   Serial.print("\r\nInitializing Filesystem on external flash...");
@@ -184,14 +181,7 @@ void _FL_SETUP(void) { // now an official Forth word
 
 
 
-
-
-
-
-
-
-
-void _FILE_OTHER(void) {
+void _FILE_WRITE(void) {
 
 /*
 #ifdef WANT_MKDIR_FORTH
@@ -217,6 +207,7 @@ void _FILE_OTHER(void) {
 // file contents - - - - - - - - - - - - - - - -
 
     forth_words();
+
     sam_editor(); // future: sam.fs and named file loading
 
 // file contents - - - - - - - - - - - - - - - -
@@ -233,22 +224,35 @@ void _FILE_OTHER(void) {
     // if the file didn't open, print an error:
     Serial.print("error opening "); Serial.println(FILE_NAME);
   }
+}
 
-  // re-open the file for reading:
 
-  myFile = fatfs.open(FILE_NAME);
-  // thisFile = (File) myFile; // local tnr kludge
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void _FILE_PRINT(void) { // re-open the file for reading: 
+  myFile = fatfs.open(FILE_NAME); // thisFile = (File) myFile; // local tnr kludge 
   if (myFile) {
 #ifdef VERBIAGE_AA
     Serial.print(FILE_NAME); Serial.println(" .. will now be read and printed");
-//  Serial.println("to the console.  Attention: design has strange line endings!\r\n");
     Serial.println("to the console.\r\n"); // no longer uses strange line endings scheme ;)
 #else
     Serial.print(" ckpt EE ");
-#endif // #ifdef VERBIAGE_AA
-
-    // read from the file until there's nothing else in it:
+#endif // #ifdef VERBIAGE_AA // read from the file until there's nothing else in it:
     while (myFile.available()) {
 #ifdef VERBIAGE_AA
       Serial.write(myFile.read());
@@ -258,19 +262,38 @@ void _FILE_OTHER(void) {
 #endif
       int ij = myFile.read(); // do the read anyway - try to break something
 #endif // #ifdef VERBIAGE_AA
-    }
-    // close the file:
+    } // close the file:
     myFile.close();
 #ifdef VERBIAGE_AA
     Serial.println("\r\n");
     Serial.print(FILE_NAME); Serial.println(" .. is now closed, safely.");
 #else
     Serial.print(" ckpt FF ");
-#endif // #ifdef VERBIAGE_AA
+#endif // #ifdef VERBIAGE_AA // re-open the file for reading:
+ } else { // if the file didn't open, print an error:
+    Serial.print("error opening "); Serial.println(FILE_NAME);
+ }
+}
 
-    // re-open the file for reading:
 
-    File dataFile = fatfs.open(FILE_NAME, FILE_READ);
+void _FILE_LOAD(void) { // temporary name for this 12 SEP 20:10z
+
+  File dataFile = fatfs.open(FILE_NAME, FILE_READ);
+
+  // Serial.println("DEBUG: LINE 281 reached");
+
+  if (dataFile) {
+
+    // Serial.println("DEBUG: LINE 285 reached");
+
+#undef DONT_TEMP_PRINT
+#define DONT_TEMP_PRINT
+
+#ifndef DONT_TEMP_PRINT
+    Serial.print(FILE_NAME);
+    Serial.println(" is now re-opened (for reading).");
+#endif
+
 #ifdef VERBIAGE_AA
     Serial.print(FILE_NAME);
     Serial.println(" is now re-opened (for reading).");
@@ -285,14 +308,9 @@ void _FILE_OTHER(void) {
 #else
     Serial.print(" ckpt HH ");
 #endif // #ifdef VERBIAGE_AA
-  } else {
-    // if the file didn't open, print an error:
-    Serial.print("error opening "); Serial.println(FILE_NAME);
+    // _FLOAD(); //  sketchy to call this here tnr 12 SEP
   }
 }
-
-
-
 
 
 void _FILE_OPS(void) {
@@ -309,11 +327,33 @@ void _FILE_OPS(void) {
       return;
     }
   } // -927 requested
+
+  if (fflag == -949) { // -949 means print file contents to the terminal (read file, write console)
+    _FILE_PRINT(); // big kludge two
+    _OK_OOB();
+    return;
+  }
+
+  if (fflag == -953) { // -953 means load the forth source code from 'disk' and compile/interpret it
+    // Serial.println("FLAG seen: load");
+    _FILE_LOAD();
+    // Serial.println("TEST trap LINE 338");
+    // while(-1);
+    // Serial.println("OOBIFABI");
+    _FLOAD(); // set the instruction ptr
+    // Serial.println("_FLOAD did finish, perhaps.  LINE 344 of flash_ops.cpp");
+    _OK_OOB();
+    return;
+  }
+
   if (fflag == -961) { // -961 means write out the forth source code to 'disk'
-    _FILE_OTHER(); // big kludge
+    _FILE_WRITE(); // big kludge
+    _OK_OOB();
+    return;
   }
   if (fflag == -982) { // -982 means mkdir_forth()
     mkdir_forth();
+    _OK_OOB();
     return;
   }
   if (fflag == -555) { // -555 means generic and is just a test value
@@ -323,16 +363,14 @@ void _FILE_OPS(void) {
   if
     (
       (fflag != -927) &&
+      (fflag != -949) && // print
+      (fflag != -953) && // load (open for reading to prep for fload word at the moment, MAYBE)
       (fflag != -961) &&
+      (fflag != -982) &&
       (fflag != -555)
     ) {
     Serial.println("Trap error Line 172: UNRECOGNIZED file ops request");
     while(-1); // trap
   }
 }
-
-
-
-
-
 

@@ -168,6 +168,8 @@ boolean keyboard_not_file = true; // keyboard or file input, for parsing
 
 // extra defs - not yet planned well 12 SEP
 extern void _FILE_OPS(void);
+extern void _LOAD_FILE(void);
+extern void _PRINT_FILE(void);
 extern void _REMOVE_FILE(void);
 extern void _WRITE_FILE(void);
 
@@ -533,6 +535,7 @@ void _FLPARSE (void) {
   char t;
   tib = "";
   keyboard_not_file = false;
+  // Serial.println("HELLO DEBUG from _FLPARSE() yak");
   if (thisFile) {
     while (thisFile.available() > 1 ) { // FLEN_MAX) {
 
@@ -1873,7 +1876,7 @@ abort:
 
 // begin new stuff - - - - - -
 
-  NAME(508, 0, 4, 'f', 'i', 'l') // 'file' accepts: read write load print (none of these exist yet)
+  NAME(508, 0, 4, 'f', 'i', 'l') // 'file' accepts: read write remove print load (none of these exist yet)
   LINK(509, 505)
   CODE(510, _FILE_OPS)
 
@@ -1882,8 +1885,16 @@ abort:
   CODE(513, _WRITE_FILE)
 
   NAME(514, 0, 6, 'r', 'e', 'm') // 'remove' talks to 'file'
-  LINK(515, 511) // standard increment +3
+  LINK(515, 511)
   CODE(516, _REMOVE_FILE)
+
+  NAME(517, 0, 5, 'p', 'r', 'i') // 'print' talks to 'file'
+  LINK(518, 514) // standard increment +3
+  CODE(519, _PRINT_FILE)
+
+  NAME(520, 0, 4, 'l', 'o', 'a') // 'load' talks to 'file'
+  LINK(521, 517) // standard increment +3
+  CODE(522, _LOAD_FILE) // complex at the moment, due to _FLPARSE mechanism
 
   // test
   DATA(600, lit)
@@ -1911,8 +1922,13 @@ abort:
 
 // latest rescinded 12 SEP 2019 14:06z:
 
-     D = 514; // latest word 'remove'
-     H = 517;
+/*
+     D=  517; // latest word 'close'
+     H = 520;
+*/
+
+     D = 520; // latest word 'load'
+     H = 523;
 
 // cpmem 486 thru 488, 489 is 488 + 1
 
@@ -1927,6 +1943,7 @@ abort:
   Serial.println("Novel code: flinit to manually init q/spi flashROM 12 SEP 2019");
   Serial.println("pnm and pnw remapped to pinmode and pinwrite .. must spell out");
   Serial.println("\r\nflinit fload - call both in that sequence to load the sam editor");
+  Serial.println("\r\n\r\nflinit remove file write file print file load file");
 #endif
 /*
   flash_setup(); // flash_ops.cpp
