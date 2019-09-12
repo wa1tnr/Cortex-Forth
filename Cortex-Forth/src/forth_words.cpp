@@ -113,15 +113,16 @@ void forth_words(void) {
       WRITE_VERT_WSPACE( "  "
 
 // >prn ( n -- )
-    ) WRITELN_FORTH(     ": >prn 32 over over - \\ ( n -- ) >prn is another form of the emit word"
-    ) WRITELN_FORTH(     "  0< if "
+    ) WRITELN_FORTH(     ": >prn  \\ ( n -- ) >prn is another form of the emit word"
+    ) WRITELN_FORTH(     "  32 over over -"
+    ) WRITELN_FORTH(     "  0< if  \\ emit a period for values on TOS that are < ASCII 32 (space char)"
     ) WRITELN_FORTH(     "      46 emit drop drop exit"
     ) WRITELN_FORTH(     "  then"
     ) WRITELN_FORTH(     "  drop 127 1 - over over swap -"
-    ) WRITELN_FORTH(     "  0< if"
+    ) WRITELN_FORTH(     "  0< if  \\ emit a period for values on TOS > ASCII 126"
     ) WRITELN_FORTH(     "      46 emit drop drop exit"
     ) WRITELN_FORTH(     "  then"
-    ) WRITELN_FORTH(     "  drop emit ;"
+    ) WRITELN_FORTH(     "  drop emit ;  \\ emit the ASCII char 7-bit clean 0x20 through 0x7E"
 
     ) WRITE_VERT_WSPACE( "  "
 
