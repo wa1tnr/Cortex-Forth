@@ -1,6 +1,13 @@
-// Tue Sep 10 21:43:43 UTC 2019 0.2.0-alpha.3 non-usart--testing-b  shred: abn-741
+// Thu Sep 12 00:39:47 UTC 2019 0.2.0-alpha.3 non-usart--testing-b  shred: abn-743
 
-// Tue Sep 10 21:59:43 UTC 2019
+/*
+commit 410de2749f5f0d9f01d77f49329fd0b259440cf2
+Author: wa1tnr
+Date:   Wed Sep 11 23:57:32 2019 +0000
+
+    document stack effect diagrams and such
+
+*/
 
 /*
 commit 5feb37a854b7f3bc4eb8e3887923beb0be0ac9ce
@@ -1890,13 +1897,13 @@ abort:
    _color_black_bg(); _color_yellow_fg();
    delay(2000);
    SERIAL_LOCAL_C.println  ("");
-   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 10 SEP 2019 21:43z");
-   SERIAL_LOCAL_C.println  ("      Tue Sep 10 21:43:43 UTC 2019 0.2.0-alpha.3 non-usart--testing-b");
+   SERIAL_LOCAL_C.println  (" myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 12 SEP 2019 00:39z");
+   SERIAL_LOCAL_C.println  ("      Thu Sep 12 00:39:47 UTC 2019 0.2.0-alpha.3 non-usart--testing-b");
    SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  +comments +sam +autoload +squote +fdir_planned");
    SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  ++rlist +cc +blist +mkdir +write_File");
-   SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  +fload                               shred: abn-741");
+   SERIAL_LOCAL_C.println  ("      +0.2.0-a.3  +fload                               shred: abn-743");
    SERIAL_LOCAL_C.println  ("      words: sam fload wlist warm - do NOT use fload without disabling autoload");
-   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-v");
+   SERIAL_LOCAL_C.println  ("      TEF MEK Hn-x");
 }
 
 /*
