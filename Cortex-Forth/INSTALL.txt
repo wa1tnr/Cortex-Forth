@@ -22,9 +22,72 @@ It generally changes at least once per calendar date of development.
 See 'Versioning' (below) for a bit more on referencing which
 version is documented here.
 
+
 Really Quick Install:
 
- Unpack the .ZIP or tarball where you want it
+ * Unpack the .ZIP or tarball where you want it
+ * Install required libraries from inside the Arduino IDE
+ * Compile in the Arduino IDE
+ * Upload the compiled file to the target
+   (ItsyBitsyM4 is the reference target)
+ * Connect to the target (via the USB connector on the target)
+   in the Serial Monitor
+
+   See: Cortex-Forth/doc/program_init.log  for sample output
+
+ * type 'words' or 'wlist' and press ENTER or Control J
+
+
+
+Communications
+
+The reference implementation uses communications via the
+'microcom' program.  Serial Monitor seems to work acceptably
+well, for quick testing (this has been verified).
+
+Usual invocation is:
+
+ mc $ microcom -p /dev/ttyACM0
+
+A lot of information is produced by the running program, and
+printed to your terminal, when the program starts.
+
+xterm is assumed; most text-based communications/shell windows
+can be expected to function, though this is unproven and untested.
+
+Most serial communications programs should produce at least
+a minimally useful environment.  Examples of such programs
+are screen, seyon, minicom, and gtkterm.
+
+Only minicom and microcom are used to test, and usually only
+microcom is used.
+
+The Serial Monitor should work, but it isn't supported, as it
+uses a line-by line input, rather than character by character
+as you type.
+
+Serial communications are established from inside
+flash_setup() found in ./src/flash_ops.cpp:
+
+ $ cat -n src/flash_ops.cpp | egrep 38400
+   110    Serial.begin(38400);
+ $
+
+Screen is another option to talk to the target board.
+
+Screen may be invoked with:
+
+ $ screen  /dev/ttyACM0 38400
+
+Control A, followed by a backslash, should prompt to exit 'screen'.
+
+See also:
+
+ [ https://learn.adafruit.com/micropython-basics-how-to-load-micropython-on-a-board/serial-terminal ]
+
+
+
+Almost Really Quick Install:
 
  Change directory to
 
@@ -54,6 +117,11 @@ Really Quick Install:
  The Arduino IDE was used to install all three of these
  libraries, for the reference implementation.  All are
  current published versions.
+
+ dog.cpp is a junk file meant to collect relevant comments
+ at the very top of that file (to help differentiate between
+ tiny similar revisons to the program).  It may be ignored,
+ for practical work on the program.
 
 
 Quick Install:
