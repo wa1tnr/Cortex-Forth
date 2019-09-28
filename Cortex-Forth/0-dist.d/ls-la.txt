@@ -1,0 +1,7 @@
+total 180
+drwxr-xr-x 2 owner owner  4096 Sep 10 22:22 .
+drwxr-xr-x 9 owner owner  4096 Sep 10 22:22 ..
+-rw-r--r-- 1 owner owner 70886 Sep 10 22:22 Cortex-Forth-0.2.0-alpha.3.tar.gz
+-rw-r--r-- 1 owner owner 94997 Sep 10 22:22 Cortex-Forth-0.2.0-alpha.3.zip
+-rw-r--r-- 1 owner owner   366 Sep 10 22:22 ls-la.txt
+-rw-r--r-- 1 owner owner   133 Sep 10 22:22 md5sums.txt
