@@ -22,8 +22,66 @@ It generally changes at least once per calendar date of development.
 See 'Versioning' (below) for a bit more on referencing which
 version is documented here.
 
+Really Quick Install:
+
+ Unpack the .ZIP or tarball where you want it
+
+ Change directory to
+
+ Cortex-Forth-0.2.0-alpha.3/Cortex-Forth
+
+ Do a directory listing to locate yourself.
+
+ Mainfile is named 'Cortex-Forth.ino' and is only
+ included once.  When a simple directory listing reports
+ Cortex-Forth.ino is present, you are in the intended,
+ top level directory for program development.
+
+ Additional active files are found in the ./src tree,
+ including flash_ops.cpp and forth_words.cpp and others.
+
+ YOU NEED ADDITIONAL LIBRARIES.
+
+ SdFat_-_Adafruit_Fork
+ Adafruit_SPIFlash
+
+ Also used (ItsyBitsyM4 in particular uses this):
+
+ Adafruit_DotStar
+
+ To operate the onboard dotstar RGB LED.
+
+ The Arduino IDE was used to install all three of these
+ libraries, for the reference implementation.  All are
+ current published versions.
 
 
+Quick Install:
+
+ $ zcat ../Cortex-Forth-0.2.0-alpha.3.tar.gz | tar -xvf -
+
+You should be in a unique directory before executing the
+previous command, with the necessary file written to the
+directory one level up from where 'cd' has placed you. ;)
+
+The output of 'tar' there might look something like this:
+
+Cortex-Forth-0.2.0-alpha.3/
+Cortex-Forth-0.2.0-alpha.3/.gitignore
+Cortex-Forth-0.2.0-alpha.3/Cortex-Forth/
+Cortex-Forth-0.2.0-alpha.3/Cortex-Forth/.gitignore
+Cortex-Forth-0.2.0-alpha.3/Cortex-Forth/0_archived.d/
+Cortex-Forth-0.2.0-alpha.3/Cortex-Forth/0_archived.d/.gitignore
+Cortex-Forth-0.2.0-alpha.3/Cortex-Forth/0_archived.d/_dumpram.cpp_deprecated_
+
+ ... with many lines following the snippet just given.
+
+ $ pwd
+/somewhere/temp.d # yours will be whatever you named 'temp.d' to be)
+ $ ls
+Cortex-Forth-0.2.0-alpha.3
+ $ cd Cortex-Forth-0.2.0-alpha.3/Cortex-Forth/
+ $
 
 Versioning
 
