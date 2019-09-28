@@ -1,0 +1,89 @@
+
+Sample run:
+
+ myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 10 SEP 2019 20:59z
+      Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a
+      +0.2.0-a.2  +comments +sam +autoload +squote +fdir_planned
+      +0.2.0-a.2  ++rlist +cc +blist +mkdir +write_File
+      +0.2.0-a.2  +fload                               shred: abn-739
+      words: sam fload wlist warm - do NOT use fload without disabling autoload
+      TEF MEK Hn-t
+ loading a forth program from flashROM ..
+ABCDE  
+/forth/ascii_xfer_a001.txt was closed - Cortex-Forth.ino LINE 625 - route B
+sam
+Here: 5649 this is a test [ENTER]
+1612 : 00 74 68 69 73 20 69 73 20 61 20 74 65 73 74 00   .this is a test. 
+1622 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+1632 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+
+[Control-H for Backspace, four times]
+[type replacement text, 'quick test']
+quick test [ENTER]
+1612 : 00 74 68 69 73 20 69 73 20 61 20 71 75 69 63 6B   .this is a quick 
+1622 : 20 74 65 73 74 00 00 00 00 00 00 00 00 00 00 00    test........... 
+1632 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+
+[Control-H for Backspace, four times]
+[type replacement text, 'little']
+little [ENTER]
+1612 : 00 74 68 69 73 20 69 73 20 61 20 71 75 69 63 6B   .this is a quick 
+1622 : 20 6C 69 74 74 6C 65 00 00 00 00 00 00 00 00 00    little......... 
+1632 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+
+[Press ESC]
+[type .s followed by a space]
+HEY_ITS_ESC_ .s -99 5777 23 5650 5673
+
+[type 'drop blist' followed by a space]
+HEY_ITS_ESC_ .s -99 5777 23 5650 5673 drop blist  
+1612 : 00 74 68 69 73 20 69 73 20 61 20 71 75 69 63 6B   .this is a quick 
+1622 : 20 6C 69 74 74 6C 65 00 00 00 00 00 00 00 00 00    little......... 
+1632 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+
+(In another terminal):
+
+ $ gforth
+Gforth 0.7.3, Copyright (C) 1995-2008 Free Software Foundation, Inc.
+Gforth comes with ABSOLUTELY NO WARRANTY; for details type `license'
+Type `bye' to exit
+hex 1612 decimal . 5650  ok
+decimal 5777 hex . 1691  ok
+
+[buffer is 0x1612 through 0x1691]
+hex 1691 1612 - decimal . 127
+
+(in Cortex Forth, again, type):
+s" falmouth [SPACE]
+fs@ emits [SPACE]  output looks like this:
+
+s" falmouth  fs@ emits falmouth
+
+The squote word accepted a string (a space character ended
+the string, and returned control to the Forth interpreter's
+basic parsing).
+
+The fs@ word fetches something.  An address.  An address that's
+relevant to the previous word typed (the squote word).
+
+.s empty s" falmouth  .s 5650 fs@ .s 104 116 117 111 109 108 97 102 8 emits falmouth
+
+warm [The 'warm' word reboots]
+s" digby .s 5650 fs@ .s 121 98 103 105 100 5 emits digby .s empty
+
+.s empty s" digby  .s 5650 fs@ .s 121 98 103 105 100 5 emits digby .s empty cr
+
+This can be made (slightly) more explicit: use Control J after each utterance:
+
+warm
+.s
+empty  Ok
+s" digby  .s
+5650  Ok
+fs@ .s
+121 98 103 105 100 5  Ok
+emits
+digby  Ok
+.s
+empty  Ok
+
