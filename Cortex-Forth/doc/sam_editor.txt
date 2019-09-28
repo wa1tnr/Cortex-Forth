@@ -69,7 +69,7 @@ relevant to the previous word typed (the squote word).
 .s empty s" falmouth  .s 5650 fs@ .s 104 116 117 111 109 108 97 102 8 emits falmouth
 
 warm [The 'warm' word reboots]
-s" digby .s 5650 fs@ .s 121 98 103 105 100 5 emits digby .s empty
+s" digby  .s 5650 fs@ .s 121 98 103 105 100 5 emits digby .s empty
 
 .s empty s" digby  .s 5650 fs@ .s 121 98 103 105 100 5 emits digby .s empty cr
 
@@ -86,4 +86,29 @@ emits
 digby  Ok
 .s
 empty  Ok
+
+warm
+s" digby  .s 5650 fs@ .s 121 98 103 105 100 5 emits digby .s empty 5650 blist  
+1612 : 31 79 62 67 69 64 00 00 00 00 00 00 00 00 00 00   1ybgid.......... 
+1622 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+
+Each instance of s" (currently) allots a new string in memory.
+
+warm
+.s
+empty  Ok
+s" shovelshot  .s
+5650  Ok
+s" pitchfork  .s
+5650 5682  Ok
+over blist  
+1612 : 31 74 6F 68 73 6C 65 76 6F 68 73 00 00 00 00 00   1tohslevohs..... 
+1622 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+1632 : 51 6B 72 6F 66 68 63 74 69 70 00 00 00 00 00 00   Qkrofhctip...... 
+1642 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+ 
+.s 5650 5682 5778 drop .s 5650 5682 blist  
+1632 : 51 6B 72 6F 66 68 63 74 69 70 00 00 00 00 00 00   Qkrofhctip...... 
+1642 : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................ 
+
 
