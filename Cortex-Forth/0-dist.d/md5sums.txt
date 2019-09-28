@@ -1,0 +1,2 @@
+6464943e41426f933217081fcb756fba  Cortex-Forth-0.2.0-alpha.3.tar.gz
+e616753b1c2fced2bc5c32648da48493  Cortex-Forth-0.2.0-alpha.3.zip
