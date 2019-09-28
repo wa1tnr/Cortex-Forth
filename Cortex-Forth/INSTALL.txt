@@ -4,6 +4,35 @@ Sat Sep 28 18:00:37 UTC 2019
 
 Installation
 
+Quick Check: Same version?
+
+The documentation assumes you are using Release 0.2.0-alpha.3
+with a 'shred' of abn-739.  The shred changes frequently, and
+is a quick reference to the current version of the program,
+independent of other means to reference this.
+
+If you glance at the 'abn' number/version when the program
+starts printing information to your terminal, you'll generally
+be up to speed in identifying which version is currently loaded
+onto the target board (give or take several commits, as the abn
+number is only updated a few times each development session).
+
+It generally changes at least once per calendar date of development.
+
+See 'Versioning' (below) for a bit more on referencing which
+version is documented here.
+
+
+
+
+Versioning
+
+ $ md5sum Cortex-Forth-0.2.0-alpha.3.tar.gz
+6464943e41426f933217081fcb756fba  Cortex-Forth-0.2.0-alpha.3.tar.gz
+
+ $ md5sum Cortex-Forth-0.2.0-alpha.3.zip
+e616753b1c2fced2bc5c32648da48493  Cortex-Forth-0.2.0-alpha.3.zip
+
 The documentation assumes you are on the commit 5feb37a854b7
 version of this program:
 
