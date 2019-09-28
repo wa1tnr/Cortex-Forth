@@ -3,6 +3,7 @@ INSTALL.txt
 Sat Sep 28 18:00:37 UTC 2019
 
 Installation
+~~~~~~~~~~~~
 
 Quick Check: Same version?
 
@@ -10,6 +11,11 @@ The documentation assumes you are using Release 0.2.0-alpha.3
 with a 'shred' of abn-739.  The shred changes frequently, and
 is a quick reference to the current version of the program,
 independent of other means to reference this.
+
+The signon message when the program is running does not reflect
+the current release version and is (instead) one version behind.
+
+This is a cosmetic difference, only.
 
 If you glance at the 'abn' number/version when the program
 starts printing information to your terminal, you'll generally
@@ -23,10 +29,29 @@ See 'Versioning' (below) for a bit more on referencing which
 version is documented here.
 
 
-Really Quick Install:
+
+Super Quick Install
+~~~~~~~~~~~~~~~~~~~
+
+ * Download the program
+ * Unpack it as usual
+ * Find it in Arduino IDE
+ * Select the .ino file as usual
+ * Compile for your target
+   Reference target: Adafruit ItsyBitsy M4
+ * Upload to your target
+ * Connect to your target in the Serial Monitor
+ * type 'words' or 'wlist' (wlist is less encompassing but less cryptic)
+
+ * if pressing ENTER does not give desired result, try pressing Control J instead.
+
+
+
+Really Quick Install
+~~~~~~~~~~~~~~~~~~~~
 
  * Unpack the .ZIP or tarball where you want it
- * Install required libraries from inside the Arduino IDE
+ * Install/update required libraries from inside the Arduino IDE
  * Compile in the Arduino IDE
  * Upload the compiled file to the target
    (ItsyBitsyM4 is the reference target)
@@ -40,6 +65,7 @@ Really Quick Install:
 
 
 Communications
+~~~~~~~~~~~~~~
 
 The reference implementation uses communications via the
 'microcom' program.  Serial Monitor seems to work acceptably
@@ -87,7 +113,8 @@ See also:
 
 
 
-Almost Really Quick Install:
+Almost Really Quick Install
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  Change directory to
 
@@ -124,7 +151,9 @@ Almost Really Quick Install:
  for practical work on the program.
 
 
-Quick Install:
+
+Quick Install
+~~~~~~~~~~~~~
 
  $ zcat ../Cortex-Forth-0.2.0-alpha.3.tar.gz | tar -xvf -
 
@@ -151,7 +180,10 @@ Cortex-Forth-0.2.0-alpha.3
  $ cd Cortex-Forth-0.2.0-alpha.3/Cortex-Forth/
  $
 
+
+
 Versioning
+~~~~~~~~~~
 
  $ md5sum Cortex-Forth-0.2.0-alpha.3.tar.gz
 6464943e41426f933217081fcb756fba  Cortex-Forth-0.2.0-alpha.3.tar.gz
@@ -228,3 +260,24 @@ of this documentation:
 Look for:
     Create release tag 0.2.0-alpha.3
 
+
+
+Program Signon
+~~~~~~~~~~~~~~
+
+ myForth Arm Cortex   de wa1tnr  ItsyBitsyM4 10 SEP 2019 20:59z
+      Tue Sep 10 20:59:28 UTC 2019 0.2.0-alpha.2 non-usart--testing-a
+      +0.2.0-a.2  +comments +sam +autoload +squote +fdir_planned
+      +0.2.0-a.2  ++rlist +cc +blist +mkdir +write_File
+      +0.2.0-a.2  +fload                               shred: abn-739
+      words: sam fload wlist warm - do NOT use fload without disabling autoload
+      TEF MEK Hn-t
+
+Although it says 'alpha.2' it is already 'alpha.3' there.
+The abn-739 numbering is accurate.
+
+'TEF MEK Hn-t' generally tracks with the abn number (if one
+is incremented, so is the other).
+
+The above is the exact signon message as the program version
+that is documented here.
