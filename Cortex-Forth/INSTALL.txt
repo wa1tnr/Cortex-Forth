@@ -1,6 +1,8 @@
 INSTALL.txt
 
-Sat Sep 28 18:00:37 UTC 2019
+Sat Sep 28 20:37:54 UTC 2019 0.2.0-alpha.3 non-usart--flash_bug-aa-  shred: abn-747
+
+
 
 Installation
 ~~~~~~~~~~~~
@@ -17,8 +19,11 @@ the current release version and is (instead) one version behind.
 
 This is a cosmetic difference, only.
 
+(Scroll way down to see a sample of the current program signon message)
+
+
 If you glance at the 'abn' number/version when the program
-starts printing information to your terminal, you'll generally
+finishes printing information to your terminal, you'll generally
 be up to speed in identifying which version is currently loaded
 onto the target board (give or take several commits, as the abn
 number is only updated a few times each development session).
