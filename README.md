@@ -6,6 +6,35 @@ Cortex-Forth is a Forth in C for an Arm Arduino, in development.
 Status
 ======
 
+30 September 2019:
+
+Metro M0 Express tested against code written for ItsyBitsy M4.
+No problems seen - spi flashROM worked functionally transparent
+to the ItsyBitsy M4 QSPI flashROM case (Adafruit's lib was written
+in such a way that one does not need to change one's code to
+switch between these two cases).
+
+Nice.
+
+This implies that multiple targets are going to function correctly,
+without code changes, except in the case of hardware-specific stuff.
+
+That is, the Arduino IDE is already fairly hardware-agnostic, and
+this Forth does not seem to have too much in the way of breaking
+that paradigm.
+
+So far. ;)
+
+There's a 'sam' editor that barely works, now, and is available and
+was written in Forth source code.
+
+It essentially establishes and populates a 128 byte buffer in memory,
+allows keyboard input (to edit the buffer) and accepts the backspace
+character (Control H, ASCII 8) as the only means to 'cursor' through
+the buffer (to modify it, after initializing (part of) it using just
+live keystrokes.
+
+
 12 August 2019:
 
 Branch 'good-compiler-aa' now holds a developed Forth that
