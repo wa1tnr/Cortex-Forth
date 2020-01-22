@@ -128,11 +128,25 @@ void blink_awaiting_serial(void) {
 void serial_setup(void) {
   // Open serial communications and wait for port to open:
   setup_blink_gpio(); // TODO: split out
-  Serial.begin(38400);
+  // SERIAL_LOCAL_C.begin(38400);
+  // SERIAL_LOCAL_C.begin(9600); // 38400 produced a response but not clean chars
+  // SERIAL_LOCAL_C.begin(115200); // 9600 also did not work // 38400 produced a response but not clean chars
+  // SERIAL_LOCAL_C.begin(57600); // 9600 also did not work // 38400 produced a response but not clean chars
+  // have SCL to Trinket M0 Pin 3
+  // SERIAL_LOCAL_C.begin(4800); // 9600 also did not work // 38400 produced a response but not clean chars
+  // SERIAL_LOCAL_C.begin(230400); // 9600 also did not work // 38400 produced a response but not clean chars
+
+  // SERIAL_LOCAL_C.begin(57600); // 9600 also did not work // 38400 produced a response but not clean chars
+  // late comment - 38400 may have been correct
+  SERIAL_LOCAL_C.begin(38400); // 9600 also did not work // 38400 produced a response but not clean chars
+#ifdef COMMENTED_AUT
   while (!Serial) {
     delay(1); // wait for serial port to connect. Needed for native USB port only
     blink_awaiting_serial();
   }
+#endif
+  // SERIAL_LOCAL_C
+  // SERIAL_LOCAL_C.println("Connection to serial port established!");
   Serial.println("Connection to serial port established!");
 }
 
