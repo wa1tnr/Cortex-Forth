@@ -110,7 +110,7 @@ extern File thisFile; // You must include SdFat.h to use 'File' here
 // global variables
 union Memory {
   int data [RAM_SIZE];
-  void (*program []) (void);
+  void (*program [0]) (void);
 } memory;
 
 int PKF = 0; // Peek Flag set to false initially
